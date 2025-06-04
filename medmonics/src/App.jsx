@@ -4,15 +4,16 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import LoginPage from './pages/LoginPage';
 import AppLayout from './layouts/AppLayout';
+import './App.css'; // Should use consistent styling with global.css
 
 const AppContent = () => {
   const { currentUser, loadingAuth } = useAuth();
 
   if (loadingAuth) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-700 text-sky-400">
-        <div className="animate-spin h-10 w-10 border-4 border-blue-400 border-t-transparent rounded-full mb-4"></div>
-        <p className="text-xl">Loading Application...</p>
+      <div className="app-loading">
+        <div className="spinner" />
+        <p className="loading-message">Loading Application...</p>
       </div>
     );
   }

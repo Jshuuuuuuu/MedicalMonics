@@ -4,7 +4,8 @@ import { collection, addDoc, doc, updateDoc, Timestamp } from 'firebase/firestor
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import { getMnemonicsCollectionPath } from '../firebase';
-import { PlusCircleIcon, PencilSquareIcon } from '@heroicons/react/24/outline'; // Add this if you have Heroicons installed
+import { PlusCircleIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
+import '../styles/AddMnemonicPage.css';
 
 const AddMnemonicPage = ({ onMnemonicAdded, editingMnemonic, onMnemonicUpdated, clearEditing }) => {
     const { userId, db } = useAuth();
@@ -54,44 +55,50 @@ const AddMnemonicPage = ({ onMnemonicAdded, editingMnemonic, onMnemonicUpdated, 
                 const mnemonicRef = doc(db, mnemonicsColPath, editingMnemonic.id);
                 await updateDoc(mnemonicRef, mnemonicData);
                 showToast('Mnemonic updated successfully!', 'success');
-                if(onMnemonicUpdated) onMnemonicUpdated({ id: editingMnemonic.id, ...mnemonicData });
+                if (onMnemonicUpdated) onMnemonicUpdated({ id: editingMnemonic.id, ...mnemonicData });
             } else {
                 mnemonicData.createdAt = Timestamp.now();
                 const docRef = await addDoc(collection(db, mnemonicsColPath), mnemonicData);
                 showToast('Mnemonic added successfully!', 'success');
-                if(onMnemonicAdded) onMnemonicAdded({ id: docRef.id, ...mnemonicData });
+                if (onMnemonicAdded) onMnemonicAdded({ id: docRef.id, ...mnemonicData });
             }
-            setAcronym(''); setFullForm(''); setCategory(''); setDescription('');
-            if(clearEditing) clearEditing();
+            setAcronym('');
+            setFullForm('');
+            setCategory('');
+            setDescription('');
+            if (clearEditing) clearEditing();
 
         } catch (error) {
             console.error("Error saving mnemonic: ", error);
             showToast(`Error saving mnemonic: ${error.message}`, 'error');
         }
     };
-    
+
     const handleCancel = () => {
-        setAcronym(''); setFullForm(''); setCategory(''); setDescription('');
-        if(clearEditing) clearEditing();
-    }
+        setAcronym('');
+        setFullForm('');
+        setCategory('');
+        setDescription('');
+        if (clearEditing) clearEditing();
+    };
 
     return (
-        <div className="flex justify-center items-center min-h-[70vh]">
-            <div className="w-full max-w-xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 p-8 rounded-2xl shadow-2xl border border-slate-700">
-                <div className="flex items-center gap-3 mb-6">
+        <div className="mnemonic-page-wrapper">
+            <div className="mnemonic-form-container">
+                <div className="mnemonic-header">
                     {editingMnemonic ? (
-                        <PencilSquareIcon className="h-7 w-7 text-yellow-400" />
+                        <PencilSquareIcon className="mnemonic-icon yellow" />
                     ) : (
-                        <PlusCircleIcon className="h-7 w-7 text-green-400" />
+                        <PlusCircleIcon className="mnemonic-icon green" />
                     )}
-                    <h2 className={`text-2xl md:text-3xl font-bold ${editingMnemonic ? 'text-yellow-400' : 'text-green-400'}`}>
+                    <h2 className={`mnemonic-title ${editingMnemonic ? 'yellow' : 'green'}`}>
                         {editingMnemonic ? 'Edit Mnemonic' : 'Add New Mnemonic'}
                     </h2>
                 </div>
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                        <label htmlFor="mnemonic-acronym-form" className="block text-sm font-semibold text-slate-200 mb-1">
-                            Acronym/Title <span className="text-red-500">*</span>
+                <form onSubmit={handleSubmit} className="mnemonic-form">
+                    <div className="form-group">
+                        <label htmlFor="mnemonic-acronym-form" className="form-label">
+                            Acronym/Title <span className="required">*</span>
                         </label>
                         <input
                             type="text"
@@ -99,13 +106,13 @@ const AddMnemonicPage = ({ onMnemonicAdded, editingMnemonic, onMnemonicUpdated, 
                             value={acronym}
                             onChange={(e) => setAcronym(e.target.value)}
                             required
-                            className="w-full p-3 rounded-lg bg-slate-700 text-gray-100 border border-slate-600 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition"
+                            className="form-input"
                             placeholder="e.g., FAST, ABCDE"
                         />
                     </div>
-                    <div>
-                        <label htmlFor="mnemonic-fullform-form" className="block text-sm font-semibold text-slate-200 mb-1">
-                            Full Form/Meaning <span className="text-red-500">*</span>
+                    <div className="form-group">
+                        <label htmlFor="mnemonic-fullform-form" className="form-label">
+                            Full Form/Meaning <span className="required">*</span>
                         </label>
                         <textarea
                             id="mnemonic-fullform-form"
@@ -113,12 +120,12 @@ const AddMnemonicPage = ({ onMnemonicAdded, editingMnemonic, onMnemonicUpdated, 
                             onChange={(e) => setFullForm(e.target.value)}
                             rows="3"
                             required
-                            className="w-full p-3 rounded-lg bg-slate-700 text-gray-100 border border-slate-600 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition"
+                            className="form-input"
                             placeholder="e.g., Face, Arms, Speech, Time"
                         ></textarea>
                     </div>
-                    <div>
-                        <label htmlFor="mnemonic-category-form" className="block text-sm font-semibold text-slate-200 mb-1">
+                    <div className="form-group">
+                        <label htmlFor="mnemonic-category-form" className="form-label">
                             Category
                         </label>
                         <input
@@ -126,12 +133,12 @@ const AddMnemonicPage = ({ onMnemonicAdded, editingMnemonic, onMnemonicUpdated, 
                             id="mnemonic-category-form"
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
-                            className="w-full p-3 rounded-lg bg-slate-700 text-gray-100 border border-slate-600 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition"
+                            className="form-input"
                             placeholder="e.g., Stroke, Emergency"
                         />
                     </div>
-                    <div>
-                        <label htmlFor="mnemonic-description-form" className="block text-sm font-semibold text-slate-200 mb-1">
+                    <div className="form-group">
+                        <label htmlFor="mnemonic-description-form" className="form-label">
                             Description/Notes
                         </label>
                         <textarea
@@ -139,25 +146,21 @@ const AddMnemonicPage = ({ onMnemonicAdded, editingMnemonic, onMnemonicUpdated, 
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             rows="2"
-                            className="w-full p-3 rounded-lg bg-slate-700 text-gray-100 border border-slate-600 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition"
+                            className="form-input"
                             placeholder="Additional details or context"
                         ></textarea>
                     </div>
-                    <div className="flex gap-3 pt-2">
+                    <div className="form-actions">
                         <button
                             type="submit"
-                            className={`flex-1 text-white font-semibold py-3 px-4 rounded-lg shadow-lg transition-all duration-150 ease-in-out transform hover:scale-105 focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 ${
-                                editingMnemonic
-                                    ? 'bg-yellow-500 hover:bg-yellow-400 focus:ring-yellow-400'
-                                    : 'bg-green-600 hover:bg-green-500 focus:ring-green-500'
-                            }`}
+                            className={`submit-btn ${editingMnemonic ? 'yellow' : 'green'}`}
                         >
                             {editingMnemonic ? 'Update Mnemonic' : 'Save Mnemonic'}
                         </button>
                         <button
                             type="button"
                             onClick={handleCancel}
-                            className="flex-1 bg-slate-500 hover:bg-slate-400 text-white font-semibold py-3 px-4 rounded-lg shadow-lg transition-all focus:ring-2 focus:ring-offset-2 focus:ring-slate-400"
+                            className="cancel-btn"
                         >
                             Cancel
                         </button>

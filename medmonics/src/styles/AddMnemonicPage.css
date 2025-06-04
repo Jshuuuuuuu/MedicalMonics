@@ -1,0 +1,146 @@
+.mnemonic-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.mnemonic-form-container {
+  width: 100%;
+  max-width: 700px;
+  background: linear-gradient(to bottom right, #0f172a, #1e293b, #334155);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  border: 1px solid #334155;
+}
+
+.mnemonic-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.mnemonic-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.mnemonic-icon.green {
+  color: #4ade80;
+}
+
+.mnemonic-icon.yellow {
+  color: #facc15;
+}
+
+.mnemonic-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+
+.mnemonic-title.green {
+  color: #4ade80;
+}
+
+.mnemonic-title.yellow {
+  color: #facc15;
+}
+
+.mnemonic-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-bottom: 0.25rem;
+}
+
+.required {
+  color: #f87171;
+}
+
+.form-input {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background-color: #334155;
+  color: #f8fafc;
+  border: 1px solid #475569;
+  outline: none;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.form-input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px #38bdf8;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.submit-btn,
+.cancel-btn {
+  flex: 1;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  color: white;
+}
+
+.submit-btn.green {
+  background-color: #16a34a;
+}
+
+.submit-btn.green:hover {
+  background-color: #22c55e;
+}
+
+.submit-btn.green:focus {
+  outline: 2px solid #22c55e;
+  outline-offset: 2px;
+}
+
+.submit-btn.yellow {
+  background-color: #eab308;
+}
+
+.submit-btn.yellow:hover {
+  background-color: #facc15;
+}
+
+.submit-btn.yellow:focus {
+  outline: 2px solid #facc15;
+  outline-offset: 2px;
+}
+
+.cancel-btn {
+  background-color: #64748b;
+}
+
+.cancel-btn:hover {
+  background-color: #94a3b8;
+}
+
+.cancel-btn:focus {
+  outline: 2px solid #94a3b8;
+  outline-offset: 2px;
+}
