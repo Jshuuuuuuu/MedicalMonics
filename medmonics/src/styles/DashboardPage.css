@@ -1,121 +1,306 @@
-/* DashboardPage.css */
-
-/* Background and container */
-.dashboard-bg {
-  background-color: #0f0e17;
-  min-height: 100vh;
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  font-family: 'Inter', sans-serif;
-  color: #fffffe;
+:root {
+    --primary: #2c3e50;
+    --secondary: #3498db;
+    --accent: #e74c3c;
+    --light: #ecf0f1;
+    --dark: #2c3e50;
+    --success: #27ae60;
 }
 
-.dashboard-content-wrapper {
-  width: 100%;
-  max-width: 960px;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Title */
-.dashboard-title {
-  font-size: 2rem;
-  color: #e94560;
-  margin-bottom: 0.5rem;
+body {
+    background-color: #f5f7fa;
+    color: var(--dark);
+    line-height: 1.6;
 }
 
-/* Cards */
-.dashboard-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+.dashboard-page {
+    padding: 0 2rem;
+    /* max-width: 1200px; */
+    /* margin: 2rem auto; */
+}
+header {
+    background-color: var(--primary);
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.dashboard-card {
-  flex: 1 1 260px;
-  background-color: #232946;
-  border: 1.5px solid #393e5c;
-  border-radius: 0.75rem;
-  padding: 1.25rem 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.dashboard-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
 }
 
-.dashboard-card-title {
-  font-size: 1.125rem;
-  color: #fffffe;
-  margin-bottom: 0.5rem;
+.logo span {
+    color: var(--accent);
 }
 
-.dashboard-card-value {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #e94560;
+.logo i {
+    margin-right: 10px;
 }
 
-/* Recently added section */
-.dashboard-recent {
-  background-color: #1d1d2f;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  border: 1.5px solid #393e5c;
+.nav-links {
+    display: flex;
+    gap: 20px;
 }
 
-.dashboard-recent-title {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-  color: #fffffe;
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
 }
 
-.dashboard-recent-item {
-  background-color: #232946;
-  border: 1px solid #393e5c;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin-bottom: 0.75rem;
+.nav-links a:hover {
+    color: var(--secondary);
 }
 
-.dashboard-recent-acronym {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #e94560;
+.nav-links .logout {
+    color: var(--accent);
 }
 
-.dashboard-recent-fullform {
-  color: #b8c1ec;
-  margin-top: 0.25rem;
+
+.main-content {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
 }
 
-.dashboard-recent-category {
-  font-size: 0.875rem;
-  color: #a0a0c0;
-  margin-top: 0.25rem;
+.page-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--primary);
 }
 
-/* User ID */
-.dashboard-userid {
-  font-size: 0.75rem;
-  color: #a7a9be;
-  text-align: right;
-  margin-top: 2rem;
-  word-break: break-all;
+.library-container {
+    display: flex;
+    gap: 30px;
 }
 
-/* Responsive */
-@media (max-width: 640px) {
-  .dashboard-cards {
-    flex-direction: column;
-  }
+.sidebar {
+    flex: 0 0 250px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+}
 
-  .dashboard-card {
-    flex: 1 1 100%;
-  }
+.sidebar h3 {
+    margin-bottom: 1rem;
+    color: var(--primary);
+    font-size: 1.2rem;
+}
+
+.category-list {
+    list-style: none;
+}
+
+.category-list li {
+    margin-bottom: 10px;
+}
+
+.category-list a {
+    display: block;
+    padding: 8px 12px;
+    color: var(--dark);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.category-list a:hover {
+    background-color: var(--light);
+}
+
+.category-list .active a {
+    background-color: var(--secondary);
+    color: white;
+}
+
+.mnemonics-content {
+    flex: 1;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.content-header h2 {
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+.search-container input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
+    width: 250px;
+}
+
+.search-container button {
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-container button:hover {
+    background-color: #2980b9;
+}
+
+.mnemonics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.mnemonic-card {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.mnemonic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: var(--secondary);
+    color: white;
+    padding: 15px;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-body p {
+    margin-bottom: 15px;
+}
+
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.tag {
+    background-color: var(--light);
+    color: var(--dark);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+}
+
+.tag.pathology {
+    background-color: #ffb8b8;
+}
+
+.tag.anatomy {
+    background-color: #ffeaa7;
+}
+
+.tag.histology {
+    background-color: #b8ffc8;
+}
+
+.tag.embryology {
+    background-color: #b8e1ff;
+}
+
+.tag.pharmacology {
+    background-color: #a5d8ff;
+}
+
+.tag.microbiology {
+    background-color: #d8b8ff;
+}
+
+.view-btn {
+    display: block;
+    text-align: center;
+    background-color: var(--primary);
+    color: white;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 4px;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+}
+
+.view-btn:hover {
+    background-color: #1a252f;
+}
+
+@media (max-width: 768px) {
+    .library-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        flex: 1;
+    }
+
+    .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .search-container {
+        width: 100%;
+    }
+
+    .search-container input {
+        width: 100%;
+    }
 }

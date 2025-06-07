@@ -1,146 +1,189 @@
+/* AddMnemonicPage.css */
+
+:root {
+    --primary: #2c3e50;
+    --secondary: #3498db;
+    --accent: #e74c3c;
+    --light: #ecf0f1;
+    --dark: #2c3e50;
+    --success: #27ae60;
+}
+
+/* Global Reset (from your provided CSS, but often in a global stylesheet) */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* font-family will be set in body or a global CSS file, changed to 'Inter' below */
+}
+
+/* Body font set to Inter as per guidelines */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f5f7fa; /* Default background for the body */
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+/* Specific styles for the AddMnemonicPage wrapper */
 .mnemonic-page-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 1rem;
-  box-sizing: border-box;
+    display: flex;
+    padding: 20px;
+    background-color: var(--light);
+    min-height: calc(100vh - 70px);
+    /* justify-content: center; */
 }
 
+/* Container for the mnemonic form, adapting from .form-container */
 .mnemonic-form-container {
-  width: 100%;
-  max-width: 700px;
-  background: linear-gradient(to bottom right, #0f172a, #1e293b, #334155);
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  border: 1px solid #334155;
+    background-color: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* max-width: 800px; */
 }
 
+/* Header section within the form container */
 .mnemonic-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-
-.mnemonic-icon {
-  width: 28px;
-  height: 28px;
-}
-
-.mnemonic-icon.green {
-  color: #4ade80;
-}
-
-.mnemonic-icon.yellow {
-  color: #facc15;
+    text-align: left;
+    margin-bottom: 25px; /* Slightly adjusted margin for spacing */
 }
 
 .mnemonic-title {
-  font-size: 1.75rem;
-  font-weight: bold;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--dark); /* Title color */
+    margin-bottom: 0;
 }
 
-.mnemonic-title.green {
-  color: #4ade80;
-}
-
-.mnemonic-title.yellow {
-  color: #facc15;
-}
-
-.mnemonic-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
+/* Form group styling */
 .form-group {
-  display: flex;
-  flex-direction: column;
+    margin-bottom: 1.5rem; /* Matches your provided CSS */
 }
 
 .form-label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #e2e8f0;
-  margin-bottom: 0.25rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--dark);
+    font-size: 0.95rem; /* Slightly smaller for labels */
 }
 
 .required {
-  color: #f87171;
+    color: var(--accent); /* Red asterisk for required fields */
 }
 
+/* Input, select, and textarea styling */
 .form-input {
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  background-color: #334155;
-  color: #f8fafc;
-  border: 1px solid #475569;
-  outline: none;
-  transition: border 0.3s, box-shadow 0.3s;
+    width: 100%;
+    padding: 12px 15px; /* Slightly increased padding for better appearance */
+    border: 1px solid #ddd;
+    border-radius: 6px; /* Slightly more rounded corners */
+    font-size: 1rem;
+    color: var(--dark);
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: white;
 }
 
 .form-input:focus {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 2px #38bdf8;
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Enhanced focus shadow */
 }
 
+textarea.form-input {
+    min-height: 120px; /* Matches your provided CSS */
+    resize: vertical;
+}
+
+/* Two-column form row layout */
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 1.5rem; /* Matches your provided CSS */
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0; /* Important to prevent double margin when used in form-row */
+}
+
+/* Form action buttons container */
 .form-actions {
-  display: flex;
-  gap: 0.75rem;
-  padding-top: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 2rem; /* Matches your provided CSS */
 }
 
-.submit-btn,
+/* Submit button styling */
+.submit-btn {
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px; /* Slightly more rounded corners */
+    font-size: 1rem;
+    font-weight: 600; /* Slightly bolder font */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+/* Cancel button styling */
 .cancel-btn {
-  flex: 1;
-  font-weight: 600;
-  padding: 0.75rem 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
-  cursor: pointer;
-  color: white;
-}
-
-.submit-btn.green {
-  background-color: #16a34a;
-}
-
-.submit-btn.green:hover {
-  background-color: #22c55e;
-}
-
-.submit-btn.green:focus {
-  outline: 2px solid #22c55e;
-  outline-offset: 2px;
-}
-
-.submit-btn.yellow {
-  background-color: #eab308;
-}
-
-.submit-btn.yellow:hover {
-  background-color: #facc15;
-}
-
-.submit-btn.yellow:focus {
-  outline: 2px solid #facc15;
-  outline-offset: 2px;
-}
-
-.cancel-btn {
-  background-color: #64748b;
+    background-color: var(--light); /* Use var(--light) as background */
+    color: var(--dark); /* Use var(--dark) for text color */
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px; /* Slightly more rounded corners */
+    font-size: 1rem;
+    font-weight: 600; /* Slightly bolder font */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .cancel-btn:hover {
-  background-color: #94a3b8;
+    background-color: #ddd; /* Darker light color on hover */
+    transform: translateY(-2px); /* Subtle lift on hover */
 }
 
-.cancel-btn:focus {
-  outline: 2px solid #94a3b8;
-  outline-offset: 2px;
+/* Hint text for tags */
+.form-hint {
+    font-size: 0.85rem;
+    color: #777;
+    margin-top: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .mnemonic-form-container {
+        padding: 20px; /* Reduced padding on smaller screens */
+    }
+
+    .mnemonic-title {
+        font-size: 1.8rem; /* Adjusted title size for mobile */
+    }
+
+    .form-row {
+        flex-direction: column; /* Stack fields vertically */
+        gap: 15px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse; /* Stack buttons vertically, cancel above submit */
+        gap: 10px;
+    }
+
+    .submit-btn,
+    .cancel-btn {
+        width: 100%; /* Full width buttons */
+    }
 }
