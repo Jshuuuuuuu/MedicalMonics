@@ -5,7 +5,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import { getMnemonicsCollectionPath } from '../firebase';
 import { PlusCircleIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
+import '../styles/common.css';
 import '../styles/AddMnemonicPage.css';
+ 
 
 const AddMnemonicPage = ({ onMnemonicAdded, editingMnemonic, onMnemonicUpdated, clearEditing }) => {
   const { userId, db } = useAuth();

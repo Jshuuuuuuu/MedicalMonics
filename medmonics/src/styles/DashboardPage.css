@@ -1,30 +1,17 @@
-:root {
-    --primary: #2c3e50;
-    --secondary: #3498db;
-    --accent: #e74c3c;
-    --light: #ecf0f1;
-    --dark: #2c3e50;
-    --success: #27ae60;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-    background-color: #f5f7fa;
-    color: var(--dark);
-    line-height: 1.6;
-}
+/* DashboardPage.css */
+/* Common styles are now in common.css */
 
 .dashboard-page {
     padding: 0 2rem;
-    /* max-width: 1200px; */
+    /* max-width: 1200px; Remove fixed max-width and margin for fluid layout */
     /* margin: 2rem auto; */
+    flex-grow: 1; /* Allow dashboard to take available space */
+    background-color: var(--background-light); /* Use common background */
+    color: var(--text-dark); /* Use common text color */
 }
+
+/* Header styles are mostly handled by AppLayout.css or common.css now */
+/* Keeping dashboard-specific header if it exists but usually it's global */
 header {
     background-color: var(--primary);
     color: white;
@@ -80,9 +67,8 @@ nav {
     color: var(--accent);
 }
 
-
 .main-content {
-    max-width: 1200px;
+    max-width: 1200px; /* Keep max-width for content inside the page */
     margin: 2rem auto;
     padding: 0 2rem;
 }
@@ -96,15 +82,20 @@ nav {
 .library-container {
     display: flex;
     gap: 30px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: center; /* Center content when wrapped */
 }
 
 .sidebar {
     flex: 0 0 250px;
-    background-color: white;
+    background-color: var(--card-background-light);
     border-radius: 8px;
     padding: 1.5rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     height: fit-content;
+    /* For smaller screens, allow sidebar to take full width */
+    width: 100%;
+    max-width: 250px; /* Maintain desktop width */
 }
 
 .sidebar h3 {
@@ -141,6 +132,7 @@ nav {
 
 .mnemonics-content {
     flex: 1;
+    min-width: 300px; /* Ensure content area doesn't shrink too much */
 }
 
 .content-header {
@@ -148,6 +140,8 @@ nav {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+    flex-wrap: wrap; /* Allow wrapping of header elements */
+    gap: 15px; /* Space between wrapped items */
 }
 
 .content-header h2 {
@@ -158,50 +152,35 @@ nav {
 .search-container {
     display: flex;
     align-items: center;
+    width: 100%; /* Take full width on small screens */
+    max-width: 300px; /* Constrain on larger screens */
 }
 
 .search-container input {
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px 0 0 4px;
-    width: 250px;
+    @extend .form-input; /* Use common form input styles */
+    border-radius: 4px 0 0 4px; /* Adjust border radius for combined input/button */
+    flex-grow: 1;
 }
 
 .search-container button {
-    background-color: var(--secondary);
-    color: white;
-    border: none;
-    padding: 10px 15px;
+    @extend .btn-primary; /* Use common primary button styles */
     border-radius: 0 4px 4px 0;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.search-container button:hover {
-    background-color: #2980b9;
+    padding: 10px 15px; /* Adjust padding to match input height */
 }
 
 .mnemonics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Adjusted minmax for better responsiveness */
     gap: 20px;
 }
 
 .mnemonic-card {
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.mnemonic-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    @extend .card; /* Extends base card styles */
+    background-color: var(--card-background-light); /* Ensures consistent card background */
 }
 
 .card-header {
-    background-color: var(--secondary);
+    background-color: var(--secondary); /* Specific header color for this card */
     color: white;
     padding: 15px;
 }
@@ -217,6 +196,7 @@ nav {
 
 .card-body p {
     margin-bottom: 15px;
+    color: var(--text-dark);
 }
 
 .card-meta {
@@ -241,53 +221,40 @@ nav {
     font-size: 0.7rem;
 }
 
-.tag.pathology {
-    background-color: #ffb8b8;
-}
+/* Specific tag colors */
+.tag.pathology { background-color: #ffb8b8; }
+.tag.anatomy { background-color: #ffeaa7; }
+.tag.histology { background-color: #b8ffc8; }
+.tag.embryology { background-color: #b8e1ff; }
+.tag.pharmacology { background-color: #a5d8ff; }
+.tag.microbiology { background-color: #d8b8ff; }
 
-.tag.anatomy {
-    background-color: #ffeaa7;
-}
-
-.tag.histology {
-    background-color: #b8ffc8;
-}
-
-.tag.embryology {
-    background-color: #b8e1ff;
-}
-
-.tag.pharmacology {
-    background-color: #a5d8ff;
-}
-
-.tag.microbiology {
-    background-color: #d8b8ff;
-}
 
 .view-btn {
+    @extend .btn-primary; /* Use common button styles */
     display: block;
     text-align: center;
-    background-color: var(--primary);
+    background-color: var(--primary); /* Override to primary color */
     color: white;
     text-decoration: none;
     padding: 8px;
     border-radius: 4px;
     margin-top: 15px;
-    transition: background-color 0.3s;
 }
 
 .view-btn:hover {
-    background-color: #1a252f;
+    background-color: #1a252f; /* Darker shade of primary */
 }
 
 @media (max-width: 768px) {
     .library-container {
         flex-direction: column;
+        align-items: center; /* Center items when stacked */
     }
 
     .sidebar {
         flex: 1;
+        max-width: 90%; /* Adjust max-width for small screens */
     }
 
     .content-header {
@@ -298,6 +265,7 @@ nav {
 
     .search-container {
         width: 100%;
+        max-width: none; /* Allow full width on small screens */
     }
 
     .search-container input {

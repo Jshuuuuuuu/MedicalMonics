@@ -1,101 +1,62 @@
 /* AddMnemonicPage.css */
-
-:root {
-    --primary: #2c3e50;
-    --secondary: #3498db;
-    --accent: #e74c3c;
-    --light: #ecf0f1;
-    --dark: #2c3e50;
-    --success: #27ae60;
-}
-
-/* Global Reset (from your provided CSS, but often in a global stylesheet) */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    /* font-family will be set in body or a global CSS file, changed to 'Inter' below */
-}
-
-/* Body font set to Inter as per guidelines */
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: #f5f7fa; /* Default background for the body */
-    color: var(--dark);
-    line-height: 1.6;
-}
+/* Common styles are now in common.css */
 
 /* Specific styles for the AddMnemonicPage wrapper */
 .mnemonic-page-wrapper {
     display: flex;
     padding: 20px;
-    background-color: var(--light);
-    min-height: calc(100vh - 70px);
-    /* justify-content: center; */
+    background-color: var(--background-light); /* Using common variable */
+    min-height: calc(100vh - 70px); /* Assuming header height of 70px */
+    justify-content: center; /* Center content on the page */
+    align-items: flex-start; /* Align form to the top */
 }
 
 /* Container for the mnemonic form, adapting from .form-container */
 .mnemonic-form-container {
-    background-color: white;
+    @extend .card; /* Extends base card styles from common.css conceptually */
+    background-color: var(--card-background-light); /* Ensures consistent card background */
     border-radius: 8px;
     padding: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     width: 100%;
+    max-width: 800px; /* Constrain max width for better readability */
     display: flex;
     flex-direction: column;
-    /* max-width: 800px; */
 }
 
 /* Header section within the form container */
 .mnemonic-header {
-    text-align: left;
-    margin-bottom: 25px; /* Slightly adjusted margin for spacing */
+    text-align: center; /* Center the header text */
+    margin-bottom: 25px;
 }
 
 .mnemonic-title {
     font-size: 2rem;
     font-weight: 600;
-    color: var(--dark); /* Title color */
+    color: var(--primary); /* Title color from primary */
     margin-bottom: 0;
 }
 
 /* Form group styling */
 .form-group {
-    margin-bottom: 1.5rem; /* Matches your provided CSS */
+    margin-bottom: 1.5rem;
 }
 
 .form-label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: var(--dark);
-    font-size: 0.95rem; /* Slightly smaller for labels */
+    color: var(--text-dark);
+    font-size: 0.95rem;
 }
 
 .required {
     color: var(--accent); /* Red asterisk for required fields */
 }
 
-/* Input, select, and textarea styling */
-.form-input {
-    width: 100%;
-    padding: 12px 15px; /* Slightly increased padding for better appearance */
-    border: 1px solid #ddd;
-    border-radius: 6px; /* Slightly more rounded corners */
-    font-size: 1rem;
-    color: var(--dark);
-    transition: border-color 0.3s, box-shadow 0.3s;
-    background-color: white;
-}
-
-.form-input:focus {
-    outline: none;
-    border-color: var(--secondary);
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Enhanced focus shadow */
-}
-
+/* Input, select, and textarea styling - now mostly covered by .form-input in common.css */
 textarea.form-input {
-    min-height: 120px; /* Matches your provided CSS */
+    min-height: 120px;
     resize: vertical;
 }
 
@@ -103,7 +64,7 @@ textarea.form-input {
 .form-row {
     display: flex;
     gap: 20px;
-    margin-bottom: 1.5rem; /* Matches your provided CSS */
+    margin-bottom: 1.5rem;
 }
 
 .form-row .form-group {
@@ -116,38 +77,21 @@ textarea.form-input {
     display: flex;
     justify-content: flex-end;
     gap: 15px;
-    margin-top: 2rem; /* Matches your provided CSS */
+    margin-top: 2rem;
 }
 
-/* Submit button styling */
+/* Submit button styling - now uses common button styles */
 .submit-btn {
-    background-color: var(--secondary);
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 6px; /* Slightly more rounded corners */
-    font-size: 1rem;
-    font-weight: 600; /* Slightly bolder font */
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    @extend .btn-primary; /* Conceptually extends from common.css */
+    padding: 12px 25px; /* Adjust padding for larger button */
 }
 
-.submit-btn:hover {
-    background-color: #2980b9;
-    transform: translateY(-2px); /* Subtle lift on hover */
-}
-
-/* Cancel button styling */
+/* Cancel button styling - now uses common button styles or a custom outline */
 .cancel-btn {
-    background-color: var(--light); /* Use var(--light) as background */
-    color: var(--dark); /* Use var(--dark) for text color */
-    border: none;
-    padding: 12px 25px;
-    border-radius: 6px; /* Slightly more rounded corners */
-    font-size: 1rem;
-    font-weight: 600; /* Slightly bolder font */
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    @extend .btn-outline; /* Conceptually extends from common.css */
+    background-color: var(--light); /* Use common light background */
+    color: var(--dark); /* Use common dark text color */
+    padding: 12px 25px; /* Adjust padding for larger button */
 }
 
 .cancel-btn:hover {

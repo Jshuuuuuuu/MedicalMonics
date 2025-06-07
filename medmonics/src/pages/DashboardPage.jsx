@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 // import { collection, query, onSnapshot } from 'firebase/firestore'; // Uncomment if fetching data from Firebase
 // import { useAuth } from '../contexts/AuthContext'; // Uncomment if using AuthContext
 // import { getMnemonicsCollectionPath } from '../firebase'; // Uncomment if using Firebase
+import '../styles/common.css';
 import '../styles/DashboardPage.css'; // Using the provided CSS
+
 
 const FamousMnemonicsPage = () => {
     // const { userId, db } = useAuth(); // Uncomment if using AuthContext

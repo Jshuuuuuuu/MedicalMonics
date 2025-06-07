@@ -1,26 +1,30 @@
 /* FlashcardsPage.css */
+/* Common styles are now in common.css */
 
 .flashcards-page-container {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background-color: #f0f2f5;
+    background-color: var(--background-light);
     min-height: 100vh;
     width: 100%;
     box-sizing: border-box;
-    /* align-items: center; */
+    align-items: center; /* Center content horizontally */
 }
 
 .flashcard-title {
     font-size: 2.5em;
-    color: #333;
+    color: var(--text-dark);
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .flashcard-intro {
     font-size: 1.1em;
     color: #555;
     margin-bottom: 20px;
+    text-align: center;
+    max-width: 800px;
 }
 
 .topic-selection-section {
@@ -28,61 +32,52 @@
     gap: 15px;
     margin-bottom: 40px;
     align-items: center;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: center; /* Center items when wrapped */
+    width: 100%;
 }
 
 .topic-dropdown {
-    padding: 10px 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1em;
+    @extend .form-input; /* Use common form input styles */
     min-width: 200px;
+    max-width: 300px; /* Constrain width */
     cursor: pointer;
 }
 
 .begin-btn {
+    @extend .btn-primary; /* Use common primary button styles */
+    background-color: var(--info); /* Specific button color for begin */
     padding: 10px 25px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
 .begin-btn:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Darker shade of info */
 }
 
 .flashcard-display-area {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* Keep this if you want cards centered within the display area */
+    justify-content: center;
     gap: 30px;
     margin-bottom: 30px;
     width: 100%;
-    /* max-width: 1200px; */
+    max-width: 1200px;
 }
 
 .flashcard-item {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    @extend .card; /* Extends base card styles */
+    background-color: var(--card-background-light);
     width: 300px; /* Fixed width for each card */
     display: flex;
     flex-direction: column;
     text-align: left;
-    transition: transform 0.2s ease-in-out;
-    padding-bottom: 20px; /* Padding for content below image placeholder */
+    padding-bottom: 20px;
+    box-sizing: border-box; /* Ensure padding is included in width */
 }
 
-.flashcard-item:hover {
-    transform: translateY(-5px);
-}
-
+/* Image placeholder for flashcards */
 .image-placeholder {
-    background-color: #e0e0e0;
+    background-color: var(--light);
     height: 180px;
     display: flex;
     justify-content: center;
@@ -90,11 +85,12 @@
     color: #888;
     font-size: 1.2em;
     margin-bottom: 15px;
+    border-radius: 8px 8px 0 0; /* Match card border radius */
 }
 
 .flashcard-category-label {
     font-size: 0.9em;
-    color: #007bff;
+    color: var(--info);
     text-transform: uppercase;
     margin: 0 20px 5px;
     font-weight: bold;
@@ -102,7 +98,7 @@
 
 .flashcard-heading {
     font-size: 1.5em;
-    color: #333;
+    color: var(--text-dark);
     margin: 0 20px 10px;
 }
 
@@ -115,9 +111,10 @@
 
 /* Flashcard flip container for actual mnemonic display */
 .flashcard-flip-container {
-    perspective: 1000px; /* For 3D flip effect */
-    height: 180px; /* Same height as image placeholder */
+    perspective: 1000px;
+    height: 180px;
     margin-bottom: 15px;
+    width: 100%; /* Ensure flip container takes full width of card */
 }
 
 .flashcard-inner {
@@ -137,27 +134,27 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    -webkit-backface-visibility: hidden; /* Safari */
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #e0e0e0; /* Match placeholder background */
-    border-radius: 8px 8px 0 0; /* Apply to top corners */
+    background-color: var(--light);
+    border-radius: 8px 8px 0 0;
+    box-sizing: border-box;
 }
 
 .flashcard-back {
     transform: rotateY(180deg);
-    background-color: #f8f9fa; /* Slightly different background for back */
+    background-color: var(--background-light); /* Slightly different background for back */
     padding: 15px;
-    box-sizing: border-box;
 }
 
 .flashcard-acronym {
     font-size: 2em;
     font-weight: bold;
-    color: #333;
+    color: var(--text-dark);
     margin: 0;
 }
 
@@ -175,7 +172,7 @@
 }
 
 .flashcard-category {
-    background-color: #e9ecef;
+    background-color: var(--light);
     color: #6c757d;
     padding: 4px 8px;
     border-radius: 4px;
@@ -187,20 +184,16 @@
     display: flex;
     gap: 20px;
     margin-top: 20px;
-}
-
-.reveal-cards-btn, .next-cards-btn {
-    padding: 12px 30px;
-    font-size: 1.1em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.1s ease;
+    flex-wrap: wrap; /* Allow controls to wrap */
+    justify-content: center;
 }
 
 .reveal-cards-btn {
-    background-color: #6c757d; /* Grey button */
+    @extend .btn; /* Use common button styles */
+    background-color: #6c757d; /* Grey button, consider adding to variables if reused */
     color: white;
+    padding: 12px 30px;
+    font-size: 1.1em;
 }
 
 .reveal-cards-btn:hover {
@@ -209,8 +202,11 @@
 }
 
 .next-cards-btn {
-    background-color: #28a745; /* Green button */
+    @extend .btn; /* Use common button styles */
+    background-color: var(--success); /* Green button */
     color: white;
+    padding: 12px 30px;
+    font-size: 1.1em;
 }
 
 .next-cards-btn:hover {

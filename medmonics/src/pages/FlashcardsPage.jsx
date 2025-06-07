@@ -4,7 +4,9 @@ import { collection, query, onSnapshot } from 'firebase/firestore';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import { getMnemonicsCollectionPath } from '../firebase';
+import '../styles/common.css';
 import '../styles/FlashcardsPage.css';
+
 
 const FlashcardsPage = () => {
     const { userId, db } = useAuth();
