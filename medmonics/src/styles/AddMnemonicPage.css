@@ -1,25 +1,24 @@
 /* AddMnemonicPage.css */
-/* Common styles are now in common.css */
 
 /* Specific styles for the AddMnemonicPage wrapper */
 .mnemonic-page-wrapper {
     display: flex;
-    padding: 20px;
-    background-color: var(--background-light); /* Using common variable */
-    min-height: calc(100vh - 70px); /* Assuming header height of 70px */
-    justify-content: center; /* Center content on the page */
-    align-items: flex-start; /* Align form to the top */
+    /* Adjust padding to create more space around the form, similar to the image */
+    padding: 40px 20px; /* Increased top/bottom padding */
+    background-color: #f0f2f5; /* Matches the background of the AppLayout */
+    min-height: calc(100vh - 80px); /* Adjust based on actual header height (approx 60px + some buffer) */
+    justify-content: center; /* Center content horizontally */
+    align-items: flex-start; /* Align form to the top of the wrapper */
 }
 
 /* Container for the mnemonic form, adapting from .form-container */
 .mnemonic-form-container {
-    @extend .card; /* Extends base card styles from common.css conceptually */
-    background-color: var(--card-background-light); /* Ensures consistent card background */
-    border-radius: 8px;
-    padding: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff; /* White background for the card */
+    border-radius: 8px; /* Slightly more rounded corners, common for cards */
+    padding: 30px 40px; /* Generous padding inside the card to match image */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Softer, more spread-out shadow */
     width: 100%;
-    max-width: 800px; /* Constrain max width for better readability */
+    max-width: 850px; /* Slightly wider than 800px to match image proportions */
     display: flex;
     flex-direction: column;
 }
@@ -27,89 +26,153 @@
 /* Header section within the form container */
 .mnemonic-header {
     text-align: center; /* Center the header text */
-    margin-bottom: 25px;
+    margin-bottom: 30px; /* More space below header */
 }
 
 .mnemonic-title {
-    font-size: 2rem;
-    font-weight: 600;
-    color: var(--primary); /* Title color from primary */
+    font-size: 2.2rem; /* Larger font size for the main title */
+    font-weight: 600; /* Bold enough */
+    color: #333333; /* Darker text for the title */
     margin-bottom: 0;
 }
 
 /* Form group styling */
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 20px; /* Consistent spacing between form groups */
 }
 
 .form-label {
     display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: var(--text-dark);
-    font-size: 0.95rem;
+    margin-bottom: 8px; /* Slightly more space below label */
+    font-weight: 500; /* Medium weight */
+    color: #555555; /* Slightly lighter text for labels */
+    font-size: 0.9rem; /* A bit smaller, but clear */
 }
 
 .required {
-    color: var(--accent); /* Red asterisk for required fields */
+    color: #ff5722; /* Accent color for required fields */
+    margin-left: 4px; /* Small space after label for asterisk */
 }
 
-/* Input, select, and textarea styling - now mostly covered by .form-input in common.css */
+/* Input, select, and textarea styling */
+.form-input {
+    width: 100%;
+    padding: 12px 15px; /* Increased padding inside inputs */
+    border: 1px solid #cccccc; /* Lighter border color */
+    border-radius: 6px; /* Rounded input borders */
+    font-size: 1rem; /* Standard font size */
+    color: #333333;
+    background-color: #fcfcfc; /* Very light background for inputs */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.form-input::placeholder {
+    color: #999999; /* Placeholder text color */
+}
+
+.form-input:focus {
+    border-color: #4CAF50; /* A green primary focus color */
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); /* Soft focus shadow */
+    outline: none;
+}
+
 textarea.form-input {
-    min-height: 120px;
+    min-height: 120px; /* Matches the image height for textarea */
     resize: vertical;
 }
 
 /* Two-column form row layout */
 .form-row {
     display: flex;
-    gap: 20px;
-    margin-bottom: 1.5rem;
+    gap: 30px; /* More gap between columns */
+    margin-bottom: 20px; /* Consistent spacing for rows */
 }
 
 .form-row .form-group {
     flex: 1;
-    margin-bottom: 0; /* Important to prevent double margin when used in form-row */
+    margin-bottom: 0; /* Remove double margin */
 }
+
+/* Dropdown specific styles */
+select.form-input {
+    appearance: none; /* Remove default arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px;
+    padding-right: 40px; /* Make space for the custom arrow */
+}
+
 
 /* Form action buttons container */
 .form-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 15px;
-    margin-top: 2rem;
+    gap: 15px; /* Space between buttons */
+    margin-top: 30px; /* More space above buttons */
 }
 
-/* Submit button styling - now uses common button styles */
+/* Submit button styling */
 .submit-btn {
-    @extend .btn-primary; /* Conceptually extends from common.css */
-    padding: 12px 25px; /* Adjust padding for larger button */
+    background-color: #4CAF50; /* A shade of green, similar to the image's submit button */
+    color: white;
+    border: none;
+    border-radius: 6px; /* Rounded button corners */
+    padding: 12px 28px; /* Generous padding */
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-/* Cancel button styling - now uses common button styles or a custom outline */
+.submit-btn:hover {
+    background-color: #45a049; /* Darker green on hover */
+    transform: translateY(-2px); /* Slight lift */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* More pronounced shadow on hover */
+}
+
+/* Cancel button styling */
 .cancel-btn {
-    @extend .btn-outline; /* Conceptually extends from common.css */
-    background-color: var(--light); /* Use common light background */
-    color: var(--dark); /* Use common dark text color */
-    padding: 12px 25px; /* Adjust padding for larger button */
+    background-color: #ffffff; /* White background */
+    color: #666666; /* Darker text */
+    border: 1px solid #cccccc; /* Light gray border */
+    border-radius: 6px; /* Rounded button corners */
+    padding: 12px 28px; /* Generous padding */
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Very subtle shadow */
 }
 
 .cancel-btn:hover {
-    background-color: #ddd; /* Darker light color on hover */
-    transform: translateY(-2px); /* Subtle lift on hover */
+    background-color: #f0f0f0; /* Slightly darker white on hover */
+    color: #333333; /* Darker text on hover */
+    border-color: #bbbbbb; /* Slightly darker border on hover */
+    transform: translateY(-2px); /* Slight lift */
 }
 
 /* Hint text for tags */
 .form-hint {
-    font-size: 0.85rem;
-    color: #777;
+    font-size: 0.8rem; /* Smaller font size */
+    color: #888888; /* Lighter gray */
     margin-top: 5px;
+    padding-left: 2px; /* Small indentation */
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .mnemonic-form-container {
+    .mnemonic-page-wrapper {
         padding: 20px; /* Reduced padding on smaller screens */
+    }
+
+    .mnemonic-form-container {
+        padding: 25px; /* Reduced padding on smaller screens */
+        max-width: 100%; /* Allow full width */
     }
 
     .mnemonic-title {
@@ -129,5 +192,6 @@ textarea.form-input {
     .submit-btn,
     .cancel-btn {
         width: 100%; /* Full width buttons */
+        padding: 15px; /* Larger touch targets */
     }
 }
