@@ -1,146 +1,197 @@
+/* AddMnemonicPage.css */
+
+/* Specific styles for the AddMnemonicPage wrapper */
 .mnemonic-page-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 1rem;
-  box-sizing: border-box;
+    display: flex;
+    /* Adjust padding to create more space around the form, similar to the image */
+    padding: 40px 20px; /* Increased top/bottom padding */
+    background-color: #f0f2f5; /* Matches the background of the AppLayout */
+    min-height: calc(100vh - 80px); /* Adjust based on actual header height (approx 60px + some buffer) */
+    justify-content: center; /* Center content horizontally */
+    align-items: flex-start; /* Align form to the top of the wrapper */
 }
 
+/* Container for the mnemonic form, adapting from .form-container */
 .mnemonic-form-container {
-  width: 100%;
-  max-width: 700px;
-  background: linear-gradient(to bottom right, #0f172a, #1e293b, #334155);
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  border: 1px solid #334155;
+    background-color: #ffffff; /* White background for the card */
+    border-radius: 8px; /* Slightly more rounded corners, common for cards */
+    padding: 30px 40px; /* Generous padding inside the card to match image */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Softer, more spread-out shadow */
+    width: 100%;
+    max-width: 850px; /* Slightly wider than 800px to match image proportions */
+    display: flex;
+    flex-direction: column;
 }
 
+/* Header section within the form container */
 .mnemonic-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-
-.mnemonic-icon {
-  width: 28px;
-  height: 28px;
-}
-
-.mnemonic-icon.green {
-  color: #4ade80;
-}
-
-.mnemonic-icon.yellow {
-  color: #facc15;
+    text-align: center; /* Center the header text */
+    margin-bottom: 30px; /* More space below header */
 }
 
 .mnemonic-title {
-  font-size: 1.75rem;
-  font-weight: bold;
+    font-size: 2.2rem; /* Larger font size for the main title */
+    font-weight: 600; /* Bold enough */
+    color: #333333; /* Darker text for the title */
+    margin-bottom: 0;
 }
 
-.mnemonic-title.green {
-  color: #4ade80;
-}
-
-.mnemonic-title.yellow {
-  color: #facc15;
-}
-
-.mnemonic-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
+/* Form group styling */
 .form-group {
-  display: flex;
-  flex-direction: column;
+    margin-bottom: 20px; /* Consistent spacing between form groups */
 }
 
 .form-label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #e2e8f0;
-  margin-bottom: 0.25rem;
+    display: block;
+    margin-bottom: 8px; /* Slightly more space below label */
+    font-weight: 500; /* Medium weight */
+    color: #555555; /* Slightly lighter text for labels */
+    font-size: 0.9rem; /* A bit smaller, but clear */
 }
 
 .required {
-  color: #f87171;
+    color: #ff5722; /* Accent color for required fields */
+    margin-left: 4px; /* Small space after label for asterisk */
 }
 
+/* Input, select, and textarea styling */
 .form-input {
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  background-color: #334155;
-  color: #f8fafc;
-  border: 1px solid #475569;
-  outline: none;
-  transition: border 0.3s, box-shadow 0.3s;
+    width: 100%;
+    padding: 12px 15px; /* Increased padding inside inputs */
+    border: 1px solid #cccccc; /* Lighter border color */
+    border-radius: 6px; /* Rounded input borders */
+    font-size: 1rem; /* Standard font size */
+    color: #333333;
+    background-color: #fcfcfc; /* Very light background for inputs */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.form-input::placeholder {
+    color: #999999; /* Placeholder text color */
 }
 
 .form-input:focus {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 2px #38bdf8;
+    border-color: #4CAF50; /* A green primary focus color */
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); /* Soft focus shadow */
+    outline: none;
 }
 
+textarea.form-input {
+    min-height: 120px; /* Matches the image height for textarea */
+    resize: vertical;
+}
+
+/* Two-column form row layout */
+.form-row {
+    display: flex;
+    gap: 30px; /* More gap between columns */
+    margin-bottom: 20px; /* Consistent spacing for rows */
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0; /* Remove double margin */
+}
+
+/* Dropdown specific styles */
+select.form-input {
+    appearance: none; /* Remove default arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px;
+    padding-right: 40px; /* Make space for the custom arrow */
+}
+
+
+/* Form action buttons container */
 .form-actions {
-  display: flex;
-  gap: 0.75rem;
-  padding-top: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px; /* Space between buttons */
+    margin-top: 30px; /* More space above buttons */
 }
 
-.submit-btn,
+/* Submit button styling */
+.submit-btn {
+    background-color: #4CAF50; /* A shade of green, similar to the image's submit button */
+    color: white;
+    border: none;
+    border-radius: 6px; /* Rounded button corners */
+    padding: 12px 28px; /* Generous padding */
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.submit-btn:hover {
+    background-color: #45a049; /* Darker green on hover */
+    transform: translateY(-2px); /* Slight lift */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* More pronounced shadow on hover */
+}
+
+/* Cancel button styling */
 .cancel-btn {
-  flex: 1;
-  font-weight: 600;
-  padding: 0.75rem 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
-  cursor: pointer;
-  color: white;
-}
-
-.submit-btn.green {
-  background-color: #16a34a;
-}
-
-.submit-btn.green:hover {
-  background-color: #22c55e;
-}
-
-.submit-btn.green:focus {
-  outline: 2px solid #22c55e;
-  outline-offset: 2px;
-}
-
-.submit-btn.yellow {
-  background-color: #eab308;
-}
-
-.submit-btn.yellow:hover {
-  background-color: #facc15;
-}
-
-.submit-btn.yellow:focus {
-  outline: 2px solid #facc15;
-  outline-offset: 2px;
-}
-
-.cancel-btn {
-  background-color: #64748b;
+    background-color: #ffffff; /* White background */
+    color: #666666; /* Darker text */
+    border: 1px solid #cccccc; /* Light gray border */
+    border-radius: 6px; /* Rounded button corners */
+    padding: 12px 28px; /* Generous padding */
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Very subtle shadow */
 }
 
 .cancel-btn:hover {
-  background-color: #94a3b8;
+    background-color: #f0f0f0; /* Slightly darker white on hover */
+    color: #333333; /* Darker text on hover */
+    border-color: #bbbbbb; /* Slightly darker border on hover */
+    transform: translateY(-2px); /* Slight lift */
 }
 
-.cancel-btn:focus {
-  outline: 2px solid #94a3b8;
-  outline-offset: 2px;
+/* Hint text for tags */
+.form-hint {
+    font-size: 0.8rem; /* Smaller font size */
+    color: #888888; /* Lighter gray */
+    margin-top: 5px;
+    padding-left: 2px; /* Small indentation */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .mnemonic-page-wrapper {
+        padding: 20px; /* Reduced padding on smaller screens */
+    }
+
+    .mnemonic-form-container {
+        padding: 25px; /* Reduced padding on smaller screens */
+        max-width: 100%; /* Allow full width */
+    }
+
+    .mnemonic-title {
+        font-size: 1.8rem; /* Adjusted title size for mobile */
+    }
+
+    .form-row {
+        flex-direction: column; /* Stack fields vertically */
+        gap: 15px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse; /* Stack buttons vertically, cancel above submit */
+        gap: 10px;
+    }
+
+    .submit-btn,
+    .cancel-btn {
+        width: 100%; /* Full width buttons */
+        padding: 15px; /* Larger touch targets */
+    }
 }

@@ -5,7 +5,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import Modal from '../contexts/Modal';
 import { getMnemonicsCollectionPath } from '../firebase';
-import '../styles/LibraryPage.css';
+import '../styles/common.css';import '../styles/LibraryPage.css';
+
 
 const LibraryPage = ({ onEditMnemonic }) => {
     const { userId, db } = useAuth();
