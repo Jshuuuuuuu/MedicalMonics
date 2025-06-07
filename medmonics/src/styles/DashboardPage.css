@@ -2,16 +2,17 @@
 /* Common styles are now in common.css */
 
 .dashboard-page {
-    padding: 0 2rem;
-    /* max-width: 1200px; Remove fixed max-width and margin for fluid layout */
-    /* margin: 2rem auto; */
+    /* Adjusted padding to match the image spacing */
+    padding: 30px 60px; /* Increased horizontal padding */
     flex-grow: 1; /* Allow dashboard to take available space */
-    background-color: var(--background-light); /* Use common background */
-    color: var(--text-dark); /* Use common text color */
+    background-color: #f0f2f5; /* Use a light grey background matching the overall app */
+    color: #333333; /* Use a darker text color for readability */
+    min-height: calc(100vh - 80px); /* Adjust based on header height to ensure full height */
 }
 
 /* Header styles are mostly handled by AppLayout.css or common.css now */
 /* Keeping dashboard-specific header if it exists but usually it's global */
+/* (No changes to this section as per instruction to only change DashboardPage.css for content) */
 header {
     background-color: var(--primary);
     color: white;
@@ -68,70 +69,76 @@ nav {
 }
 
 .main-content {
-    max-width: 1200px; /* Keep max-width for content inside the page */
-    margin: 2rem auto;
-    padding: 0 2rem;
+    max-width: 1200px; /* Keep max-width for content inside the page, match image width */
+    margin: 30px auto; /* Centered with top/bottom margin */
+    padding: 0 20px; /* Inner padding for content */
 }
 
 .page-title {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    color: var(--primary);
+    font-size: 2.2rem; /* Larger font size to match the "Famous Mnemonics" title in the image */
+    font-weight: 600; /* Bolder */
+    margin-bottom: 30px; /* More space below the title */
+    color: #333333; /* Darker title color */
 }
 
 .library-container {
     display: flex;
-    gap: 30px;
+    gap: 40px; /* Increased gap between sidebar and content */
     flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    justify-content: center; /* Center content when wrapped */
+    justify-content: flex-start; /* Align to start on larger screens, let wrap center on small */
 }
 
 .sidebar {
-    flex: 0 0 250px;
-    background-color: var(--card-background-light);
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    height: fit-content;
-    /* For smaller screens, allow sidebar to take full width */
-    width: 100%;
+    flex: 0 0 250px; /* Fixed width for the sidebar */
+    background-color: #ffffff; /* White background for sidebar card */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px 0; /* Adjusted padding, top/bottom 20px, no left/right for inner list */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Softer shadow */
+    height: fit-content; /* Only take height needed by content */
+    width: 100%; /* Default to full width for small screens */
     max-width: 250px; /* Maintain desktop width */
 }
 
 .sidebar h3 {
-    margin-bottom: 1rem;
-    color: var(--primary);
-    font-size: 1.2rem;
+    margin: 0 20px 15px 20px; /* Adjusted margins: top 0, right 20, bottom 15, left 20 */
+    color: #2c3e50; /* Darker primary color for sidebar title */
+    font-size: 1.1rem; /* Slightly smaller, more refined title */
+    font-weight: 600;
 }
 
 .category-list {
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .category-list li {
-    margin-bottom: 10px;
+    margin-bottom: 5px; /* Smaller margin between list items */
 }
 
 .category-list a {
     display: block;
-    padding: 8px 12px;
-    color: var(--dark);
+    padding: 10px 20px; /* Padding for list items */
+    color: #555555; /* Default text color for categories */
     text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s, color 0.3s;
+    border-radius: 0; /* Remove border-radius for cleaner look, handled by active state */
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-weight: 500; /* Medium font weight */
 }
 
 .category-list a:hover {
-    background-color: var(--light);
+    background-color: #e9ecef; /* Light gray on hover */
+    color: #2c3e50; /* Darker text on hover */
 }
 
 .category-list .active a {
-    background-color: var(--secondary);
-    color: white;
+    background-color: #2196F3; /* A vibrant blue for active state, matching image */
+    color: white; /* White text for active state */
+    /* Add subtle border-radius to active state corners if desired, e.g. border-radius: 0 50px 50px 0; */
 }
 
 .mnemonics-content {
-    flex: 1;
+    flex: 1; /* Take up remaining space */
     min-width: 300px; /* Ensure content area doesn't shrink too much */
 }
 
@@ -139,64 +146,112 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 30px; /* More space below header */
     flex-wrap: wrap; /* Allow wrapping of header elements */
-    gap: 15px; /* Space between wrapped items */
+    gap: 20px; /* Space between wrapped items */
 }
 
 .content-header h2 {
-    font-size: 1.5rem;
-    color: var(--primary);
+    font-size: 1.6rem; /* Size for "Famous Mnemonics" within content */
+    color: #333333; /* Darker title color */
+    font-weight: 600;
 }
 
 .search-container {
-    display: flex;
-    align-items: center;
-    width: 100%; /* Take full width on small screens */
-    max-width: 300px; /* Constrain on larger screens */
+    display: inline-flex; /* Changed to inline-flex to prevent full width */
+    align-items: stretch;
+    width: 300px; /* Fixed width instead of auto */
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: white;
+    white-space: nowrap; /* Prevent wrapping */
 }
 
 .search-container input {
-    @extend .form-input; /* Use common form input styles */
-    border-radius: 4px 0 0 4px; /* Adjust border radius for combined input/button */
-    flex-grow: 1;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    flex: 1;
+    background-color: transparent;
+    color: #374151;
+    border-radius: 0;
+    width: calc(100% - 40px); /* Ensure input takes remaining space */
+}
+
+.search-container input::placeholder {
+    color: #9ca3af; /* Light gray placeholder text */
+    font-size: 14px;
+}
+
+.search-container input:focus {
+    outline: none; /* Remove default focus outline */
+    background-color: transparent;
 }
 
 .search-container button {
-    @extend .btn-primary; /* Use common primary button styles */
-    border-radius: 0 4px 4px 0;
-    padding: 10px 15px; /* Adjust padding to match input height */
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 100%;
+    flex-shrink: 0;
+}
+
+.search-container button:hover {
+    background-color: #2563eb; /* Darker blue on hover */
+}
+
+/* Add a search icon if needed */
+.search-container button::before {
+    content: "🔍"; /* Using emoji for cleaner look */
+    font-size: 14px; /* Smaller icon size */
+    line-height: 1;
 }
 
 .mnemonics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Adjusted minmax for better responsiveness */
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjusted minmax for larger cards */
+    gap: 25px; /* Increased gap between cards */
 }
 
 .mnemonic-card {
-    @extend .card; /* Extends base card styles */
-    background-color: var(--card-background-light); /* Ensures consistent card background */
+    background-color: #ffffff; /* White background for mnemonic cards */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Soft shadow */
+    overflow: hidden; /* Ensures rounded corners are applied */
 }
 
 .card-header {
-    background-color: var(--secondary); /* Specific header color for this card */
-    color: white;
-    padding: 15px;
+    background-color: #f8f9fa; /* Lighter background for card header */
+    color: #2c3e50; /* Dark text for header */
+    padding: 15px 20px; /* More padding */
+    border-bottom: 1px solid #eeeeee; /* Subtle border below header */
 }
 
 .card-header h3 {
     margin: 0;
     font-size: 1.2rem;
+    font-weight: 600;
 }
 
 .card-body {
-    padding: 15px;
+    padding: 20px; /* More padding inside the body */
 }
 
 .card-body p {
     margin-bottom: 15px;
-    color: var(--text-dark);
+    color: #555555; /* Lighter text for body content */
+    font-size: 0.95rem;
+    line-height: 1.6;
 }
 
 .card-meta {
@@ -204,71 +259,112 @@ nav {
     justify-content: space-between;
     font-size: 0.8rem;
     color: #777;
+    margin-top: 10px; /* Space between content and meta */
 }
 
 .card-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 10px;
+    gap: 8px; /* More space between tags */
+    margin-top: 15px; /* More space above tags */
 }
 
 .tag {
-    background-color: var(--light);
-    color: var(--dark);
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 0.7rem;
+    background-color: #e0e0e0; /* Light gray tag background */
+    color: #555555; /* Darker text for tags */
+    padding: 5px 10px; /* More padding for tags */
+    border-radius: 5px; /* Rounded tag corners */
+    font-size: 0.75rem; /* Slightly larger tag font */
+    font-weight: 500;
 }
 
 /* Specific tag colors */
-.tag.pathology { background-color: #ffb8b8; }
-.tag.anatomy { background-color: #ffeaa7; }
-.tag.histology { background-color: #b8ffc8; }
-.tag.embryology { background-color: #b8e1ff; }
-.tag.pharmacology { background-color: #a5d8ff; }
-.tag.microbiology { background-color: #d8b8ff; }
+.tag.pathology { background-color: #FFCDD2; color: #B71C1C; } /* Light Red */
+.tag.anatomy { background-color: #FFF9C4; color: #F57F17; } /* Light Yellow */
+.tag.histology { background-color: #DCEDC8; color: #33691E; } /* Light Green */
+.tag.embryology { background-color: #BBDEFB; color: #1565C0; } /* Light Blue */
+.tag.pharmacology { background-color: #E1BEE7; color: #6A1B9A; } /* Light Purple */
+.tag.microbiology { background-color: #CFD8DC; color: #455A64; } /* Light Gray */
 
 
 .view-btn {
-    @extend .btn-primary; /* Use common button styles */
     display: block;
     text-align: center;
-    background-color: var(--primary); /* Override to primary color */
+    background-color: #4CAF50; /* Green color for view button */
     color: white;
     text-decoration: none;
-    padding: 8px;
-    border-radius: 4px;
-    margin-top: 15px;
+    padding: 10px 15px; /* Generous padding */
+    border-radius: 6px; /* Rounded button corners */
+    margin-top: 20px; /* More space above button */
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .view-btn:hover {
-    background-color: #1a252f; /* Darker shade of primary */
+    background-color: #45a049; /* Darker green on hover */
+    transform: translateY(-1px); /* Subtle lift */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
+    .dashboard-page {
+        padding: 20px; /* Reduced padding on smaller screens */
+    }
+
+    .main-content {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        margin-bottom: 25px;
+    }
+
     .library-container {
         flex-direction: column;
         align-items: center; /* Center items when stacked */
+        gap: 30px;
     }
 
     .sidebar {
         flex: 1;
-        max-width: 90%; /* Adjust max-width for small screens */
+        max-width: 100%; /* Allow full width on small screens */
+        padding: 20px; /* More uniform padding for mobile */
+    }
+
+    .sidebar h3 {
+        margin: 0 0 15px 0; /* Adjust margin for mobile */
+        text-align: center;
+    }
+
+    .category-list a {
+        padding: 12px 15px; /* Larger touch targets */
+        text-align: center;
     }
 
     .content-header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center; /* Center header items */
         gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .content-header h2 {
+        text-align: center;
+        font-size: 1.5rem;
     }
 
     .search-container {
         width: 100%;
-        max-width: none; /* Allow full width on small screens */
+        max-width: 100%; /* Allow full width on small screens */
+        min-width: unset; /* Remove min-width constraint on mobile */
     }
 
-    .search-container input {
-        width: 100%;
+    .mnemonics-grid {
+        grid-template-columns: 1fr; /* Single column layout for cards on mobile */
+        gap: 20px;
     }
 }
