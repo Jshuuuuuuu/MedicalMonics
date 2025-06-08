@@ -1,70 +1,98 @@
-// DashboardPage.js
-import React, { useState, useEffect } from 'react';
-import { collection, query, onSnapshot } from 'firebase/firestore';
-import { useAuth } from '../contexts/AuthContext';
-import { getMnemonicsCollectionPath } from '../firebase';
-import '../styles/DashboardPage.css';
+import React, { useState } from 'react';
+// import { collection, query, onSnapshot } from 'firebase/firestore'; // Uncomment if fetching data from Firebase
+// import { useAuth } from '../contexts/AuthContext'; // Uncomment if using AuthContext
+// import { getMnemonicsCollectionPath } from '../firebase'; // Uncomment if using Firebase
+import '../styles/common.css';
+import '../styles/DashboardPage.css'; // Using the provided CSS
 
-const DashboardPage = () => {
-    const { userId, db } = useAuth();
-    const [totalMnemonics, setTotalMnemonics] = useState(0);
-    const [uniqueCategories, setUniqueCategories] = useState(0);
-    const [recentlyAdded, setRecentlyAdded] = useState([]);
 
-    useEffect(() => {
-        if (!userId || !db) return;
+const FamousMnemonicsPage = () => {
+    // const { userId, db } = useAuth(); // Uncomment if using AuthContext
+    const [searchQuery, setSearchQuery] = useState('');
+    const [activeCategory, setActiveCategory] = useState('Pathology'); // Default active category based on image
 
-        const mnemonicsColPath = getMnemonicsCollectionPath(userId);
-        const q = query(collection(db, mnemonicsColPath));
+    // This data would typically come from a database fetch,
+    // but for demonstration based on the image, we'll use a placeholder.
+    const categories = [
+        'Pathology',
+        'Anatomy',
+        'Histology',
+        'Embryology',
+        'Pharmacology',
+        'Microbiology',
+    ];
 
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const userMnemonics = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setTotalMnemonics(userMnemonics.length);
+    // You would typically fetch and filter mnemonics based on activeCategory and searchQuery
+    const famousMnemonics = []; // Placeholder for mnemonics data
 
-            const categories = new Set(userMnemonics.map(m => m.category).filter(Boolean));
-            setUniqueCategories(categories.size);
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
 
-            const sorted = userMnemonics.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
-            setRecentlyAdded(sorted.slice(0, 3));
-        }, (error) => {
-            console.error("Error fetching dashboard data:", error);
-        });
+    const handleCategoryClick = (category) => {
+        setActiveCategory(category);
+        // In a real application, you'd trigger a data fetch/filter here
+    };
 
-        return () => unsubscribe();
-    }, [userId, db]);
+    const handleSearchSubmit = (event) => {
+        event.preventDefault();
+        // In a real application, you'd trigger a search here
+        console.log('Searching for:', searchQuery);
+    };
 
     return (
-        <div className="dashboard-bg">
-            <div className="dashboard-content-wrapper">
-                <h2 className="dashboard-title">Dashboard</h2>
-                <div className="dashboard-cards">
-                    <div className="dashboard-card">
-                        <h3 className="dashboard-card-title">Total Mnemonics</h3>
-                        <p className="dashboard-card-value">{totalMnemonics}</p>
-                    </div>
-                    <div className="dashboard-card">
-                        <h3 className="dashboard-card-title">Unique Categories</h3>
-                        <p className="dashboard-card-value">{uniqueCategories}</p>
-                    </div>
-                </div>
-                <div className="dashboard-recent">
-                    <h3 className="dashboard-recent-title">Recently Added</h3>
-                    {recentlyAdded.length > 0 ? (
-                        recentlyAdded.map(m => (
-                            <div key={m.id} className="dashboard-recent-item">
-                                <div className="dashboard-recent-acronym">{m.acronym}</div>
-                                <div className="dashboard-recent-fullform">{m.fullForm}</div>
-                                {m.category && <div className="dashboard-recent-category">Category: {m.category}</div>}
+        <div className="dashboard-page">
+            <div className="main-content">
+                <h1 className="page-title">Famous Mnemonics</h1> {/* Changed to h1 as it's the main page title */}
+                <div className="library-container">
+                    <aside className="sidebar">
+                        <h3>Categories</h3>
+                        <ul className="category-list">
+                            {categories.map((category) => (
+                                <li key={category} className={activeCategory === category ? 'active' : ''}>
+                                    <a href="#" onClick={() => handleCategoryClick(category)}>
+                                        {category}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </aside>
+
+                    <div className="mnemonics-content">
+                        <div className="content-header">
+                            <h2>Famous Mnemonics</h2> {/* This title is also present in the main content area */}
+                            <div className="search-container">
+                                <form onSubmit={handleSearchSubmit}>
+                                    <input
+                                        type="text"
+                                        placeholder="Search mnemonics..."
+                                        value={searchQuery}
+                                        onChange={handleSearchChange}
+                                    />
+                                    <button type="submit">
+                                        <i className="fas fa-search"></i> {/* Assuming Font Awesome for search icon */}
+                                    </button>
+                                </form>
                             </div>
-                        ))
-                    ) : (
-                        <p className="dashboard-recent-category">No mnemonics added yet.</p>
-                    )}
+                        </div>
+
+                        {/* This is where the mnemonics grid would be rendered if there were any */}
+                        <div className="mnemonics-grid">
+                            {/* {famousMnemonics.length > 0 ? (
+                                famousMnemonics.map(mnemonic => (
+                                    // Render mnemonic card here
+                                ))
+                            ) : (
+                                <p>No famous mnemonics found for this category or search.</p>
+                            )} */}
+                            {/* Placeholder for no mnemonics, as per the image's empty content area */}
+                            <p>Select a category or use the search bar to find mnemonics.</p>
+                        </div>
+                    </div>
                 </div>
-                <div className="dashboard-userid">User ID: {userId}</div>
             </div>
         </div>
     );
 };
 
-export default DashboardPage;
+export default FamousMnemonicsPage;
