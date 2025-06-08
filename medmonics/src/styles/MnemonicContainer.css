@@ -1,0 +1,37 @@
+.mnemonic-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.mnemonic-card:hover {
+  background-color: #f1f1f1;
+}
+
+.mnemonic-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.mnemonic-details {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.mnemonic-details p {
+  margin: 5px 0;
+}
+
+.mnemonic-card .mnemonic-header {
+  font-weight: bold;
+}
+
+.mnemonic-card .mnemonic-header:hover {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+

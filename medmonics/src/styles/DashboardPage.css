@@ -1,18 +1,14 @@
 /* DashboardPage.css */
-/* Common styles are now in common.css */
 
+/* Common styles are now in common.css */
 .dashboard-page {
-    /* Adjusted padding to match the image spacing */
-    padding: 30px 60px; /* Increased horizontal padding */
-    flex-grow: 1; /* Allow dashboard to take available space */
-    background-color: #f0f2f5; /* Use a light grey background matching the overall app */
-    color: #333333; /* Use a darker text color for readability */
-    min-height: calc(100vh - 80px); /* Adjust based on header height to ensure full height */
+    padding: 30px 60px;
+    flex-grow: 1;
+    background-color: #f0f2f5;
+    color: #333333;
+    min-height: calc(100vh - 80px);
 }
 
-/* Header styles are mostly handled by AppLayout.css or common.css now */
-/* Keeping dashboard-specific header if it exists but usually it's global */
-/* (No changes to this section as per instruction to only change DashboardPage.css for content) */
 header {
     background-color: var(--primary);
     color: white;
@@ -44,65 +40,40 @@ nav {
     color: var(--accent);
 }
 
-.logo i {
-    margin-right: 10px;
-}
-
-.nav-links {
-    display: flex;
-    gap: 20px;
-}
-
-.nav-links a {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-.nav-links a:hover {
-    color: var(--secondary);
-}
-
-.nav-links .logout {
-    color: var(--accent);
-}
-
 .main-content {
-    max-width: 1200px; /* Keep max-width for content inside the page, match image width */
-    margin: 30px auto; /* Centered with top/bottom margin */
-    padding: 0 20px; /* Inner padding for content */
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
 }
 
 .page-title {
-    font-size: 2.2rem; /* Larger font size to match the "Famous Mnemonics" title in the image */
-    font-weight: 600; /* Bolder */
-    margin-bottom: 30px; /* More space below the title */
-    color: #333333; /* Darker title color */
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #333333;
 }
 
 .library-container {
     display: flex;
-    gap: 40px; /* Increased gap between sidebar and content */
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    justify-content: flex-start; /* Align to start on larger screens, let wrap center on small */
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
 .sidebar {
-    flex: 0 0 250px; /* Fixed width for the sidebar */
-    background-color: #ffffff; /* White background for sidebar card */
-    border-radius: 8px; /* Rounded corners */
-    padding: 20px 0; /* Adjusted padding, top/bottom 20px, no left/right for inner list */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Softer shadow */
-    height: fit-content; /* Only take height needed by content */
-    width: 100%; /* Default to full width for small screens */
-    max-width: 250px; /* Maintain desktop width */
+    flex: 0 0 250px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    height: fit-content;
+    max-width: 250px;
 }
 
 .sidebar h3 {
-    margin: 0 20px 15px 20px; /* Adjusted margins: top 0, right 20, bottom 15, left 20 */
-    color: #2c3e50; /* Darker primary color for sidebar title */
-    font-size: 1.1rem; /* Slightly smaller, more refined title */
+    margin: 0 20px 15px 20px;
+    color: #2c3e50;
+    font-size: 1.1rem;
     font-weight: 600;
 }
 
@@ -113,59 +84,57 @@ nav {
 }
 
 .category-list li {
-    margin-bottom: 5px; /* Smaller margin between list items */
+    margin-bottom: 5px;
 }
 
 .category-list a {
     display: block;
-    padding: 10px 20px; /* Padding for list items */
-    color: #555555; /* Default text color for categories */
+    padding: 10px 20px;
+    color: #555555;
     text-decoration: none;
-    border-radius: 0; /* Remove border-radius for cleaner look, handled by active state */
+    border-radius: 0;
     transition: background-color 0.2s ease, color 0.2s ease;
-    font-weight: 500; /* Medium font weight */
+    font-weight: 500;
 }
 
 .category-list a:hover {
-    background-color: #e9ecef; /* Light gray on hover */
-    color: #2c3e50; /* Darker text on hover */
+    background-color: #e9ecef;
+    color: #2c3e50;
 }
 
 .category-list .active a {
-    background-color: #2196F3; /* A vibrant blue for active state, matching image */
-    color: white; /* White text for active state */
-    /* Add subtle border-radius to active state corners if desired, e.g. border-radius: 0 50px 50px 0; */
+    background-color: #2196F3;
+    color: white;
 }
 
 .mnemonics-content {
-    flex: 1; /* Take up remaining space */
-    min-width: 300px; /* Ensure content area doesn't shrink too much */
+    flex: 1;
+    min-width: 300px;
 }
 
 .content-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px; /* More space below header */
-    flex-wrap: wrap; /* Allow wrapping of header elements */
-    gap: 20px; /* Space between wrapped items */
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .content-header h2 {
-    font-size: 1.6rem; /* Size for "Famous Mnemonics" within content */
-    color: #333333; /* Darker title color */
+    font-size: 1.6rem;
+    color: #333333;
     font-weight: 600;
 }
 
 .search-container {
-    display: inline-flex; /* Changed to inline-flex to prevent full width */
+    display: inline-flex;
     align-items: stretch;
-    width: 300px; /* Fixed width instead of auto */
+    width: 300px;
     border: 1px solid #d1d5db;
     border-radius: 4px;
     overflow: hidden;
     background-color: white;
-    white-space: nowrap; /* Prevent wrapping */
 }
 
 .search-container input {
@@ -176,17 +145,7 @@ nav {
     background-color: transparent;
     color: #374151;
     border-radius: 0;
-    width: calc(100% - 40px); /* Ensure input takes remaining space */
-}
-
-.search-container input::placeholder {
-    color: #9ca3af; /* Light gray placeholder text */
-    font-size: 14px;
-}
-
-.search-container input:focus {
-    outline: none; /* Remove default focus outline */
-    background-color: transparent;
+    width: calc(100% - 40px);
 }
 
 .search-container button {
@@ -196,45 +155,32 @@ nav {
     padding: 8px 12px;
     font-size: 14px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
     border-radius: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 100%;
-    flex-shrink: 0;
-}
-
-.search-container button:hover {
-    background-color: #2563eb; /* Darker blue on hover */
-}
-
-/* Add a search icon if needed */
-.search-container button::before {
-    content: "🔍"; /* Using emoji for cleaner look */
-    font-size: 14px; /* Smaller icon size */
-    line-height: 1;
 }
 
 .mnemonics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjusted minmax for larger cards */
-    gap: 25px; /* Increased gap between cards */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
 }
 
 .mnemonic-card {
-    background-color: #ffffff; /* White background for mnemonic cards */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Soft shadow */
-    overflow: hidden; /* Ensures rounded corners are applied */
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.mnemonic-card:hover {
+    transform: scale(1.05);
 }
 
 .card-header {
-    background-color: #f8f9fa; /* Lighter background for card header */
-    color: #2c3e50; /* Dark text for header */
-    padding: 15px 20px; /* More padding */
-    border-bottom: 1px solid #eeeeee; /* Subtle border below header */
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eeeeee;
 }
 
 .card-header h3 {
@@ -244,12 +190,12 @@ nav {
 }
 
 .card-body {
-    padding: 20px; /* More padding inside the body */
+    padding: 20px;
 }
 
 .card-body p {
     margin-bottom: 15px;
-    color: #555555; /* Lighter text for body content */
+    color: #555555;
     font-size: 0.95rem;
     line-height: 1.6;
 }
@@ -259,58 +205,55 @@ nav {
     justify-content: space-between;
     font-size: 0.8rem;
     color: #777;
-    margin-top: 10px; /* Space between content and meta */
+    margin-top: 10px;
 }
 
 .card-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px; /* More space between tags */
-    margin-top: 15px; /* More space above tags */
+    gap: 8px;
+    margin-top: 15px;
 }
 
 .tag {
-    background-color: #e0e0e0; /* Light gray tag background */
-    color: #555555; /* Darker text for tags */
-    padding: 5px 10px; /* More padding for tags */
-    border-radius: 5px; /* Rounded tag corners */
-    font-size: 0.75rem; /* Slightly larger tag font */
+    background-color: #e0e0e0;
+    color: #555555;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.75rem;
     font-weight: 500;
 }
 
-/* Specific tag colors */
-.tag.pathology { background-color: #FFCDD2; color: #B71C1C; } /* Light Red */
-.tag.anatomy { background-color: #FFF9C4; color: #F57F17; } /* Light Yellow */
-.tag.histology { background-color: #DCEDC8; color: #33691E; } /* Light Green */
-.tag.embryology { background-color: #BBDEFB; color: #1565C0; } /* Light Blue */
-.tag.pharmacology { background-color: #E1BEE7; color: #6A1B9A; } /* Light Purple */
-.tag.microbiology { background-color: #CFD8DC; color: #455A64; } /* Light Gray */
-
+.tag.pathology { background-color: #FFCDD2; color: #B71C1C; }
+.tag.anatomy { background-color: #FFF9C4; color: #F57F17; }
+.tag.histology { background-color: #DCEDC8; color: #33691E; }
+.tag.embryology { background-color: #BBDEFB; color: #1565C0; }
+.tag.pharmacology { background-color: #E1BEE7; color: #6A1B9A; }
+.tag.microbiology { background-color: #CFD8DC; color: #455A64; }
 
 .view-btn {
     display: block;
     text-align: center;
-    background-color: #4CAF50; /* Green color for view button */
+    background-color: #4CAF50;
     color: white;
     text-decoration: none;
-    padding: 10px 15px; /* Generous padding */
-    border-radius: 6px; /* Rounded button corners */
-    margin-top: 20px; /* More space above button */
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-top: 20px;
     font-weight: 600;
     transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .view-btn:hover {
-    background-color: #45a049; /* Darker green on hover */
-    transform: translateY(-1px); /* Subtle lift */
+    background-color: #45a049;
+    transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .dashboard-page {
-        padding: 20px; /* Reduced padding on smaller screens */
+        padding: 20px;
     }
 
     .main-content {
@@ -325,29 +268,29 @@ nav {
 
     .library-container {
         flex-direction: column;
-        align-items: center; /* Center items when stacked */
+        align-items: center;
         gap: 30px;
     }
 
     .sidebar {
         flex: 1;
-        max-width: 100%; /* Allow full width on small screens */
-        padding: 20px; /* More uniform padding for mobile */
+        max-width: 100%;
+        padding: 20px;
     }
 
     .sidebar h3 {
-        margin: 0 0 15px 0; /* Adjust margin for mobile */
+        margin: 0 0 15px 0;
         text-align: center;
     }
 
     .category-list a {
-        padding: 12px 15px; /* Larger touch targets */
+        padding: 12px 15px;
         text-align: center;
     }
 
     .content-header {
         flex-direction: column;
-        align-items: center; /* Center header items */
+        align-items: center;
         gap: 15px;
         margin-bottom: 25px;
     }
@@ -359,12 +302,12 @@ nav {
 
     .search-container {
         width: 100%;
-        max-width: 100%; /* Allow full width on small screens */
-        min-width: unset; /* Remove min-width constraint on mobile */
+        max-width: 100%;
+        min-width: unset;
     }
 
     .mnemonics-grid {
-        grid-template-columns: 1fr; /* Single column layout for cards on mobile */
+        grid-template-columns: 1fr;
         gap: 20px;
     }
 }

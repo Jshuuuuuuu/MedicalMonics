@@ -44,71 +44,69 @@ const AddMnemonicPage = ({
   }, [editingMnemonic]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!currentUser) {
-      showToast("User not authenticated.", "warning");
-      return;
-    }
+  e.preventDefault();
+  if (!currentUser) {
+    showToast("User not authenticated.", "warning");
+    return;
+  }
 
-    if (!acronym.trim() || !fullForm.trim()) {
-      showToast("Mnemonic Title and Mnemonic Content are required.", "error");
-      return;
-    }
+  if (!acronym.trim() || !fullForm.trim()) {
+    showToast("Mnemonic Title and Mnemonic Content are required.", "error");
+    return;
+  }
 
-    const mnemonicData = {
-      acronym,
-      fullForm,
-      category,
-      bodySystem,
-      difficulty,
-      examRelevance,
-      tags: tags.split(","), // If you're sending tags as a comma-separated string, convert it to an array
-      userId: currentUser.id,
+  const mnemonicData = {
+    acronym,
+    fullForm,
+    category,
+    bodySystem,
+    difficulty,
+    examRelevance,
+    tags: tags.split(","),
+    userId: currentUser.id,  // Ensure that currentUser.id is being sent as userId
+  };
+
+  try {
+    const token = localStorage.getItem("authToken"); // Get JWT token from localStorage
+    const headers = {
+      Authorization: `Bearer ${token}`, // Send token for authorization
     };
 
-    try {
-      const token = localStorage.getItem("authToken"); // Get JWT token from localStorage
-      const headers = {
-        Authorization: `Bearer ${token}`, // Send token for authorization
-      };
-
-      if (editingMnemonic) {
-        // Update existing mnemonic
-        mnemonicData.updatedAt = new Date();
-        const response = await axios.put(
-          `http://localhost:5000/update-mnemonic/${editingMnemonic.id}`,
-          mnemonicData,
-          { headers }
-        );
-        showToast("Mnemonic updated successfully!", "success");
-        if (onMnemonicUpdated) onMnemonicUpdated(response.data);
-      } else {
-        // Add new mnemonic
-        mnemonicData.createdAt = new Date();
-        const response = await axios.post(
-          "http://localhost:5000/add-mnemonic",
-          mnemonicData,
-          { headers }
-        );
-        showToast("Mnemonic added successfully!", "success");
-        if (onMnemonicAdded) onMnemonicAdded(response.data);
-      }
-
-      // Clear the form after submission
-      setAcronym("");
-      setFullForm("");
-      setCategory("");
-      setBodySystem("");
-      setDifficulty("");
-      setExamRelevance("");
-      setTags("");
-
-      if (clearEditing) clearEditing(); // Clear editing state
-    } catch (error) {
-      console.error("Error saving mnemonic: ", error);
-      showToast(`Error saving mnemonic: ${error.message}`, "error");
+    if (editingMnemonic) {
+      mnemonicData.updatedAt = new Date();
+      const response = await axios.put(
+        `http://localhost:5000/update-mnemonic/${editingMnemonic.id}`,
+        mnemonicData,
+        { headers }
+      );
+      showToast("Mnemonic updated successfully!", "success");
+      if (onMnemonicUpdated) onMnemonicUpdated(response.data);
+    } else {
+      mnemonicData.createdAt = new Date();
+      const response = await axios.post(
+        "http://localhost:5000/add-mnemonic",
+        mnemonicData,
+        { headers }
+      );
+      showToast("Mnemonic added successfully!", "success");
+      if (onMnemonicAdded) onMnemonicAdded(response.data);
     }
-  };
+
+    // Clear the form after submission
+    setAcronym("");
+    setFullForm("");
+    setCategory("");
+    setBodySystem("");
+    setDifficulty("");
+    setExamRelevance("");
+    setTags("");
+
+    if (clearEditing) clearEditing(); // Clear editing state
+  } catch (error) {
+    console.error("Error saving mnemonic: ", error);
+    showToast(`Error saving mnemonic: ${error.message}`, "error");
+  }
+};
 
   const handleCancel = () => {
     setAcronym("");

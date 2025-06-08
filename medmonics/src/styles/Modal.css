@@ -47,3 +47,23 @@
 .close-button:hover {
     color: #f7fafc; /* Slightly lighter gray on hover */
 }
+
+.modal-content {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  text-align: left;
+}
+
+button.close-btn {
+  background-color: #f44336;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button.close-btn:hover {
+  background-color: #d32f2f;
+}

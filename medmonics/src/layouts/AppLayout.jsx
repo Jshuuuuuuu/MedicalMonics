@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import DashboardPage from '../pages/DashboardPage';
-import LibraryPage from '../pages/LibraryPage';
 import AddMnemonicPage from '../pages/AddMnemonicPage';
 import FlashcardsPage from '../pages/FlashcardsPage';
 import '../styles/AppLayout.css'; // Make sure this CSS file is created as well
@@ -40,18 +39,17 @@ const AppLayout = () => {
 
   const clearEditingState = () => {
     setEditingMnemonic(null);
-    setCurrentView('library'); // Assuming 'library' is the default view after clearing edit
+    setCurrentView('dashboard'); // Default view is now dashboard after clearing edit
   };
 
   const handleMnemonicAddedOrUpdated = () => {
-    setCurrentView('library'); // Go to library after add/update
+    setCurrentView('dashboard'); // Go to dashboard after add/update
     setEditingMnemonic(null);
   };
 
   // Adjusting navItems to match the image's text links
   const navItems = [
     { view: 'dashboard', label: 'Dashboard' },
-    { view: 'library', label: 'Library' },
     { view: 'add-edit-mnemonic', label: 'AddMnemonic' },
     { view: 'quiz', label: 'FlashCard' },
   ];
@@ -86,7 +84,6 @@ const AppLayout = () => {
 
       <main className="content-area">
         {currentView === 'dashboard' && <DashboardPage />}
-        {currentView === 'library' && <LibraryPage onEditMnemonic={handleEditMnemonic} />}
         {currentView === 'add-edit-mnemonic' && (
           <AddMnemonicPage
             editingMnemonic={editingMnemonic}

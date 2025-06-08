@@ -1,170 +1,178 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
-import axios from 'axios';  // For making HTTP requests to the backend
 import '../styles/common.css';
 import '../styles/FlashcardsPage.css';
 
 const FlashcardsPage = () => {
-    const { userId } = useAuth();
-    const [allMnemonics, setAllMnemonics] = useState([]);
-    const [availableTopics, setAvailableTopics] = useState([]);
-    const [selectedTopic, setSelectedTopic] = useState('');
-    const [displayedMnemonics, setDisplayedMnemonics] = useState([]);
-    const [showAnswersForDisplayedCards, setShowAnswersForDisplayedCards] = useState(false);
-    const showToast = useToast();
+  const { currentUser } = useAuth();
+  const [flashcards, setFlashcards] = useState([]);
+  const [currentFlashcards, setCurrentFlashcards] = useState([]);
+  const [answeredFlashcards, setAnsweredFlashcards] = useState([]);
+  const [points, setPoints] = useState(0);
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [loading, setLoading] = useState(false);
+  const [revealedCards, setRevealedCards] = useState({});
+  const showToast = useToast();
 
-    // Fetch mnemonics from PostgreSQL (via the backend API)
-    useEffect(() => {
-        if (!userId) return;
-        const fetchMnemonics = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/get-mnemonics', {
-                    params: { userId: userId }
-                });
-                const mnemonics = response.data;
+  const categories = [
+    'All',
+    'Pathology',
+    'Anatomy',
+    'Histology',
+    'Embryology',
+    'Pharmacology',
+    'Microbiology',
+  ];
 
-                setAllMnemonics(mnemonics);
+  useEffect(() => {
+    if (!currentUser) return;
 
-                // Extract unique categories for topic selection
-                const topics = [...new Set(mnemonics.map(m => m.category).filter(Boolean))];
-                setAvailableTopics(topics);
-                if (topics.length > 0) {
-                    setSelectedTopic(topics[0]); // Select the first topic by default
-                } else {
-                    setSelectedTopic('');
-                }
-            } catch (error) {
-                console.error('Error fetching mnemonics:', error);
-                showToast(`Error fetching mnemonics: ${error.message}`, 'error');
-            }
-        };
+    const fetchFlashcards = async () => {
+      setLoading(true);
 
-        fetchMnemonics();
-    }, [userId, showToast]);
+      try {
+        const response = await axios.get('http://localhost:5000/get-mnemonics', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+          },
+          params: {
+            category: activeCategory === 'All' ? '' : activeCategory,
+          },
+        });
 
-    // Function to shuffle and select 3 mnemonics for display based on topic
-    const selectMnemonicsForDisplay = () => {
-        let filteredMnemonics = allMnemonics;
-        if (selectedTopic) {
-            filteredMnemonics = allMnemonics.filter(m => m.category === selectedTopic);
-        }
-
-        if (filteredMnemonics.length === 0) {
-            showToast("No mnemonics available for the selected topic.", "warning");
-            setDisplayedMnemonics([]);
-            return;
-        }
-
-        const shuffled = [...filteredMnemonics].sort(() => Math.random() - 0.5);
-        // Display up to 3 cards
-        setDisplayedMnemonics(shuffled.slice(0, 3));
-        setShowAnswersForDisplayedCards(false); // Reset show answers when new cards are displayed
+        setFlashcards(response.data);
+      } catch (error) {
+        console.error('Error fetching flashcards:', error);
+        showToast('Error fetching flashcards', 'error');
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const handleBeginQuiz = () => {
-        selectMnemonicsForDisplay();
-    };
+    fetchFlashcards();
+  }, [activeCategory, currentUser, showToast]);
 
-    const handleNextCards = () => {
-        selectMnemonicsForDisplay(); // Get new set of 3 cards
-    };
-
-    const handleRevealCards = () => {
-        setShowAnswersForDisplayedCards(prev => !prev);
-    };
-
-    if (allMnemonics.length === 0) {
-        return (
-            <div className="flashcards-page-container">
-                <h2 className="flashcard-title">Flashcards</h2>
-                <p className="flashcard-intro">Add some mnemonics to your library to start reviewing!</p>
-            </div>
-        );
+  useEffect(() => {
+    if (flashcards.length > 0) {
+      const getRandomFlashcards = () => {
+        const shuffled = [...flashcards].sort(() => Math.random() - 0.5);
+        setCurrentFlashcards(shuffled.slice(0, 2));
+      };
+      getRandomFlashcards();
     }
+  }, [flashcards]);
 
-    return (
-        <div className="flashcards-page-container">
-            <h2 className="flashcard-title">Flashcards</h2>
-            <p className="flashcard-intro">Select mnemonic to review</p>
+  const handleCategoryClick = (category) => {
+    setActiveCategory(category);
+  };
 
-            <div className="topic-selection-section">
-                <select
-                    className="topic-dropdown"
-                    value={selectedTopic}
-                    onChange={(e) => setSelectedTopic(e.target.value)}
-                >
-                    <option value="">All Topics</option>
-                    {availableTopics.map(topic => (
-                        <option key={topic} value={topic}>{topic}</option>
-                    ))}
-                </select>
-                <button onClick={handleBeginQuiz} className="begin-btn">
-                    Begin
-                </button>
+  const handleAnswer = (flashcardId, isCorrect) => {
+    if (!answeredFlashcards.includes(flashcardId)) {
+      setAnsweredFlashcards(prev => [...prev, flashcardId]);
+      if (isCorrect) {
+        setPoints(prevPoints => prevPoints + 1);
+      }
+    }
+  };
+
+  const handleReveal = (flashcardId) => {
+    setRevealedCards(prevState => ({
+      ...prevState,
+      [flashcardId]: !prevState[flashcardId],
+    }));
+  };
+
+  const handleReset = () => {
+    setAnsweredFlashcards([]);
+    setPoints(0);
+    setCurrentFlashcards([]);
+    setRevealedCards({});
+  };
+
+  const handleNextFlashcards = () => {
+    setAnsweredFlashcards([]);
+    setCurrentFlashcards([]);
+    setPoints(prev => prev);
+  };
+
+  return (
+    <div className="flashcards-page">
+      <div className="main-content">
+        <h1 className="page-title">Flashcards Quiz</h1>
+
+        {loading ? (
+          <p>Loading flashcards...</p>
+        ) : (
+          <div className="flashcards-container">
+            <div className="sidebar">
+              <h3>Categories</h3>
+              <ul className="category-list">
+                {categories.map((category) => (
+                  <li
+                    key={category}
+                    className={activeCategory === category ? 'active' : ''}
+                    onClick={() => handleCategoryClick(category)}
+                  >
+                    {category}
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            <div className="flashcard-display-area">
-                {displayedMnemonics.length > 0 ? (
-                    displayedMnemonics.map((card, index) => (
-                        <div key={card.id} className="flashcard-item">
-                            <div className="flashcard-flip-container">
-                                <div className={`flashcard-inner ${showAnswersForDisplayedCards ? 'show-answer' : ''}`}>
-                                    <div className="flashcard-front">
-                                        <p className="flashcard-acronym">{card.acronym}</p>
-                                        {!showAnswersForDisplayedCards && (
-                                            <p className="flashcard-hint">Hover or reveal to see answer</p>
-                                        )}
-                                    </div>
-                                    <div className="flashcard-back">
-                                        <p className="flashcard-acronym">{card.acronym}</p>
-                                        <p className="flashcard-answer">{card.fullForm}</p>
-                                        {card.category && (
-                                            <span className="flashcard-category">{card.category}</span>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                            <p className="flashcard-category-label">{card.category || 'No Category'}</p>
-                            <h3 className="flashcard-heading">{card.acronym}</h3>
-                            <p className="flashcard-description">
-                                {showAnswersForDisplayedCards ? card.fullForm : "Click 'Reveal Cards' to see the full form."}
-                            </p>
-                        </div>
-                    ))
-                ) : (
-                    // Placeholder cards if no mnemonics are displayed yet or after 'Begin'
-                    Array.from({ length: 3 }).map((_, index) => (
-                        <div key={`placeholder-${index}`} className="flashcard-item placeholder-card">
-                            <div className="image-placeholder">Image Placeholder</div>
-                            <p className="flashcard-category-label">Category</p>
-                            <h3 className="flashcard-heading">Blog title heading goes here</h3>
-                            <p className="flashcard-description">
-                                Lorem ipsum dolor sit amet et delectus accommodare his consul copiosae.
-                            </p>
-                        </div>
-                    ))
-                )}
-            </div>
+            <div className="flashcards-content">
+              <div className="flashcards-header">
+                <h2>Your Flashcards</h2>
+                <p>Points: {points}</p>
+                <button onClick={handleReset} className="reset-btn">Reset</button>
+              </div>
 
-            {displayedMnemonics.length > 0 && (
-                <div className="flashcard-quiz-controls">
-                    <button
-                        onClick={handleRevealCards}
-                        className="reveal-cards-btn"
-                    >
-                        {showAnswersForDisplayedCards ? "Hide Cards" : "Reveal Cards"}
-                    </button>
-                    <button
-                        onClick={handleNextCards}
-                        className="next-cards-btn"
-                    >
-                        Next Cards
-                    </button>
-                </div>
-            )}
-        </div>
-    );
+              <div className="flashcards-list">
+                {currentFlashcards.length > 0 &&
+                  currentFlashcards.map((flashcard) => (
+                    <div key={flashcard.id} className="flashcard">
+                      <h3>{flashcard.acronym}</h3>
+
+                      {revealedCards[flashcard.id] ? (
+                        <div>
+                          <p>{flashcard.fullForm}</p>
+                          <p><strong>Category:</strong> {flashcard.category}</p>
+                          <p><strong>Body System:</strong> {flashcard.bodySystem}</p>
+                          <p><strong>Exam Relevance:</strong> {flashcard.examRelevance}</p>
+                        </div>
+                      ) : (
+                        <p>Click "Reveal" to see the full mnemonic.</p>
+                      )}
+
+                      <button onClick={() => handleReveal(flashcard.id)}>
+                        {revealedCards[flashcard.id] ? 'Hide' : 'Reveal'}
+                      </button>
+
+                      <div className="answer-checklist">
+                        <label>
+                          <input
+                            type="checkbox"
+                            onChange={(e) =>
+                              handleAnswer(flashcard.id, e.target.checked)
+                            }
+                          />
+                          Got it right?
+                        </label>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+
+              <button onClick={handleNextFlashcards} className="next-btn">
+                Next Flashcards
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default FlashcardsPage;

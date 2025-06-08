@@ -70,18 +70,17 @@ app.post("/signup", async (req, res) => {
 });
 
 app.post("/add-mnemonic", authenticateJWT, async (req, res) => {
-  const { acronym, fullForm, category, bodySystem, difficulty, examRelevance, tags, userId } = req.body;
-  
+  const { acronym, fullForm, category, bodySystem, difficulty, examRelevance, tags } = req.body;
+  const userId = req.user.userId;  // Extract userId from the JWT token
+
   console.log('Received mnemonic data:', req.body); // Log received data
 
   try {
-    // Insert the new mnemonic into the database
     const result = await client.query(
       `INSERT INTO mnemonics (acronym, full_form, category, body_system, difficulty, exam_relevance, tags, user_id, created_at)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW()) RETURNING *`, 
       [acronym, fullForm, category, bodySystem, difficulty, examRelevance, tags, userId]
     );
-
     res.status(201).json(result.rows[0]);  // Send the inserted mnemonic back
   } catch (err) {
     console.error("Error saving mnemonic:", err);  // Log error for debugging
@@ -89,6 +88,7 @@ app.post("/add-mnemonic", authenticateJWT, async (req, res) => {
   }
 });
 
+// Fetch Mnemonics (Authenticated route)
 app.get("/get-mnemonics", authenticateJWT, async (req, res) => {
   const { searchQuery, category } = req.query;
   const userId = req.user.userId;
@@ -97,21 +97,23 @@ app.get("/get-mnemonics", authenticateJWT, async (req, res) => {
     let query = "SELECT * FROM mnemonics WHERE user_id = $1";
     let params = [userId];
 
-    if (category) {
-      query += " AND category = $2";
-      params.push(category);
-    }
-
-    if (searchQuery) {
-      query += " AND (acronym ILIKE $3 OR full_form ILIKE $3 OR description ILIKE $3)";
+    // Check if searchQuery is defined and add it to the query if necessary
+    if (searchQuery && searchQuery.trim() !== '') {
+      query += " AND (acronym ILIKE $2 OR full_form ILIKE $2)";
       params.push(`%${searchQuery}%`);
     }
 
+    // Check if category is defined and add it to the query if necessary
+    if (category && category.trim() !== '') {
+      query += " AND category = $3";
+      params.push(category);
+    }
+
     const result = await client.query(query, params);
-    res.json(result.rows);  // Return the fetched data
+    res.json(result.rows);  // Send the result as JSON
   } catch (err) {
     console.error("Error fetching mnemonics:", err);
-    res.status(500).json({ message: "Error fetching mnemonics" });
+    res.status(500).json({ message: "Error fetching mnemonics", error: err.message });
   }
 });
 // Login endpoint (Authentication)
@@ -176,6 +178,7 @@ app.get("/get-mnemonics", authenticateJWT, async (req, res) => {
     res.status(500).json({ message: "Error fetching mnemonics" });
   }
 });
+
 
 // Start the server
 app.listen(5000, () => {
