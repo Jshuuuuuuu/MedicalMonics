@@ -1,5 +1,5 @@
-// ToastContext.js
 import React, { useState, createContext, useContext, useCallback } from 'react';
+import '../styles/Toast.css';  // Import the CSS file for styles
 
 const ToastContext = createContext();
 
@@ -17,11 +17,7 @@ export const ToastProvider = ({ children }) => {
         <ToastContext.Provider value={showToast}>
             {children}
             {toast.visible && (
-                <div className={`fixed bottom-5 right-5 text-white py-2 px-4 rounded-lg shadow-md transition-opacity duration-300 z-50 ${
-                    toast.type === 'success' ? 'bg-green-500' : 
-                    toast.type === 'error' ? 'bg-red-500' : 
-                    'bg-yellow-500' // warning
-                }`}>
+                <div className={`toast ${toast.type}`}>
                     {toast.message}
                 </div>
             )}

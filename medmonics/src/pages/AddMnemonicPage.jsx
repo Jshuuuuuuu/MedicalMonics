@@ -1,53 +1,53 @@
-// AddMnemonicPage.js
-import React, { useState, useEffect } from 'react';
-import { collection, addDoc, doc, updateDoc, Timestamp } from 'firebase/firestore';
-import { useAuth } from '../contexts/AuthContext';
-import { useToast } from '../contexts/ToastContext';
-import { getMnemonicsCollectionPath } from '../firebase';
-import { PlusCircleIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
-import '../styles/common.css';
-import '../styles/AddMnemonicPage.css';
- 
+import React, { useState, useEffect } from "react";
+import axios from "axios"; // Import Axios for making API requests
+import { useAuth } from "../contexts/AuthContext"; // Assuming you have a context to manage user
+import { useToast } from "../contexts/ToastContext";
+import "../styles/common.css";
+import "../styles/AddMnemonicPage.css";
 
-const AddMnemonicPage = ({ onMnemonicAdded, editingMnemonic, onMnemonicUpdated, clearEditing }) => {
-  const { userId, db } = useAuth();
+const AddMnemonicPage = ({
+  onMnemonicAdded,
+  editingMnemonic,
+  onMnemonicUpdated,
+  clearEditing,
+}) => {
+  const { currentUser } = useAuth(); // Access current user from context
   const showToast = useToast();
 
-  const [acronym, setAcronym] = useState('');
-  const [fullForm, setFullForm] = useState('');
-  const [category, setCategory] = useState('');
-  const [bodySystem, setBodySystem] = useState('');
-  const [difficulty, setDifficulty] = useState('');
-  const [examRelevance, setExamRelevance] = useState('');
-  const [tags, setTags] = useState('');
-  const [description, setDescription] = useState('');
+  const [acronym, setAcronym] = useState("");
+  const [fullForm, setFullForm] = useState("");
+  const [category, setCategory] = useState("");
+  const [bodySystem, setBodySystem] = useState("");
+  const [difficulty, setDifficulty] = useState("");
+  const [examRelevance, setExamRelevance] = useState("");
+  const [tags, setTags] = useState("");
 
+  // Pre-fill form with existing mnemonic data if editing
   useEffect(() => {
     if (editingMnemonic) {
       setAcronym(editingMnemonic.acronym);
       setFullForm(editingMnemonic.fullForm);
-      setCategory(editingMnemonic.category || '');
-      setBodySystem(editingMnemonic.bodySystem || '');
-      setDifficulty(editingMnemonic.difficulty || '');
-      setExamRelevance(editingMnemonic.examRelevance || '');
-      setTags(editingMnemonic.tags || '');
-      setDescription(editingMnemonic.description || '');
+      setCategory(editingMnemonic.category || "");
+      setBodySystem(editingMnemonic.bodySystem || "");
+      setDifficulty(editingMnemonic.difficulty || "");
+      setExamRelevance(editingMnemonic.examRelevance || "");
+      setTags(editingMnemonic.tags || "");
     } else {
-      setAcronym('');
-      setFullForm('');
-      setCategory('');
-      setBodySystem('');
-      setDifficulty('');
-      setExamRelevance('');
-      setTags('');
-      setDescription('');
+      setAcronym("");
+      setFullForm("");
+      setCategory("");
+      setBodySystem("");
+      setDifficulty("");
+      setExamRelevance("");
+      setTags("");
     }
   }, [editingMnemonic]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!userId || !db) {
-        showToast("User not authenticated or DB not available. Using mock operations.", "warning");
+    if (!currentUser) {
+      showToast("User not authenticated.", "warning");
+      return;
     }
 
     if (!acronym.trim() || !fullForm.trim()) {
@@ -62,50 +62,62 @@ const AddMnemonicPage = ({ onMnemonicAdded, editingMnemonic, onMnemonicUpdated, 
       bodySystem,
       difficulty,
       examRelevance,
-      tags,
-      description,
-      userId,
+      tags: tags.split(","), // If you're sending tags as a comma-separated string, convert it to an array
+      userId: currentUser.id,
     };
 
     try {
-      const mnemonicsColPath = getMnemonicsCollectionPath(userId);
-      if (editingMnemonic) {
-        mnemonicData.updatedAt = firebaseFirestore.Timestamp.now();
-        const mnemonicRef = firebaseFirestore.doc(db, mnemonicsColPath, editingMnemonic.id);
-        await firebaseFirestore.updateDoc(mnemonicRef, mnemonicData);
-        showToast('Mnemonic updated successfully!', 'success');
-        if (onMnemonicUpdated) onMnemonicUpdated({ id: editingMnemonic.id, ...mnemonicData });
-      } else {
-        mnemonicData.createdAt = firebaseFirestore.Timestamp.now();
-        const docRef = await firebaseFirestore.addDoc(firebaseFirestore.collection(db, mnemonicsColPath), mnemonicData);
-        showToast('Mnemonic added successfully!', 'success');
-        if (onMnemonicAdded) onMnemonicAdded({ id: docRef.id, ...mnemonicData });
-      }
-      setAcronym('');
-      setFullForm('');
-      setCategory('');
-      setBodySystem('');
-      setDifficulty('');
-      setExamRelevance('');
-      setTags('');
-      setDescription('');
-      if (clearEditing) clearEditing();
+      const token = localStorage.getItem("authToken"); // Get JWT token from localStorage
+      const headers = {
+        Authorization: `Bearer ${token}`, // Send token for authorization
+      };
 
+      if (editingMnemonic) {
+        // Update existing mnemonic
+        mnemonicData.updatedAt = new Date();
+        const response = await axios.put(
+          `http://localhost:5000/update-mnemonic/${editingMnemonic.id}`,
+          mnemonicData,
+          { headers }
+        );
+        showToast("Mnemonic updated successfully!", "success");
+        if (onMnemonicUpdated) onMnemonicUpdated(response.data);
+      } else {
+        // Add new mnemonic
+        mnemonicData.createdAt = new Date();
+        const response = await axios.post(
+          "http://localhost:5000/add-mnemonic",
+          mnemonicData,
+          { headers }
+        );
+        showToast("Mnemonic added successfully!", "success");
+        if (onMnemonicAdded) onMnemonicAdded(response.data);
+      }
+
+      // Clear the form after submission
+      setAcronym("");
+      setFullForm("");
+      setCategory("");
+      setBodySystem("");
+      setDifficulty("");
+      setExamRelevance("");
+      setTags("");
+
+      if (clearEditing) clearEditing(); // Clear editing state
     } catch (error) {
       console.error("Error saving mnemonic: ", error);
-      showToast(`Error saving mnemonic: ${error.message}`, 'error');
+      showToast(`Error saving mnemonic: ${error.message}`, "error");
     }
   };
 
   const handleCancel = () => {
-    setAcronym('');
-    setFullForm('');
-    setCategory('');
-    setBodySystem('');
-    setDifficulty('');
-    setExamRelevance('');
-    setTags('');
-    setDescription('');
+    setAcronym("");
+    setFullForm("");
+    setCategory("");
+    setBodySystem("");
+    setDifficulty("");
+    setExamRelevance("");
+    setTags("");
     if (clearEditing) clearEditing();
   };
 
@@ -114,7 +126,7 @@ const AddMnemonicPage = ({ onMnemonicAdded, editingMnemonic, onMnemonicUpdated, 
       <div className="mnemonic-form-container">
         <div className="mnemonic-header">
           <h2 className="mnemonic-title">
-            {editingMnemonic ? 'Edit Mnemonic' : 'Add New Mnemonic'}
+            {editingMnemonic ? "Edit Mnemonic" : "Add New Mnemonic"}
           </h2>
         </div>
         <form onSubmit={handleSubmit} className="mnemonic-form">
@@ -239,21 +251,16 @@ A - Acute ...`}
               className="form-input"
               placeholder="e.g., emergency, toxicology, cardiology"
             />
-            <p className="form-hint">Add relevant tags to help others find your mnemonic</p>
+            <p className="form-hint">
+              Add relevant tags to help others find your mnemonic
+            </p>
           </div>
 
           <div className="form-actions">
-            <button
-              type="submit"
-              className="submit-btn"
-            >
-              {editingMnemonic ? 'Update Mnemonic' : 'Submit Mnemonic'}
+            <button type="submit" className="submit-btn">
+              {editingMnemonic ? "Update Mnemonic" : "Submit Mnemonic"}
             </button>
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="cancel-btn"
-            >
+            <button type="button" onClick={handleCancel} className="cancel-btn">
               Cancel
             </button>
           </div>

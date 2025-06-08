@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Import Axios for making API requests
 import './styles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBrain, faSearch, faHeartbeat, faPills, faVirus, faDna, faFlask, faTwitter, faFacebook, faInstagram, faEnvelope, faMoon, faEye } from '@fortawesome/free-solid-svg-icons'; // Import solid icons
+import { faBrain, faSearch, faHeartbeat, faPills, faVirus, faDna, faFlask, faTwitter, faFacebook, faInstagram, faEnvelope, faMoon } from '@fortawesome/free-solid-svg-icons'; // Import solid icons
 
 function HomePage() {
   const [darkMode, setDarkMode] = useState(false);
+  const [mnemonics, setMnemonics] = useState([]);  // Store fetched mnemonics
+  const [categories, setCategories] = useState([]);  // Store fetched categories
+  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (darkMode) {
@@ -16,6 +21,40 @@ function HomePage() {
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
+  };
+
+  // Fetch mnemonics data on component mount
+  useEffect(() => {
+    const fetchMnemonics = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get('http://localhost:5000/get-mnemonics', {
+          params: { searchQuery },
+        });
+        setMnemonics(response.data);  // Update state with fetched mnemonics
+      } catch (error) {
+        console.error('Error fetching mnemonics:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMnemonics();
+  }, [searchQuery]);
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleCategoryClick = (category) => {
+    // Implement category filtering logic here
+    // For now, just logging category
+    console.log('Category clicked:', category);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    console.log('Searching for:', searchQuery);
   };
 
   return (
@@ -40,8 +79,14 @@ function HomePage() {
           <h1>Master Medicine with Powerful Mnemonics</h1>
           <p>Discover, create, and share medical mnemonics to boost your learning and retention</p>
           <div className="search-container">
-            <input type="text" id="search" placeholder="Search for mnemonics (e.g., 'cranial nerves', 'antibiotics')" />
-            <button className="search-btn"><FontAwesomeIcon icon={faSearch} /></button>
+            <input
+              type="text"
+              id="search"
+              placeholder="Search for mnemonics (e.g., 'cranial nerves', 'antibiotics')"
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            <button className="search-btn" onClick={handleSearchSubmit}><FontAwesomeIcon icon={faSearch} /></button>
           </div>
         </div>
       </section>
@@ -54,12 +99,9 @@ function HomePage() {
               <label htmlFor="category">Category</label>
               <select id="category">
                 <option value="">All Categories</option>
-                <option value="anatomy">Anatomy</option>
-                <option value="physiology">Physiology</option>
-                <option value="pathology">Pathology</option>
-                <option value="pharmacology">Pharmacology</option>
-                <option value="microbiology">Microbiology</option>
-                <option value="biochemistry">Biochemistry</option>
+                {categories.map(category => (
+                  <option key={category} value={category}>{category}</option>
+                ))}
               </select>
             </div>
             <div className="filter-group">
@@ -104,7 +146,18 @@ function HomePage() {
             <h2>Popular Mnemonics</h2>
           </div>
           <div className="mnemonics-grid" id="mnemonics-grid">
-            {/* Mnemonic cards will be dynamically inserted here */}
+            {loading ? (
+              <p>Loading mnemonics...</p>
+            ) : mnemonics.length > 0 ? (
+              mnemonics.map(mnemonic => (
+                <div key={mnemonic.id} className="mnemonic-card">
+                  <h3>{mnemonic.title}</h3>
+                  <p>{mnemonic.content}</p>
+                </div>
+              ))
+            ) : (
+              <p>No mnemonics found based on your search criteria.</p>
+            )}
           </div>
         </section>
 

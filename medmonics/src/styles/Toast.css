@@ -1,0 +1,26 @@
+/* Toast.css */
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: white;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 50;
+}
+
+.toast.success {
+    background-color: #38a169; /* Green */
+}
+
+.toast.error {
+    background-color: #e53e3e; /* Red */
+}
+
+.toast.warning {
+    background-color: #d69e2e; /* Yellow */
+}

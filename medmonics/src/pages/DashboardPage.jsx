@@ -1,98 +1,127 @@
-import React, { useState } from 'react';
-// import { collection, query, onSnapshot } from 'firebase/firestore'; // Uncomment if fetching data from Firebase
-// import { useAuth } from '../contexts/AuthContext'; // Uncomment if using AuthContext
-// import { getMnemonicsCollectionPath } from '../firebase'; // Uncomment if using Firebase
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // For making HTTP requests to the backend
+import { useAuth } from '../contexts/AuthContext'; // Assuming we use useAuth to manage current user
+import { useToast } from '../contexts/ToastContext';
 import '../styles/common.css';
 import '../styles/DashboardPage.css'; // Using the provided CSS
 
-
 const FamousMnemonicsPage = () => {
-    // const { userId, db } = useAuth(); // Uncomment if using AuthContext
-    const [searchQuery, setSearchQuery] = useState('');
-    const [activeCategory, setActiveCategory] = useState('Pathology'); // Default active category based on image
+  const { currentUser } = useAuth();  // Accessing the logged-in user from context
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState('Pathology'); // Default active category
+  const [mnemonics, setMnemonics] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const showToast = useToast();
 
-    // This data would typically come from a database fetch,
-    // but for demonstration based on the image, we'll use a placeholder.
-    const categories = [
-        'Pathology',
-        'Anatomy',
-        'Histology',
-        'Embryology',
-        'Pharmacology',
-        'Microbiology',
-    ];
+  const categories = [
+    'Pathology',
+    'Anatomy',
+    'Histology',
+    'Embryology',
+    'Pharmacology',
+    'Microbiology',
+  ];
 
-    // You would typically fetch and filter mnemonics based on activeCategory and searchQuery
-    const famousMnemonics = []; // Placeholder for mnemonics data
+  // Fetch mnemonics when the category or search query changes
+  useEffect(() => {
+    if (!currentUser) return; // Ensure user is logged in
 
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
+    const fetchMnemonics = async () => {
+      setLoading(true);
+
+      try {
+        const response = await axios.get('http://localhost:5000/get-mnemonics', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`, // Send JWT token
+          },
+          params: {
+            category: activeCategory,
+            searchQuery: searchQuery,
+          },
+        });
+
+        setMnemonics(response.data);  // Set fetched mnemonics data
+      } catch (error) {
+        console.error('Error fetching mnemonics:', error);
+        showToast('Error fetching mnemonics', 'error');
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const handleCategoryClick = (category) => {
-        setActiveCategory(category);
-        // In a real application, you'd trigger a data fetch/filter here
-    };
+    fetchMnemonics();
+  }, [activeCategory, searchQuery, currentUser, showToast]);
 
-    const handleSearchSubmit = (event) => {
-        event.preventDefault();
-        // In a real application, you'd trigger a search here
-        console.log('Searching for:', searchQuery);
-    };
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
 
-    return (
-        <div className="dashboard-page">
-            <div className="main-content">
-                <h1 className="page-title">Famous Mnemonics</h1> {/* Changed to h1 as it's the main page title */}
-                <div className="library-container">
-                    <aside className="sidebar">
-                        <h3>Categories</h3>
-                        <ul className="category-list">
-                            {categories.map((category) => (
-                                <li key={category} className={activeCategory === category ? 'active' : ''}>
-                                    <a href="#" onClick={() => handleCategoryClick(category)}>
-                                        {category}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-                    </aside>
+  const handleCategoryClick = (category) => {
+    setActiveCategory(category);
+  };
 
-                    <div className="mnemonics-content">
-                        <div className="content-header">
-                            <h2>Famous Mnemonics</h2> {/* This title is also present in the main content area */}
-                            <div className="search-container">
-                                <form onSubmit={handleSearchSubmit}>
-                                    <input
-                                        type="text"
-                                        placeholder="Search mnemonics..."
-                                        value={searchQuery}
-                                        onChange={handleSearchChange}
-                                    />
-                                    <button type="submit">
-                                        <i className="fas fa-search"></i> {/* Assuming Font Awesome for search icon */}
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    // Trigger a search fetch (useEffect hook will handle this)
+    console.log('Searching for:', searchQuery);
+  };
 
-                        {/* This is where the mnemonics grid would be rendered if there were any */}
-                        <div className="mnemonics-grid">
-                            {/* {famousMnemonics.length > 0 ? (
-                                famousMnemonics.map(mnemonic => (
-                                    // Render mnemonic card here
-                                ))
-                            ) : (
-                                <p>No famous mnemonics found for this category or search.</p>
-                            )} */}
-                            {/* Placeholder for no mnemonics, as per the image's empty content area */}
-                            <p>Select a category or use the search bar to find mnemonics.</p>
-                        </div>
-                    </div>
-                </div>
+  return (
+    <div className="dashboard-page">
+      <div className="main-content">
+        <h1 className="page-title">Famous Mnemonics</h1> {/* Main page title */}
+        <div className="library-container">
+          <aside className="sidebar">
+            <h3>Categories</h3>
+            <ul className="category-list">
+              {categories.map((category) => (
+                <li key={category} className={activeCategory === category ? 'active' : ''}>
+                  <a href="#" onClick={() => handleCategoryClick(category)}>
+                    {category}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </aside>
+
+          <div className="mnemonics-content">
+            <div className="content-header">
+              <h2>Famous Mnemonics</h2>
+              <div className="search-container">
+                <form onSubmit={handleSearchSubmit}>
+                  <input
+                    type="text"
+                    placeholder="Search mnemonics..."
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                  />
+                  <button type="submit">
+                    <i className="fas fa-search"></i> {/* FontAwesome search icon */}
+                  </button>
+                </form>
+              </div>
             </div>
+
+            {/* Displaying the fetched mnemonics */}
+            <div className="mnemonics-grid">
+              {loading ? (
+                <p>Loading mnemonics...</p>  // Display loading message while fetching
+              ) : mnemonics.length > 0 ? (
+                mnemonics.map((mnemonic) => (
+                  <div key={mnemonic.id} className="mnemonic-card">
+                    <h3>{mnemonic.title}</h3>
+                    <p>{mnemonic.content}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No mnemonics found for this category or search.</p>
+              )}
+            </div>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default FamousMnemonicsPage;

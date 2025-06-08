@@ -1,44 +1,47 @@
-// FlashcardsPage.js
 import React, { useState, useEffect } from 'react';
-import { collection, query, onSnapshot } from 'firebase/firestore';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
-import { getMnemonicsCollectionPath } from '../firebase';
+import axios from 'axios';  // For making HTTP requests to the backend
 import '../styles/common.css';
 import '../styles/FlashcardsPage.css';
 
-
 const FlashcardsPage = () => {
-    const { userId, db } = useAuth();
+    const { userId } = useAuth();
     const [allMnemonics, setAllMnemonics] = useState([]);
     const [availableTopics, setAvailableTopics] = useState([]);
     const [selectedTopic, setSelectedTopic] = useState('');
-    const [displayedMnemonics, setDisplayedMnemonics] = useState([]); // Mnemonics currently shown as cards
+    const [displayedMnemonics, setDisplayedMnemonics] = useState([]);
     const [showAnswersForDisplayedCards, setShowAnswersForDisplayedCards] = useState(false);
     const showToast = useToast();
 
+    // Fetch mnemonics from PostgreSQL (via the backend API)
     useEffect(() => {
-        if (!userId || !db) return;
-        const mnemonicsColPath = getMnemonicsCollectionPath(userId);
-        const q = query(collection(db, mnemonicsColPath));
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const fetchedMnemonics = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setAllMnemonics(fetchedMnemonics);
+        if (!userId) return;
+        const fetchMnemonics = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/get-mnemonics', {
+                    params: { userId: userId }
+                });
+                const mnemonics = response.data;
 
-            // Extract unique categories for topic selection
-            const topics = [...new Set(fetchedMnemonics.map(m => m.category).filter(Boolean))];
-            setAvailableTopics(topics);
-            if (topics.length > 0) {
-                setSelectedTopic(topics[0]); // Select the first topic by default
-            } else {
-                setSelectedTopic('');
+                setAllMnemonics(mnemonics);
+
+                // Extract unique categories for topic selection
+                const topics = [...new Set(mnemonics.map(m => m.category).filter(Boolean))];
+                setAvailableTopics(topics);
+                if (topics.length > 0) {
+                    setSelectedTopic(topics[0]); // Select the first topic by default
+                } else {
+                    setSelectedTopic('');
+                }
+            } catch (error) {
+                console.error('Error fetching mnemonics:', error);
+                showToast(`Error fetching mnemonics: ${error.message}`, 'error');
             }
-        }, (error) => {
-            console.error("Error fetching mnemonics:", error);
-            showToast(`Error fetching mnemonics: ${error.message}`, 'error');
-        });
-        return () => unsubscribe();
-    }, [userId, db, showToast]);
+        };
+
+        fetchMnemonics();
+    }, [userId, showToast]);
 
     // Function to shuffle and select 3 mnemonics for display based on topic
     const selectMnemonicsForDisplay = () => {
