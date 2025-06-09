@@ -23,40 +23,45 @@ const DashboardPage = () => {
     "Embryology",
     "Pharmacology",
     "Microbiology",
+    "Neurology",
   ];
 
   // Fetch mnemonics when category or search query changes
-  useEffect(() => {
-    if (!currentUser) return; // Ensure user is logged in
+  console.log("Fetching mnemonics with params:", { category: activeCategory, searchQuery });
 
-    const fetchMnemonics = async () => {
-      setLoading(true);
+useEffect(() => {
+  console.log("useEffect triggered:", { activeCategory, searchQuery });
 
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/get-mnemonics",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Send JWT token
-            },
-            params: {
-              category: activeCategory === "All" ? "" : activeCategory, // If 'All' is selected, don't filter by category
-              searchQuery: searchQuery,
-            },
-          }
-        );
+  if (!currentUser) return;
 
-        setMnemonics(response.data); // Set fetched mnemonics data
-      } catch (error) {
-        console.error("Error fetching mnemonics:", error);
-        showToast("Error fetching mnemonics", "error");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchMnemonics = async () => {
+    setLoading(true);
+    try {
+      console.log("Sending request...");
+      const response = await axios.get(
+        "http://localhost:5000/get-mnemonics",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+          params: {
+            category: activeCategory === "All" ? "" : activeCategory,
+            searchQuery: searchQuery,
+          },
+        }
+      );
+      console.log("Response received:", response.data);
+      setMnemonics(response.data);
+    } catch (error) {
+      console.error("Error fetching mnemonics:", error.response || error);
+      showToast("Error fetching mnemonics", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchMnemonics();
-  }, [activeCategory, searchQuery, currentUser, showToast]);
+  fetchMnemonics();
+}, [activeCategory, searchQuery, currentUser, showToast]);
 
   // Handle search input
   const handleSearchChange = (event) => {
@@ -75,6 +80,9 @@ const DashboardPage = () => {
   const handleCloseModal = () => {
     setSelectedMnemonic(null); // Close the modal by setting the selected mnemonic to null
   };
+
+
+
 
   return (
     <div className="dashboard-page">
@@ -110,6 +118,8 @@ const DashboardPage = () => {
                 />
               </div>
             </div>
+
+            
 
             {/* Displaying the fetched mnemonics */}
             <div className="mnemonics-grid">

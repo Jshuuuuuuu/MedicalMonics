@@ -178,6 +178,7 @@ A - Acute ...`}
                 <option value="Emergency">Emergency</option>
                 <option value="Toxicology">Toxicology</option>
                 <option value="Neurology">Neurology</option>
+                <option value="Neurology">Anatomy</option>
               </select>
             </div>
             <div className="form-group">

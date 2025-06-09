@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useAuth } from '../contexts/AuthContext';
-import { useToast } from '../contexts/ToastContext';
-import '../styles/common.css';
-import '../styles/FlashcardsPage.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
+import { useToast } from "../contexts/ToastContext";
+import "../styles/common.css";
+import "../styles/FlashcardsPage.css";
 
 const FlashcardsPage = () => {
   const { currentUser } = useAuth();
@@ -11,21 +11,22 @@ const FlashcardsPage = () => {
   const [currentFlashcards, setCurrentFlashcards] = useState([]);
   const [answeredFlashcards, setAnsweredFlashcards] = useState([]);
   const [points, setPoints] = useState(0);
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeCategory, setActiveCategory] = useState("All");
   const [loading, setLoading] = useState(false);
-  const [revealedCards, setRevealedCards] = useState({});
   const showToast = useToast();
+  const [revealedCards, setRevealedCards] = useState({}); // To track which card is revealed
 
   const categories = [
-    'All',
-    'Pathology',
-    'Anatomy',
-    'Histology',
-    'Embryology',
-    'Pharmacology',
-    'Microbiology',
+    "All",
+    "Pathology",
+    "Anatomy",
+    "Histology",
+    "Embryology",
+    "Pharmacology",
+    "Microbiology",
   ];
 
+  // Fetch flashcards when category or search query changes
   useEffect(() => {
     if (!currentUser) return;
 
@@ -33,19 +34,19 @@ const FlashcardsPage = () => {
       setLoading(true);
 
       try {
-        const response = await axios.get('http://localhost:5000/get-mnemonics', {
+        const response = await axios.get("http://localhost:5000/get-mnemonics", {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
           params: {
-            category: activeCategory === 'All' ? '' : activeCategory,
+            category: activeCategory === "All" ? "" : activeCategory,
           },
         });
 
         setFlashcards(response.data);
       } catch (error) {
-        console.error('Error fetching flashcards:', error);
-        showToast('Error fetching flashcards', 'error');
+        console.error("Error fetching flashcards:", error);
+        showToast("Error fetching flashcards", "error");
       } finally {
         setLoading(false);
       }
@@ -54,47 +55,49 @@ const FlashcardsPage = () => {
     fetchFlashcards();
   }, [activeCategory, currentUser, showToast]);
 
+  // Set two random flashcards excluding the answered ones
   useEffect(() => {
     if (flashcards.length > 0) {
       const getRandomFlashcards = () => {
-        const shuffled = [...flashcards].sort(() => Math.random() - 0.5);
+        const filteredFlashcards = flashcards.filter(
+          (flashcard) => !answeredFlashcards.includes(flashcard.id)
+        );
+        const shuffled = [...filteredFlashcards].sort(() => Math.random() - 0.5);
         setCurrentFlashcards(shuffled.slice(0, 2));
       };
+
       getRandomFlashcards();
     }
-  }, [flashcards]);
+  }, [flashcards, answeredFlashcards]);
 
   const handleCategoryClick = (category) => {
     setActiveCategory(category);
   };
 
   const handleAnswer = (flashcardId, isCorrect) => {
-    if (!answeredFlashcards.includes(flashcardId)) {
-      setAnsweredFlashcards(prev => [...prev, flashcardId]);
-      if (isCorrect) {
-        setPoints(prevPoints => prevPoints + 1);
-      }
+    if (isCorrect) {
+      setAnsweredFlashcards((prev) => [...prev, flashcardId]);
+      setPoints((prevPoints) => prevPoints + 1); // Add point if correct
     }
   };
 
   const handleReveal = (flashcardId) => {
-    setRevealedCards(prevState => ({
+    setRevealedCards((prevState) => ({
       ...prevState,
-      [flashcardId]: !prevState[flashcardId],
+      [flashcardId]: !prevState[flashcardId], // Toggle reveal state for each flashcard
     }));
   };
 
   const handleReset = () => {
-    setAnsweredFlashcards([]);
-    setPoints(0);
-    setCurrentFlashcards([]);
-    setRevealedCards({});
+    setAnsweredFlashcards([]); // Clear answers
+    setPoints(0); // Reset points
+    setCurrentFlashcards([]); // Reset flashcards
+    setRevealedCards({}); // Reset revealed state for all flashcards
   };
 
   const handleNextFlashcards = () => {
-    setAnsweredFlashcards([]);
-    setCurrentFlashcards([]);
-    setPoints(prev => prev);
+    setAnsweredFlashcards([]); // Reset answers when moving to next set
+    setCurrentFlashcards([]); // Clear current flashcards to fetch new ones
   };
 
   return (
@@ -112,7 +115,7 @@ const FlashcardsPage = () => {
                 {categories.map((category) => (
                   <li
                     key={category}
-                    className={activeCategory === category ? 'active' : ''}
+                    className={activeCategory === category ? "active" : ""}
                     onClick={() => handleCategoryClick(category)}
                   >
                     {category}
@@ -125,7 +128,9 @@ const FlashcardsPage = () => {
               <div className="flashcards-header">
                 <h2>Your Flashcards</h2>
                 <p>Points: {points}</p>
-                <button onClick={handleReset} className="reset-btn">Reset</button>
+                <button onClick={handleReset} className="reset-btn">
+                  Reset
+                </button>
               </div>
 
               <div className="flashcards-list">
@@ -134,19 +139,26 @@ const FlashcardsPage = () => {
                     <div key={flashcard.id} className="flashcard">
                       <h3>{flashcard.acronym}</h3>
 
+                      {/* Show full form if revealed */}
                       {revealedCards[flashcard.id] ? (
                         <div>
                           <p>{flashcard.fullForm}</p>
-                          <p><strong>Category:</strong> {flashcard.category}</p>
-                          <p><strong>Body System:</strong> {flashcard.bodySystem}</p>
-                          <p><strong>Exam Relevance:</strong> {flashcard.examRelevance}</p>
+                          <p>
+                            <strong>Category:</strong> {flashcard.category}
+                          </p>
+                          <p>
+                            <strong>Body System:</strong> {flashcard.bodySystem}
+                          </p>
+                          <p>
+                            <strong>Exam Relevance:</strong> {flashcard.examRelevance}
+                          </p>
                         </div>
                       ) : (
                         <p>Click "Reveal" to see the full mnemonic.</p>
                       )}
 
                       <button onClick={() => handleReveal(flashcard.id)}>
-                        {revealedCards[flashcard.id] ? 'Hide' : 'Reveal'}
+                        {revealedCards[flashcard.id] ? "Hide" : "Reveal"}
                       </button>
 
                       <div className="answer-checklist">
