@@ -9,26 +9,16 @@ import '../styles/AppLayout.css'; // Make sure this CSS file is created as well
 const AppLayout = () => {
   const [currentView, setCurrentView] = useState('dashboard'); // Default to dashboard
   const [editingMnemonic, setEditingMnemonic] = useState(null);
-  const { user, setUser } = useAuth();  // Assuming user context handles user session
+  const { currentUser, logout } = useAuth();
   const showToast = useToast();
 
-  const handleSignOut = async () => {
+  const handleSignOut = () => {
     try {
-      // Call to your backend to log the user out (e.g., invalidate JWT token)
-      await fetch('http://localhost:5000/logout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}`, // Send current JWT token to server
-        },
-      });
-
-      // Clear user data from context or localStorage
-      setUser(null);
-      showToast("Logged out successfully.", "success");
+      logout();
+      showToast('Logged out successfully.', 'success');
     } catch (error) {
-      console.error("Sign out error", error);
-      showToast(`Sign out error: ${error.message}`, "error");
+      console.error('Sign out error', error);
+      showToast(`Sign out error: ${error.message}`, 'error');
     }
   };
 
