@@ -72,7 +72,7 @@ const StyledWrapper = styled.div`
 
   .flip-card-back {
     background: linear-gradient(120deg, rgb(255, 174, 145) 30%, coral 88%, bisque 40%, rgb(255, 185, 160) 78%);
-    color: white;
+    color: #333;
     transform: rotateY(180deg);
   }
 `;
