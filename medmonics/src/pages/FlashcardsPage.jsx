@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
 import "../styles/common.css";
 import "../styles/FlashcardsPage.css";
+import FlipCard from "../components/FlipCard"
 
 const FlashcardsPage = () => {
   const { currentUser } = useAuth();
@@ -81,13 +82,6 @@ const FlashcardsPage = () => {
     }
   };
 
-  const handleReveal = (flashcardId) => {
-    setRevealedCards((prevState) => ({
-      ...prevState,
-      [flashcardId]: !prevState[flashcardId], // Toggle reveal state for each flashcard
-    }));
-  };
-
   const handleReset = () => {
     setAnsweredFlashcards([]); // Clear answers
     setPoints(0); // Reset points
@@ -136,43 +130,14 @@ const FlashcardsPage = () => {
               <div className="flashcards-list">
                 {currentFlashcards.length > 0 &&
                   currentFlashcards.map((flashcard) => (
-                    <div key={flashcard.id} className="flashcard">
-                      <h3>{flashcard.acronym}</h3>
-
-                      {/* Show full form if revealed */}
-                      {revealedCards[flashcard.id] ? (
-                        <div>
-                          <p>{flashcard.fullForm}</p>
-                          <p>
-                            <strong>Category:</strong> {flashcard.category}
-                          </p>
-                          <p>
-                            <strong>Body System:</strong> {flashcard.bodySystem}
-                          </p>
-                          <p>
-                            <strong>Exam Relevance:</strong> {flashcard.examRelevance}
-                          </p>
-                        </div>
-                      ) : (
-                        <p>Click "Reveal" to see the full mnemonic.</p>
-                      )}
-
-                      <button onClick={() => handleReveal(flashcard.id)}>
-                        {revealedCards[flashcard.id] ? "Hide" : "Reveal"}
-                      </button>
-
-                      <div className="answer-checklist">
-                        <label>
-                          <input
-                            type="checkbox"
-                            onChange={(e) =>
-                              handleAnswer(flashcard.id, e.target.checked)
-                            }
-                          />
-                          Got it right?
-                        </label>
-                      </div>
-                    </div>
+                    <FlipCard
+                      key={flashcard.id}
+                      acronym={flashcard.acronym}
+                      fullForm={flashcard.fullForm}
+                      category={flashcard.category}
+                      bodySystem={flashcard.bodySystem}
+                      examRelevance={flashcard.examRelevance}
+                    />
                   ))}
               </div>
 

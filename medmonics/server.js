@@ -123,31 +123,29 @@ app.get("/get-mnemonics", authenticateJWT, async (req, res) => {
   try {
     let query = "SELECT * FROM mnemonics WHERE user_id = $1";
     let params = [userId];
+    let paramIndex = 2; // Start from $2 since $1 is userId
 
-    // If searchQuery is provided, include it in the query and parameters
-    if (searchQuery) {
-      query += " AND (acronym ILIKE $2 OR full_form ILIKE $2)";
-      params.push(`%${searchQuery}%`);  // Bind $2 parameter
+    // Add search query filter if provided
+    if (searchQuery && searchQuery.trim() !== "") {
+      query += ` AND (acronym ILIKE $${paramIndex} OR full_form ILIKE $${paramIndex})`;
+      params.push(`%${searchQuery}%`);
+      paramIndex++;
     }
 
-    // If category is provided and searchQuery is not passed, include it in the query
-    if (category) {
-      if (!searchQuery) { // Only add category filter if searchQuery is not provided
-        query += " AND category = $3";
-        params.push(category);  // Bind $3 parameter
-      } else { // If searchQuery is provided, include category in the query as well
-        query += " AND category = $3";
-        params.push(category);  // Bind $3 parameter
-      }
+    // Add category filter if provided and not "All"
+    if (category && category.trim() !== "" && category !== "All") {
+      query += ` AND category = $${paramIndex}`;
+      params.push(category);
+      paramIndex++;
     }
 
     // Log the query and parameters for debugging
     console.log("Executing query:", query, "with params:", params);
 
     const result = await client.query(query, params);
-    res.json(result.rows);  // Return the fetched mnemonics
+    res.json(result.rows);
   } catch (err) {
-    console.error("Error fetching mnemonics:", err);  // Log the error
+    console.error("Error fetching mnemonics:", err);
     res
       .status(500)
       .json({ message: "Error fetching mnemonics", error: err.message });
