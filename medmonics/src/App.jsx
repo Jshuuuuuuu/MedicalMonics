@@ -1,45 +1,41 @@
+
+// App.jsx
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import DashboardPage from './pages/DashboardPage';
-import AppLayout from './layouts/AppLayout';
-import { AuthProvider } from './contexts/AuthContext';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import AppLayout from './layouts/AppLayout';
 import './App.css';
 
-// Simple auth check function
-const isAuthenticated = () => {
-  return localStorage.getItem('authToken') !== null;
+const AppContent = () => {
+  const { currentUser, loadingAuth } = useAuth();
+
+  if (loadingAuth) {
+    return (
+      <div className="app-loading">
+        <div className="spinner" />
+        <p className="loading-message">Loading Application...</p>
+      </div>
+    );
+  }
+
+  // Authentication flow:
+  // 1. Not authenticated -> HomePage (landing page with login popup)
+  // 2. Authenticated -> AppLayout (dashboard)
+  // 3. After logout -> Back to HomePage
+  return currentUser ? <AppLayout /> : <HomePage />;
 };
 
-const App = () => {
+export default function App() {
   return (
-    <AuthProvider>
-      <ToastProvider>
-        <Router>
-          <Routes>
-            {/* Public Route: HomePage is always accessible at the root */}
-            <Route path="/" element={<HomePage />} />
-
-            {/* Protected Route: Dashboard */}
-            <Route
-              path="/dashboard"
-              element={isAuthenticated() ? <DashboardPage /> : <Navigate to="/" replace />}
-            />
-
-            {/* If you have AppLayout with nested routes, keep this */}
-            <Route
-              path="/app/*"
-              element={isAuthenticated() ? <AppLayout /> : <Navigate to="/" replace />}
-            />
-
-            {/* Catch-all for undefined routes */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Router>
-      </ToastProvider>
-    </AuthProvider>
+    <Router>
+      <AuthProvider>
+        <ToastProvider>
+          <AppContent />
+        </ToastProvider>
+      </AuthProvider>
+    </Router>
   );
-};
-
-export default App;
+}
