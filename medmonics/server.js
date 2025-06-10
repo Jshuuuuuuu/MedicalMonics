@@ -14,7 +14,7 @@ const client = new Client({
   user: "postgres",
   host: "localhost",
   database: "medicalmnemonics",
-  password: "JEDI", // Replace with your actual password
+  password: "Mapua112304", // Replace with your actual password
   port: 5432,
 });
 

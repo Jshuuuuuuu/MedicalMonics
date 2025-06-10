@@ -39,7 +39,7 @@ nav {
 }
 
 .logo {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: white;
     text-decoration: none;
@@ -57,7 +57,7 @@ nav {
 
 .nav-links {
     display: flex;
-    gap: 20px;
+    gap: 30px;
 }
 
 .nav-links a {
@@ -65,6 +65,7 @@ nav {
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s;
+    font-size: 0.95rem;
 }
 
 .nav-links a:hover {
@@ -84,40 +85,45 @@ nav {
 }
 
 .hero h1 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     margin-bottom: 1rem;
+    font-weight: 600;
 }
 
 .hero p {
     font-size: 1.1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     opacity: 0.9;
 }
 
 .search-container {
-    max-width: 600px;
+    max-width: 500px;
     margin: 0 auto;
     position: relative;
 }
 
 #search {
     width: 100%;
-    padding: 15px 20px;
-    border-radius: 50px;
+    padding: 12px 50px 12px 20px;
+    border-radius: 25px;
     border: none;
-    font-size: 1rem;
+    font-size: 0.95rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    color: #333;
+    outline: none;
 }
 
 .search-btn {
     position: absolute;
-    right: 5px;
-    top: 5px;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
     background-color: var(--accent);
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 50px;
+    padding: 8px 12px;
+    border-radius: 20px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
@@ -134,17 +140,19 @@ nav {
 
 .section-title {
     text-align: center;
-    margin-bottom: 2rem;
+    margin: 3rem 0 2rem 0;
     position: relative;
 }
 
 .section-title h2 {
-    font-size: 2rem;
+    font-size: 1.8rem;
     display: inline-block;
     background-color: #f5f7fa;
     padding: 0 20px;
     position: relative;
     z-index: 1;
+    color: var(--dark);
+    font-weight: 600;
 }
 
 .section-title::after {
@@ -160,36 +168,48 @@ nav {
 
 .filter-section {
     background-color: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    margin-bottom: 2rem;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1rem;
+}
+
+.filter-section h3 {
+    margin-bottom: 1.5rem;
+    color: var(--dark);
+    font-size: 1.2rem;
+    font-weight: 600;
 }
 
 .filter-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.filter-group {
-    flex: 1;
-    min-width: 200px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
 }
 
 .filter-group label {
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
+    color: var(--dark);
+    font-size: 0.9rem;
 }
 
 .filter-group select {
     width: 100%;
-    padding: 10px;
+    padding: 10px 12px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 6px;
     background-color: white;
+    color: var(--dark);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.filter-group select:focus {
+    border-color: var(--secondary);
 }
 
 .reset-btn {
@@ -197,9 +217,11 @@ nav {
     color: var(--dark);
     border: none;
     padding: 10px 20px;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .reset-btn:hover {
@@ -208,41 +230,53 @@ nav {
 
 .mnemonics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
     margin-top: 2rem;
+    min-height: 200px;
+}
+
+.mnemonics-grid p {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #666;
+    font-size: 1.1rem;
+    margin: 2rem 0;
 }
 
 .mnemonic-card {
     background-color: white;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .mnemonic-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .card-header {
     background-color: var(--secondary);
     color: white;
-    padding: 15px;
+    padding: 18px;
 }
 
 .card-header h3 {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .card-body {
-    padding: 15px;
+    padding: 18px;
 }
 
 .card-body p {
     margin-bottom: 15px;
+    color: var(--dark);
+    line-height: 1.5;
 }
 
 .card-meta {
@@ -255,16 +289,17 @@ nav {
 .card-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 10px;
+    gap: 6px;
+    margin-top: 12px;
 }
 
 .tag {
     background-color: var(--light);
     color: var(--dark);
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 0.7rem;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 500;
 }
 
 .tag.anatomy {
@@ -285,10 +320,12 @@ nav {
     background-color: var(--primary);
     color: white;
     text-decoration: none;
-    padding: 8px;
-    border-radius: 4px;
+    padding: 10px;
+    border-radius: 6px;
     margin-top: 15px;
     transition: background-color 0.3s;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .view-btn:hover {
@@ -296,48 +333,56 @@ nav {
 }
 
 .categories-section {
-    margin: 3rem 0;
+    margin: 4rem 0 3rem 0;
 }
 
 .categories-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .category-card {
     background-color: white;
-    border-radius: 8px;
-    padding: 20px;
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
     text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
 }
 
 .category-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .category-card i {
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: var(--secondary);
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
 }
 
 .category-card h3 {
-    margin-bottom: 10px;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .category-card p {
     color: #777;
     font-size: 0.9rem;
+    margin: 0;
 }
 
 footer {
     background-color: var(--dark);
     color: white;
-    padding: 3rem 2rem;
-    text-align: center;
+    padding: 3rem 2rem 2rem;
+    margin-top: 4rem;
 }
 
 .footer-content {
@@ -345,13 +390,19 @@ footer {
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    text-align: left;
+    gap: 2.5rem;
 }
 
 .footer-column h3 {
     margin-bottom: 1rem;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.footer-column p {
+    color: #bbb;
+    line-height: 1.6;
+    font-size: 0.9rem;
 }
 
 .footer-column ul {
@@ -366,6 +417,7 @@ footer {
     color: #bbb;
     text-decoration: none;
     transition: color 0.3s;
+    font-size: 0.9rem;
 }
 
 .footer-column a:hover {
@@ -374,31 +426,17 @@ footer {
 
 .copyright {
     margin-top: 2rem;
-    padding-top: 1rem;
+    padding-top: 1.5rem;
     border-top: 1px solid #444;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #bbb;
+    text-align: center;
 }
 
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-    }
-    
-    .hero h1 {
-        font-size: 2rem;
-    }
-    
-    .filter-row {
-        flex-direction: column;
-    }
-}
-
-/* Dark mode toggle */
 .dark-mode-toggle {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 25px;
+    right: 25px;
     background-color: var(--primary);
     color: white;
     width: 50px;
@@ -408,8 +446,53 @@ footer {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     z-index: 100;
+    transition: transform 0.3s;
+}
+
+.dark-mode-toggle:hover {
+    transform: scale(1.1);
+}
+
+/* Login popup styles */
+.login-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.login-popup-content {
+    position: relative;
+    background-color: white;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close-popup-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #666;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.close-popup-btn:hover {
+    color: var(--accent);
 }
 
 /* Dark mode styles */
@@ -423,11 +506,12 @@ body.dark-mode .mnemonic-card,
 body.dark-mode .category-card {
     background-color: #2d2d2d;
     color: #f0f0f0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
 }
 
 body.dark-mode .section-title h2 {
     background-color: #1a1a1a;
+    color: #f0f0f0;
 }
 
 body.dark-mode .section-title::after {
@@ -444,4 +528,74 @@ body.dark-mode #search {
     background-color: #333;
     color: #f0f0f0;
     border-color: #444;
+}
+
+body.dark-mode .filter-group label,
+body.dark-mode .card-body p,
+body.dark-mode .category-card h3,
+body.dark-mode .filter-section h3 {
+    color: #f0f0f0;
+}
+
+body.dark-mode .login-popup-content {
+    background-color: #2d2d2d;
+    color: #f0f0f0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .filter-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 20px;
+    }
+    
+    .category-card {
+        padding: 1.5rem 1rem;
+    }
+    
+    .category-card i {
+        font-size: 2rem;
+    }
+    
+    .main-content {
+        padding: 0 1rem;
+    }
+    
+    .filter-section {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding: 3rem 1rem;
+    }
+    
+    .search-container {
+        max-width: 100%;
+    }
+    
+    .mnemonics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

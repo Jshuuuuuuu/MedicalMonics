@@ -1,14 +1,16 @@
-// App.js
+
+// App.jsx
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext'; // <-- add useAuth here
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import AppLayout from './layouts/AppLayout';
 import './App.css';
 
 const AppContent = () => {
-  const { currentUser, loadingAuth } = useAuth(); // Use context to get authentication status
+  const { currentUser, loadingAuth } = useAuth();
 
   if (loadingAuth) {
     return (
@@ -19,13 +21,16 @@ const AppContent = () => {
     );
   }
 
-  // If the user is authenticated, render the AppLayout (dashboard); otherwise, render the LoginPage
-  return currentUser ? <AppLayout /> : <LoginPage />;
+  // Authentication flow:
+  // 1. Not authenticated -> HomePage (landing page with login popup)
+  // 2. Authenticated -> AppLayout (dashboard)
+  // 3. After logout -> Back to HomePage
+  return currentUser ? <AppLayout /> : <HomePage />;
 };
 
 export default function App() {
   return (
-    <Router>  {/* Wrap your entire app with BrowserRouter */}
+    <Router>
       <AuthProvider>
         <ToastProvider>
           <AppContent />
