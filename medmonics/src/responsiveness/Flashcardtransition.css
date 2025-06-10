@@ -1,0 +1,88 @@
+/* Enhancements applied across buttons */
+button,
+.category-btn,
+.reveal-btn,
+.correct-btn,
+.incorrect-btn,
+.start-quiz-btn,
+.end-quiz-btn {
+  transition: all 0.3s ease-in-out;
+  transform: scale(1);
+}
+
+button:hover:not(:disabled),
+.category-btn:hover,
+.reveal-btn:hover,
+.correct-btn:hover,
+.incorrect-btn:hover,
+.start-quiz-btn:hover:not(:disabled),
+.end-quiz-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Flashcard flip animation */
+.flashcard-preview {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.flashcard-preview:hover {
+  transform: scale(1.05) rotateZ(-1deg);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Input focus effect */
+.answer-field:focus {
+  border-color: #4e8cff;
+  box-shadow: 0 0 12px rgba(78, 140, 255, 0.2);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Floating quiz card transition */
+.quiz-card {
+  animation: fadeSlideIn 0.5s ease-out;
+  transition: transform 0.3s ease;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive grid refinements */
+@media (max-width: 768px) {
+  .flashcards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .category-selection {
+    justify-content: center;
+  }
+
+  .quiz-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .flashcard-preview {
+    padding: 1rem;
+  }
+
+  .acronym {
+    font-size: 2rem;
+  }
+
+  .answer-buttons {
+    flex-direction: column;
+  }
+}

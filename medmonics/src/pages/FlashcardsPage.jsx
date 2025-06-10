@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
 import "../styles/common.css";
 import "../styles/FlashcardsPage.css";
+import "../responsiveness/Flashcardtransition.css";
 import FlipCard from "../components/FlipCard";
 
 const FlashcardsPage = () => {
