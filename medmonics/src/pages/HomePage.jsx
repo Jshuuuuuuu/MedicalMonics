@@ -5,7 +5,7 @@ import { faBrain, faSearch, faHeartbeat, faPills, faVirus, faDna, faFlask, faEnv
 import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons'; 
 import LoginPage from './LoginPage';
 import "../styles/HomePage.css";
-import "../styles/Hometransition.css";
+import "../responsiveness/Hometransition.css";
 
 
 function HomePage() {
