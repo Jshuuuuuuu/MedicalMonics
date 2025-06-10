@@ -1,0 +1,537 @@
+/* ===================================
+   HOMEPAGE ANIMATIONS & TRANSITIONS
+   ===================================*/
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Page load animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Header animations - Enhanced without conflicting */
+header {
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.logo {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+/* Enhanced nav links - adds to existing hover effects */
+.nav-links a {
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--secondary), var(--accent));
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(-50%);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Enhances existing nav hover - doesn't override */
+.nav-links a:hover {
+    transform: translateY(-2px);
+}
+
+/* Hero section animations */
+.hero {
+    animation: fadeInUp 1s ease-out 0.2s both;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    animation: shimmer 3s infinite;
+}
+
+.hero-content h1 {
+    animation: fadeInUp 1.2s ease-out 0.4s both;
+    transition: all 0.3s ease;
+}
+
+.hero-content p {
+    animation: fadeInUp 1.2s ease-out 0.6s both;
+}
+
+.hero-content:hover h1 {
+    transform: translateY(-5px);
+    text-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Search container animations */
+.search-container {
+    animation: scaleIn 1s ease-out 0.8s both;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-container:hover {
+    transform: translateY(-5px);
+}
+
+#search {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#search:focus {
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.search-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-btn:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Main content animations */
+.main-content {
+    animation: fadeInUp 1s ease-out 1s both;
+}
+
+/* Info card animations - Enhanced effects */
+.info-card-section {
+    animation: fadeInUp 1.2s ease-out 1.2s both;
+    position: relative;
+    overflow: hidden;
+}
+
+.info-card-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(70, 115, 160, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.info-card-section:hover::before {
+    left: 100%;
+}
+
+/* Enhanced hover that combines with existing transform */
+.info-card-section:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.info-card-section h2 {
+    transition: all 0.3s ease;
+}
+
+.info-card-section:hover h2 {
+    color: var(--secondary);
+    transform: scale(1.05);
+}
+
+/* Categories section animations */
+.categories-section {
+    animation: fadeInUp 1.4s ease-out 1.4s both;
+}
+
+.section-title {
+    animation: fadeInUp 1.2s ease-out 1.2s both;
+}
+
+.section-title h2 {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.section-title h2:hover {
+    color: var(--secondary);
+    transform: scale(1.05);
+}
+
+/* Category cards - Enhanced hover effects without conflicts */
+.category-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.category-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(52, 152, 219, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.category-card:hover::before {
+    left: 100%;
+}
+
+/* Enhanced hover - combines with existing transform */
+.category-card:hover {
+    transform: translateY(-15px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.category-card i {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-card:hover i {
+    transform: scale(1.2) rotate(10deg);
+    color: var(--accent);
+    animation: pulse 1s infinite;
+}
+
+.category-card h3 {
+    transition: all 0.3s ease;
+}
+
+.category-card:hover h3 {
+    color: var(--primary);
+    transform: translateY(-3px);
+}
+
+.category-card p {
+    transition: all 0.3s ease;
+}
+
+.category-card:hover p {
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+/* Floating animation for icons */
+.category-card:nth-child(odd) i {
+    animation: float 3s ease-in-out infinite;
+}
+
+.category-card:nth-child(even) i {
+    animation: float 3s ease-in-out infinite 1.5s;
+}
+
+/* Mnemonic cards animations - Non-conflicting enhancements */
+.mnemonic-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.mnemonic-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+    z-index: 1;
+}
+
+.mnemonic-card:hover::before {
+    left: 100%;
+}
+
+/* Enhanced hover - works with existing transform */
+.mnemonic-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+    transition: all 0.3s ease;
+}
+
+.mnemonic-card:hover .card-header {
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+}
+
+.view-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.view-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.view-btn:hover::before {
+    left: 100%;
+}
+
+.view-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(70, 115, 160, 0.3);
+}
+
+/* Footer animations */
+footer {
+    animation: fadeInUp 1.6s ease-out 2.6s both;
+}
+
+.footer-column {
+    transition: all 0.3s ease;
+}
+
+.footer-column:hover {
+    transform: translateY(-5px);
+}
+
+.footer-column a {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.footer-column a::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--secondary);
+    transition: width 0.3s ease;
+}
+
+.footer-column a:hover::before {
+    width: 100%;
+}
+
+/* Dark mode toggle - Enhanced without conflicts */
+.dark-mode-toggle {
+    animation: scaleIn 1s ease-out 3s both;
+}
+
+.dark-mode-toggle:hover {
+    transform: scale(1.2) rotate(15deg);
+    box-shadow: 0 8px 25px rgba(70, 115, 160, 0.4);
+}
+
+.dark-mode-toggle i {
+    transition: all 0.3s ease;
+}
+
+.dark-mode-toggle:hover i {
+    animation: pulse 0.5s infinite;
+}
+
+/* Login popup animations */
+.login-popup-overlay {
+    animation: fadeInUp 0.3s ease-out;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.login-popup-content {
+    animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
+}
+
+.close-popup-btn {
+    transition: all 0.3s ease;
+}
+
+.close-popup-btn:hover {
+    transform: scale(1.2) rotate(90deg);
+}
+
+/* Loading states */
+.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 1.5s infinite;
+}
+
+/* Responsive animations */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        animation: fadeInUp 1s ease-out 0.3s both;
+    }
+    
+    .hero-content p {
+        animation: fadeInUp 1s ease-out 0.5s both;
+    }
+    
+    .category-card:nth-child(n) {
+        animation: fadeInUp 0.8s ease-out calc(1.4s + var(--delay, 0s)) both;
+    }
+    
+    .category-card:nth-child(1) { --delay: 0.1s; }
+    .category-card:nth-child(2) { --delay: 0.2s; }
+    .category-card:nth-child(3) { --delay: 0.3s; }
+    .category-card:nth-child(4) { --delay: 0.4s; }
+    .category-card:nth-child(5) { --delay: 0.5s; }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        animation: fadeInUp 0.8s ease-out both;
+    }
+    
+    .search-container {
+        animation: scaleIn 0.8s ease-out 0.6s both;
+    }
+    
+    .info-card-section {
+        animation: fadeInUp 0.8s ease-out 0.8s both;
+    }
+    
+    .categories-section {
+        animation: fadeInUp 0.8s ease-out 1s both;
+    }
+}
+
+/* Accessibility: Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* Enhanced focus states for better accessibility */
+*:focus {
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+    transition: outline 0.2s ease;
+}
+
+/* Non-conflicting enhanced hover effects */
+button:hover:not(.close-popup-btn):not(.reset-btn), 
+.view-btn:hover, 
+.search-btn:hover {
+    filter: brightness(1.1);
+}
+
+/* Category cards staggered entrance animations */
+.category-card:nth-child(1) { animation: fadeInLeft 1s ease-out 1.6s both; }
+.category-card:nth-child(2) { animation: fadeInUp 1s ease-out 1.8s both; }
+.category-card:nth-child(3) { animation: fadeInRight 1s ease-out 2s both; }
+.category-card:nth-child(4) { animation: fadeInLeft 1s ease-out 2.2s both; }
+.category-card:nth-child(5) { animation: fadeInUp 1s ease-out 2.4s both; }

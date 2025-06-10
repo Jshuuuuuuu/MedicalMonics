@@ -5,6 +5,7 @@ import { faBrain, faSearch, faHeartbeat, faPills, faVirus, faDna, faFlask, faEnv
 import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons'; 
 import LoginPage from './LoginPage';
 import "../styles/HomePage.css";
+import "../styles/Hometransition.css";
 
 
 function HomePage() {
@@ -104,16 +105,17 @@ function HomePage() {
 
       <div className="main-content">
 
-        <section>
-          <div className="section-title">
-            <h2>About us</h2>
-            <p>At MedMnemonics, we are dedicated to making learning easier and more engaging for medical students and professionals. 
-              Our platform provides a comprehensive collection of mnemonics designed to simplify complex medical concepts, enhance memory retention, 
-              and improve exam performance. Whether you're preparing for your next board exam or seeking to deepen your medical knowledge, 
-              our community-driven resources are tailored to suit your learning needs. 
-              We believe that with the right tools and a little creativity, mastering medical content can be both effective and fun.</p>
-          </div>
+        <section className="info-card-section">
+          <h2>About Us</h2>
+          <p>
+            At MedMnemonics, we are dedicated to making learning easier and more engaging for medical students and professionals.
+            Our platform provides a comprehensive collection of mnemonics designed to simplify complex medical concepts, enhance memory retention,
+            and improve exam performance. Whether you're preparing for your next board exam or seeking to deepen your medical knowledge,
+            our community-driven resources are tailored to suit your learning needs. We believe that with the right tools and a little creativity,
+            mastering medical content can be both effective and fun.
+          </p>
         </section>
+
 
         <section className="categories-section">
           <div className="section-title">
