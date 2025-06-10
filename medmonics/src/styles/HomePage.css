@@ -1,9 +1,9 @@
 :root {
-    --primary: #2c3e50;
+    --primary: #4673a0;
     --secondary: #3498db;
     --accent: #e74c3c;
     --light: #ecf0f1;
-    --dark: #2c3e50;
+    --dark: #415e7a;
     --success: #27ae60;
 }
 
@@ -142,6 +142,13 @@ nav {
     text-align: center;
     margin: 3rem 0 2rem 0;
     position: relative;
+}
+.section-title p{
+    margin-top: 3rem;
+    font-size: 1rem;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
 }
 
 .section-title h2 {

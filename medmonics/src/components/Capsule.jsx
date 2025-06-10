@@ -1,5 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
+// Loader.js
+import React from "react";
+import styled from "styled-components";
 
 const Loader = () => {
   return (
@@ -7,7 +8,27 @@ const Loader = () => {
       <div className="content">
         <div className="pill">
           <div className="medicine">
-            <i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i />
+            {/* Medicine particles */}
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
           </div>
           <div className="side" />
           <div className="side" />
@@ -15,9 +36,22 @@ const Loader = () => {
       </div>
     </StyledWrapper>
   );
-}
+};
 
 const StyledWrapper = styled.div`
+  .app-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Background with slight opacity */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it appears above other content */
+  }
+
   .content {
     width: 50vmin;
     height: 50vmin;
@@ -161,99 +195,6 @@ const StyledWrapper = styled.div`
     animation: medicine-dust 1.75s ease 0s infinite alternate;
   }
 
-  .medicine i:nth-child(2n + 2) {
-    width: 1.5vmin;
-    height: 1.5vmin;
-    margin-top: -5vmin;
-    margin-right: -5vmin;
-    animation-delay: -0.2s;
-  }
-
-  .medicine i:nth-child(3n + 3) {
-    width: 2vmin;
-    height: 2vmin;
-    margin-top: 4vmin;
-    margin-right: 3vmin;
-    animation-delay: -0.33s;
-  }
-
-  .medicine i:nth-child(4) {
-    margin-top: -5vmin;
-    margin-right: 4vmin;
-    animation-delay: -0.4s;
-  }
-
-  .medicine i:nth-child(5) {
-    margin-top: 5vmin;
-    margin-right: -4vmin;
-    animation-delay: -0.5s;
-  }
-
-  .medicine i:nth-child(6) {
-    margin-top: 0vmin;
-    margin-right: -3.5vmin;
-    animation-delay: -0.66s;
-  }
-
-  .medicine i:nth-child(7) {
-    margin-top: -1vmin;
-    margin-right: 7vmin;
-    animation-delay: -0.7s;
-  }
-
-  .medicine i:nth-child(8) {
-    margin-top: 6vmin;
-    margin-right: -1vmin;
-    animation-delay: -0.8s;
-  }
-
-  .medicine i:nth-child(9) {
-    margin-top: 4vmin;
-    margin-right: -7vmin;
-    animation-delay: -0.99s;
-  }
-
-  .medicine i:nth-child(10) {
-    margin-top: -6vmin;
-    margin-right: 0vmin;
-    animation-delay: -1.11s;
-  }
-
-  .medicine i:nth-child(1n + 10) {
-    width: 0.6vmin;
-    height: 0.6vmin;
-  }
-
-  .medicine i:nth-child(11) {
-    margin-top: 6vmin;
-    margin-right: 6vmin;
-    animation-delay: -1.125s;
-  }
-
-  .medicine i:nth-child(12) {
-    margin-top: -7vmin;
-    margin-right: -7vmin;
-    animation-delay: -1.275s;
-  }
-
-  .medicine i:nth-child(13) {
-    margin-top: -1vmin;
-    margin-right: 3vmin;
-    animation-delay: -1.33s;
-  }
-
-  .medicine i:nth-child(14) {
-    margin-top: -3vmin;
-    margin-right: -1vmin;
-    animation-delay: -1.4s;
-  }
-
-  .medicine i:nth-child(15) {
-    margin-top: -1vmin;
-    margin-right: -7vmin;
-    animation-delay: -1.55s;
-  }
-
   @keyframes medicine-dust {
     0%,
     100% {
@@ -265,6 +206,7 @@ const StyledWrapper = styled.div`
     75% {
       transform: translate3d(-0.1vmin, -4vmin, 0.25vmin);
     }
-  }`;
+  }
+`;
 
 export default Loader;

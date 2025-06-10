@@ -77,7 +77,6 @@ function HomePage() {
 
   const handleLoginSuccess = () => {
     setShowLoginPopup(false);
-    // Handle successful login (e.g., redirect to dashboard)
     console.log('Login successful!');
   };
 
@@ -90,8 +89,6 @@ function HomePage() {
           </a>
           <div className="nav-links">
             <a href="#">Home</a>
-            <a href="#">Browse</a>
-            <a href="#">Contribute</a>
             <a href="/frontEnd/aboutpage/index.html">About</a>
             <a href="#" id="loginLink" onClick={handleLoginClick}>Login</a>
           </div>
@@ -102,88 +99,19 @@ function HomePage() {
         <div className="hero-content">
           <h1>Master Medicine with Powerful Mnemonics</h1>
           <p>Discover, create, and share medical mnemonics to boost your learning and retention</p>
-          <div className="search-container">
-            <input
-              type="text"
-              id="search"
-              placeholder="Search for mnemonics (e.g., 'cranial nerves', 'antibiotics')"
-              value={searchQuery}
-              onChange={handleSearchChange}
-            />
-            <button className="search-btn" onClick={handleSearchSubmit}><FontAwesomeIcon icon={faSearch} /></button>
-          </div>
         </div>
       </section>
 
       <div className="main-content">
-        <section className="filter-section">
-          <h3>Filter Mnemonics</h3>
-          <div className="filter-row">
-            <div className="filter-group">
-              <label htmlFor="category">Category</label>
-              <select id="category">
-                <option value="">All Categories</option>
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
-            </div>
-            <div className="filter-group">
-              <label htmlFor="system">Body System</label>
-              <select id="system">
-                <option value="">All Systems</option>
-                <option value="cardiovascular">Cardiovascular</option>
-                <option value="respiratory">Respiratory</option>
-                <option value="gastrointestinal">Gastrointestinal</option>
-                <option value="neurology">Neurology</option>
-                <option value="endocrine">Endocrine</option>
-                <option value="renal">Renal</option>
-              </select>
-            </div>
-          </div>
-          <div className="filter-row">
-            <div className="filter-group">
-              <label htmlFor="difficulty">Difficulty</label>
-              <select id="difficulty">
-                <option value="">All Levels</option>
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
-              </select>
-            </div>
-            <div className="filter-group">
-              <label htmlFor="exam">Exam Relevance</label>
-              <select id="exam">
-                <option value="">All Exams</option>
-                <option value="usmle">USMLE</option>
-                <option value="ncle">NCLEX</option>
-                <option value="plab">PLAB</option>
-                <option value="medical-school">Medical School</option>
-              </select>
-            </div>
-          </div>
-          <button className="reset-btn">Reset Filters</button>
-        </section>
 
         <section>
           <div className="section-title">
-            <h2>Popular Mnemonics</h2>
-          </div>
-          <div className="mnemonics-grid" id="mnemonics-grid">
-            {loading ? (
-              <p>Loading mnemonics...</p>
-            ) : mnemonics.length > 0 ? (
-              mnemonics.map((mnemonic, index) => (
-                <div key={mnemonic.id || index} className="mnemonic-card">
-                  <h3>{mnemonic.title}</h3>
-                  <p>{mnemonic.content}</p>
-                </div>
-              ))
-            ) : searchQuery.trim() ? (
-              <p>No mnemonics found for "{searchQuery}".</p>
-            ) : (
-              <p>Start typing to search for mnemonics...</p>
-            )}
+            <h2>About us</h2>
+            <p>At MedMnemonics, we are dedicated to making learning easier and more engaging for medical students and professionals. 
+              Our platform provides a comprehensive collection of mnemonics designed to simplify complex medical concepts, enhance memory retention, 
+              and improve exam performance. Whether you're preparing for your next board exam or seeking to deepen your medical knowledge, 
+              our community-driven resources are tailored to suit your learning needs. 
+              We believe that with the right tools and a little creativity, mastering medical content can be both effective and fun.</p>
           </div>
         </section>
 

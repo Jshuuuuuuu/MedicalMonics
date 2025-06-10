@@ -9,16 +9,15 @@ dotenv.config(); // To load environment variables like JWT_SECRET
 
 const app = express();
 
-// Correct PostgreSQL connection setup
 const client = new Client({
   user: "postgres",
   host: "localhost",
   database: "medicalmnemonics",
-  password: "Mapua112304", // Replace with your actual password
+  password: "JEDI", 
   port: 5432,
 });
 
-client.connect(); // Connect to the PostgreSQL server
+client.connect(); 
 
 const JWT_SECRET = process.env.JWT_SECRET; // Make sure to define this in your .env file
 
@@ -310,7 +309,8 @@ app.post("/start-quiz", authenticateJWT, async (req, res) => {
     flashcards.sort((a, b) => {
       if (a.review_status === 'new' && b.review_status !== 'new') return -1;
       if (b.review_status === 'new' && a.review_status !== 'new') return 1;
-      return (a.correct_count / (a.correct_count + a.incorrect_count)) - (b.correct_count / (b.correct_count + b.incorrect_count));
+      return (a.correct_count / (a.correct_count + a.incorrect_count)) - 
+              (b.correct_count / (b.correct_count + b.incorrect_count));
     });
 
     // Limit to the requested number of cards
