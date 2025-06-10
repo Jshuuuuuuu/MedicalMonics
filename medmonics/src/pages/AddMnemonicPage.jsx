@@ -4,7 +4,6 @@ import { useAuth } from "../contexts/AuthContext"; // Assuming you have a contex
 import { useToast } from "../contexts/ToastContext";
 import "../styles/common.css";
 import "../styles/AddMnemonicPage.css";
-import "../responsiveness/Addmnemonictransition.css";
 
 const AddMnemonicPage = ({
   onMnemonicAdded,
