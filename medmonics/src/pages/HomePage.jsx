@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Import Axios for making API requests
-import './styles.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBrain, faSearch, faHeartbeat, faPills, faVirus, faDna, faFlask, faTwitter, faFacebook, faInstagram, faEnvelope, faMoon } from '@fortawesome/free-solid-svg-icons'; // Import solid icons
+import axios from 'axios';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBrain, faSearch, faHeartbeat, faPills, faVirus, faDna, faFlask, faEnvelope, faMoon } from '@fortawesome/free-solid-svg-icons';
+import { faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons'; 
+import LoginPage from './LoginPage';
+import "../styles/HomePage.css";
+
 
 function HomePage() {
   const [darkMode, setDarkMode] = useState(false);
-  const [mnemonics, setMnemonics] = useState([]);  // Store fetched mnemonics
-  const [categories, setCategories] = useState([]);  // Store fetched categories
+  const [mnemonics, setMnemonics] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   useEffect(() => {
     if (darkMode) {
@@ -23,7 +27,6 @@ function HomePage() {
     setDarkMode(!darkMode);
   };
 
-  // Fetch mnemonics data on component mount
   useEffect(() => {
     const fetchMnemonics = async () => {
       setLoading(true);
@@ -31,15 +34,23 @@ function HomePage() {
         const response = await axios.get('http://localhost:5000/get-mnemonics', {
           params: { searchQuery },
         });
-        setMnemonics(response.data);  // Update state with fetched mnemonics
+        setMnemonics(response.data);
       } catch (error) {
         console.error('Error fetching mnemonics:', error);
+        // Don't let API errors block the UI
+        setMnemonics([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMnemonics();
+    // Only fetch if there's a search query, otherwise show empty state
+    if (searchQuery.trim()) {
+      fetchMnemonics();
+    } else {
+      setMnemonics([]);
+      setLoading(false);
+    }
   }, [searchQuery]);
 
   const handleSearchChange = (e) => {
@@ -47,14 +58,27 @@ function HomePage() {
   };
 
   const handleCategoryClick = (category) => {
-    // Implement category filtering logic here
-    // For now, just logging category
     console.log('Category clicked:', category);
   };
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     console.log('Searching for:', searchQuery);
+  };
+
+  const handleLoginClick = (e) => {
+    e.preventDefault();
+    setShowLoginPopup(true);
+  };
+
+  const handleCloseLoginPopup = () => {
+    setShowLoginPopup(false);
+  };
+
+  const handleLoginSuccess = () => {
+    setShowLoginPopup(false);
+    // Handle successful login (e.g., redirect to dashboard)
+    console.log('Login successful!');
   };
 
   return (
@@ -69,7 +93,7 @@ function HomePage() {
             <a href="#">Browse</a>
             <a href="#">Contribute</a>
             <a href="/frontEnd/aboutpage/index.html">About</a>
-            <a href="#" id="loginLink">Login</a>
+            <a href="#" id="loginLink" onClick={handleLoginClick}>Login</a>
           </div>
         </nav>
       </header>
@@ -149,14 +173,16 @@ function HomePage() {
             {loading ? (
               <p>Loading mnemonics...</p>
             ) : mnemonics.length > 0 ? (
-              mnemonics.map(mnemonic => (
-                <div key={mnemonic.id} className="mnemonic-card">
+              mnemonics.map((mnemonic, index) => (
+                <div key={mnemonic.id || index} className="mnemonic-card">
                   <h3>{mnemonic.title}</h3>
                   <p>{mnemonic.content}</p>
                 </div>
               ))
+            ) : searchQuery.trim() ? (
+              <p>No mnemonics found for "{searchQuery}".</p>
             ) : (
-              <p>No mnemonics found based on your search criteria.</p>
+              <p>Start typing to search for mnemonics...</p>
             )}
           </div>
         </section>
@@ -237,6 +263,15 @@ function HomePage() {
       <div className="dark-mode-toggle" id="darkModeToggle" onClick={toggleDarkMode}>
         <FontAwesomeIcon icon={faMoon} />
       </div>
+
+      {showLoginPopup && (
+        <div className="login-popup-overlay">
+          <div className="login-popup-content">
+            <button className="close-popup-btn" onClick={handleCloseLoginPopup}>&times;</button>
+            <LoginPage onClose={handleCloseLoginPopup} onLoginSuccess={handleLoginSuccess} />
+          </div>
+        </div>
+      )}
     </>
   );
 }
