@@ -7,12 +7,12 @@ import "../styles/common.css";
 import "../styles/DashboardPage.css"; // Using the provided CSS
 
 const DashboardPage = () => {
-  const { currentUser } = useAuth(); // Accessing the logged-in user from context
+  const { currentUser } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState("All"); // Default to 'All' category
+  const [activeCategory, setActiveCategory] = useState("All");
   const [mnemonics, setMnemonics] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedMnemonic, setSelectedMnemonic] = useState(null); // Store selected mnemonic for modal
+  const [selectedMnemonic, setSelectedMnemonic] = useState(null);
   const showToast = useToast();
 
   const categories = [
@@ -26,69 +26,56 @@ const DashboardPage = () => {
     "Neurology",
   ];
 
-  // Fetch mnemonics when category or search query changes
-  console.log("Fetching mnemonics with params:", { category: activeCategory, searchQuery });
+  useEffect(() => {
+    if (!currentUser) return;
 
-useEffect(() => {
-  console.log("useEffect triggered:", { activeCategory, searchQuery });
+    const fetchMnemonics = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/get-mnemonics",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
+            params: {
+              category: activeCategory === "All" ? "" : activeCategory,
+              searchQuery: searchQuery,
+            },
+          }
+        );
+        setMnemonics(response.data);
+      } catch (error) {
+        console.error("Error fetching mnemonics:", error.response || error);
+        showToast("Error fetching mnemonics", "error");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!currentUser) return;
+    fetchMnemonics();
+  }, [activeCategory, searchQuery, currentUser, showToast]);
 
-  const fetchMnemonics = async () => {
-    setLoading(true);
-    try {
-      console.log("Sending request...");
-      const response = await axios.get(
-        "http://localhost:5000/get-mnemonics",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-          params: {
-            category: activeCategory === "All" ? "" : activeCategory,
-            searchQuery: searchQuery,
-          },
-        }
-      );
-      console.log("Response received:", response.data);
-      setMnemonics(response.data);
-    } catch (error) {
-      console.error("Error fetching mnemonics:", error.response || error);
-      showToast("Error fetching mnemonics", "error");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchMnemonics();
-}, [activeCategory, searchQuery, currentUser, showToast]);
-
-  // Handle search input
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  // Handle category selection
   const handleCategoryClick = (category) => {
     setActiveCategory(category);
   };
 
   const handleMnemonicClick = (mnemonic) => {
-    setSelectedMnemonic(mnemonic); // Show the selected mnemonic in the modal
+    setSelectedMnemonic(mnemonic);
   };
 
   const handleCloseModal = () => {
-    setSelectedMnemonic(null); // Close the modal by setting the selected mnemonic to null
+    setSelectedMnemonic(null);
   };
-
-
-
 
   return (
     <div className="dashboard-page">
       <div className="main-content">
-        <h1 className="page-title">Welcome to Medmnemonics</h1>{" "}
-        {/* Main page title */}
+        <h1 className="page-title">Welcome to Medmnemonics</h1>
         <div className="library-container">
           <aside className="sidebar">
             <h3>Categories</h3>
@@ -119,32 +106,29 @@ useEffect(() => {
               </div>
             </div>
 
-            
-
-            {/* Displaying the fetched mnemonics */}
-            <div className="mnemonics-grid">
-              {loading ? (
-                <p>Loading mnemonics...</p> // Display loading message while fetching
-              ) : mnemonics.length > 0 ? (
-                mnemonics.map((mnemonic) => (
-                  <div
-                    key={mnemonic.id}
-                    className="mnemonic-card"
-                    onClick={() => handleMnemonicClick(mnemonic)} // Open modal on click
-                  >
-                    <h3>{mnemonic.acronym}</h3>
-                    {/* The delete button is removed */}
-                  </div>
-                ))
-              ) : (
-                <p>No mnemonics found for this category or search.</p>
-              )}
+            <div className="mnemonics-section">
+              <div className="mnemonics-grid">
+                {loading ? (
+                  <p>Loading mnemonics...</p>
+                ) : mnemonics.length > 0 ? (
+                  mnemonics.map((mnemonic) => (
+                    <div
+                      key={mnemonic.id}
+                      className="mnemonic-card"
+                      onClick={() => handleMnemonicClick(mnemonic)}
+                    >
+                      <h3>{mnemonic.acronym}</h3>
+                    </div>
+                  ))
+                ) : (
+                  <p>No mnemonics found for this category or search.</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Modal to display the expanded mnemonic */}
       {selectedMnemonic && (
         <Modal
           isOpen={true}
