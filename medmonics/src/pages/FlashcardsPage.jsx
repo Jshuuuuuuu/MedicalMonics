@@ -348,28 +348,31 @@ const endQuiz = () => {
             {/* Browse Mode */}
             <div className="browse-section">
               <h2>Browse Flashcards</h2>
-              <div className="sidebar">
-                <h3>Categories</h3>
-                <ul className="category-list">
-                  {categories.map((category) => (
-                    <li
-                      key={category}
-                      className={activeCategory === category ? "active" : ""}
-                      onClick={() => handleCategoryClick(category)}
-                    >
-                      {category}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              
+              <div className="browse-content">
+                <div className="sidebar">
+                  <h3>Categories</h3>
+                  <ul className="category-list">
+                    {categories.map((category) => (
+                      <li
+                        key={category}
+                        className={activeCategory === category ? "active" : ""}
+                        onClick={() => handleCategoryClick(category)}
+                      >
+                        {category}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-              <div className="flashcards-grid">
-                {flashcards.map((flashcard) => (
-                  <div key={flashcard.id} className="flashcard-preview">
-                    <h4>{flashcard.acronym}</h4>
-                    <p>{flashcard.category}</p>
-                  </div>
-                ))}
+                <div className="flashcards-grid">
+                  {flashcards.map((flashcard) => (
+                    <div key={flashcard.id} className="flashcard-preview">
+                      <h4>{flashcard.acronym}</h4>
+                      <p>{flashcard.category}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
