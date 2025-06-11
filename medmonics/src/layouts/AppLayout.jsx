@@ -4,10 +4,10 @@ import { useToast } from '../contexts/ToastContext';
 import DashboardPage from '../pages/DashboardPage';
 import AddMnemonicPage from '../pages/AddMnemonicPage';
 import FlashcardsPage from '../pages/FlashcardsPage';
-import '../styles/AppLayout.css'; // Make sure this CSS file is created as well
+import '../styles/AppLayout.css';
 
 const AppLayout = () => {
-  const [currentView, setCurrentView] = useState('dashboard'); // Default to dashboard
+  const [currentView, setCurrentView] = useState('dashboard');
   const [editingMnemonic, setEditingMnemonic] = useState(null);
   const { currentUser, logout } = useAuth();
   const showToast = useToast();
@@ -29,15 +29,14 @@ const AppLayout = () => {
 
   const clearEditingState = () => {
     setEditingMnemonic(null);
-    setCurrentView('dashboard'); // Default view is now dashboard after clearing edit
+    setCurrentView('dashboard');
   };
 
   const handleMnemonicAddedOrUpdated = () => {
-    setCurrentView('dashboard'); // Go to dashboard after add/update
+    setCurrentView('dashboard');
     setEditingMnemonic(null);
   };
 
-  // Adjusting navItems to match the image's text links
   const navItems = [
     { view: 'dashboard', label: 'Dashboard' },
     { view: 'add-edit-mnemonic', label: 'AddMnemonic' },

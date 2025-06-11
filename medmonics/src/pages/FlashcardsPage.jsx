@@ -3,9 +3,8 @@ import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
 import "../styles/common.css";
-import "../styles/FlashcardsPage.css";
-import "../responsiveness/Flashcardtransition.css";
-import FlipCard from "../components/FlipCard";
+import "../styles/FlashcardsPage.css"; // Scoped to this page
+import "../responsiveness/Flashcardtransition.css"; // Keep for transitions
 
 const FlashcardsPage = () => {
   const { currentUser } = useAuth();
@@ -46,24 +45,20 @@ const FlashcardsPage = () => {
 
   const difficulties = ["All", "Easy", "Medium", "Hard"];
 
-  // Fetch flashcards when category changes
   useEffect(() => {
     if (!currentUser) return;
 
     const fetchFlashcards = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
-          "http://localhost:5000/get-mnemonics",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            },
-            params: {
-              category: activeCategory === "All" ? "" : activeCategory,
-            },
-          }
-        );
+        const response = await axios.get("http://localhost:5000/get-mnemonics", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+          params: {
+            category: activeCategory === "All" ? "" : activeCategory,
+          },
+        });
         setFlashcards(response.data);
       } catch (error) {
         console.error("Error fetching flashcards:", error);
@@ -76,64 +71,49 @@ const FlashcardsPage = () => {
     fetchFlashcards();
   }, [activeCategory, currentUser, showToast]);
 
-  // Start quiz with intelligent card selection
+  const startQuiz = async () => {
+    setLoading(true);
+    setQuizMode(false);
 
-const startQuiz = async () => {
-  setLoading(true);
-  setQuizMode(false);
-
-  const token = localStorage.getItem("authToken");
-  if (!token) {
-    showToast("Please log in to start quiz", "error");
-    setLoading(false);
-    return;
-  }
-
-  try {
-    const response = await axios.post(
-      "http://localhost:5000/start-quiz",
-      quizSettings,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-
-    if (response.data && response.data.flashcards) {
-      setQuizFlashcards(response.data.flashcards);
-      setCurrentFlashcard(response.data.flashcards[0]);
-      setQuizMode(true);
-      setCurrentFlashcardIndex(0);
-    } else {
-      showToast("No flashcards available for quiz", "error");
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      showToast("Please log in to start quiz", "error");
+      setLoading(false);
+      return;
     }
-  } catch (error) {
-    console.error("Error starting quiz:", error);
-    showToast("Error starting quiz", "error");
-  } finally {
-    setLoading(false);
-  }
-};
 
-  // Handle answer submission
+    try {
+      const response = await axios.post("http://localhost:5000/start-quiz", quizSettings, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.data && response.data.flashcards) {
+        setQuizFlashcards(response.data.flashcards);
+        setCurrentFlashcard(response.data.flashcards[0]);
+        setQuizMode(true);
+        setCurrentFlashcardIndex(0);
+      } else {
+        showToast("No flashcards available for quiz", "error");
+      }
+    } catch (error) {
+      console.error("Error starting quiz:", error);
+      showToast("Error starting quiz", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleAnswerSubmit = async (isCorrect) => {
     if (!currentFlashcard) return;
 
     try {
-      // Update user stats in backend
-      await axios.post(
-        "http://localhost:5000/update-mnemonic-stats",
-        {
-          mnemonicId: currentFlashcard.id,
-          isCorrect: isCorrect,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        }
-      );
+      await axios.post("http://localhost:5000/update-mnemonic-stats", {
+        mnemonicId: currentFlashcard.id,
+        isCorrect: isCorrect,
+      }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
+      });
 
-      // Update local stats
       setQuizStats((prev) => ({
         correct: prev.correct + (isCorrect ? 1 : 0),
         incorrect: prev.incorrect + (isCorrect ? 0 : 1),
@@ -147,7 +127,6 @@ const startQuiz = async () => {
         showToast("Incorrect. Keep trying! 💪", "error");
       }
 
-      // Move to next card after a short delay
       setTimeout(() => {
         nextFlashcard();
       }, 1500);
@@ -157,7 +136,6 @@ const startQuiz = async () => {
     }
   };
 
-  // Calculate points based on difficulty and performance
   const calculatePoints = (flashcard) => {
     const basePoints = 10;
     const difficultyMultiplier = {
@@ -165,35 +143,27 @@ const startQuiz = async () => {
       Medium: 1.5,
       Hard: 2,
     };
-    return Math.round(
-      basePoints * (difficultyMultiplier[flashcard.difficulty] || 1)
-    );
+    return Math.round(basePoints * (difficultyMultiplier[flashcard.difficulty] || 1));
   };
 
-  // Move to next flashcard
-const nextFlashcard = () => {
-  if (currentFlashcardIndex < quizFlashcards.length - 1) {
-    const nextIndex = currentFlashcardIndex + 1;
-    setCurrentFlashcardIndex(nextIndex);
-    setCurrentFlashcard(quizFlashcards[nextIndex]);
-    setShowAnswer(false);
-    setCurrentAnswer("");
-  } else {
-    endQuiz();
-  }
-};
+  const nextFlashcard = () => {
+    if (currentFlashcardIndex < quizFlashcards.length - 1) {
+      const nextIndex = currentFlashcardIndex + 1;
+      setCurrentFlashcardIndex(nextIndex);
+      setCurrentFlashcard(quizFlashcards[nextIndex]);
+      setShowAnswer(false);
+      setCurrentAnswer("");
+    } else {
+      endQuiz();
+    }
+  };
 
-  // End quiz and show results
-const endQuiz = () => {
-  setQuizMode(false);
-  setCurrentFlashcard(null);
-  showToast(
-    `Quiz completed! Score: ${quizStats.correct}/${quizStats.total}`,
-    "success"
-  );
-};
+  const endQuiz = () => {
+    setQuizMode(false);
+    setCurrentFlashcard(null);
+    showToast(`Quiz completed! Score: ${quizStats.correct}/${quizStats.total}`, "success");
+  };
 
-  // Handle category selection for quiz settings
   const handleCategorySelection = (category) => {
     if (category === "All") {
       setQuizSettings((prev) => ({ ...prev, categories: ["All"] }));
@@ -217,15 +187,15 @@ const endQuiz = () => {
   };
 
   const handleReset = () => {
-  setQuizMode(false);
-  setCurrentFlashcard(null);
-  setQuizFlashcards([]);
-  setCurrentFlashcardIndex(0);
-  setPoints(0);
-  setQuizStats({ correct: 0, incorrect: 0, total: 0 });
-  setCurrentAnswer("");
-  setShowAnswer(false);
-};
+    setQuizMode(false);
+    setCurrentFlashcard(null);
+    setQuizFlashcards([]);
+    setCurrentFlashcardIndex(0);
+    setPoints(0);
+    setQuizStats({ correct: 0, incorrect: 0, total: 0 });
+    setCurrentAnswer("");
+    setShowAnswer(false);
+  };
 
   if (loading) {
     return (
@@ -243,22 +213,16 @@ const endQuiz = () => {
         <h1 className="page-title">Flashcards Quiz</h1>
 
         {!quizMode ? (
-          // Quiz Setup Screen
           <div className="quiz-setup">
             <div className="setup-section">
               <h2>Quiz Settings</h2>
-
               <div className="setting-group">
                 <label>Categories:</label>
                 <div className="category-selection">
                   {categories.map((category) => (
                     <button
                       key={category}
-                      className={`category-btn ${
-                        quizSettings.categories.includes(category)
-                          ? "selected"
-                          : ""
-                      }`}
+                      className={`category-btn ${quizSettings.categories.includes(category) ? "selected" : ""}`}
                       onClick={() => handleCategorySelection(category)}
                     >
                       {category}
@@ -305,38 +269,6 @@ const endQuiz = () => {
                 </select>
               </div>
 
-              <div className="setting-group">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={quizSettings.includeNew}
-                    onChange={(e) =>
-                      setQuizSettings((prev) => ({
-                        ...prev,
-                        includeNew: e.target.checked,
-                      }))
-                    }
-                  />
-                  Include new cards
-                </label>
-              </div>
-
-              <div className="setting-group">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={quizSettings.includeReview}
-                    onChange={(e) =>
-                      setQuizSettings((prev) => ({
-                        ...prev,
-                        includeReview: e.target.checked,
-                      }))
-                    }
-                  />
-                  Include review cards
-                </label>
-              </div>
-
               <button
                 className="start-quiz-btn"
                 onClick={startQuiz}
@@ -346,10 +278,8 @@ const endQuiz = () => {
               </button>
             </div>
 
-            {/* Browse Mode */}
             <div className="browse-section">
               <h2>Browse Flashcards</h2>
-              
               <div className="browse-content">
                 <div className="sidebar">
                   <h3>Categories</h3>
@@ -378,7 +308,6 @@ const endQuiz = () => {
             </div>
           </div>
         ) : (
-          // Quiz Mode Screen
           <div className="quiz-active">
             <div className="quiz-header">
               <div className="quiz-progress">
