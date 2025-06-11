@@ -9,24 +9,12 @@ import "../responsiveness/Hometransition.css";
 
 
 function HomePage() {
-  const [darkMode, setDarkMode] = useState(false);
   const [mnemonics, setMnemonics] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-  }, [darkMode]);
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
 
   useEffect(() => {
     const fetchMnemonics = async () => {
@@ -189,10 +177,6 @@ function HomePage() {
           &copy; 2023 MedMnemonics. All rights reserved.
         </div>
       </footer>
-
-      <div className="dark-mode-toggle" id="darkModeToggle" onClick={toggleDarkMode}>
-        <FontAwesomeIcon icon={faMoon} />
-      </div>
 
       {showLoginPopup && (
         <div className="login-popup-overlay">
