@@ -1,4 +1,3 @@
-
 .flashcards-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -19,20 +18,31 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Quiz Setup Styles */
+/* Quiz Setup Styles - Updated Layout */
 .quiz-setup {
   display: flex;
   gap: 2rem;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* Ensure browse-section expands properly */
+.browse-section {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .setup-section {
-  flex: 1;
+  flex: 0 0 350px; /* Fixed width for quiz settings */
   background: white;
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: fit-content;
 }
 
 .setup-section h2 {
@@ -67,6 +77,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 0.9rem;
+  color: white;
 }
 
 .category-btn:hover {
@@ -87,6 +98,7 @@
   border-radius: 8px;
   font-size: 1rem;
   background: rgb(1, 153, 102);
+  color: white;
 }
 
 .setting-group input[type="checkbox"] {
@@ -117,87 +129,120 @@
   cursor: not-allowed;
 }
 
-/* Browse Section Styles */
+/* Browse Section Styles - Updated for horizontal layout */
 .browse-section {
-  flex: 1;
+  flex: 1; /* Take remaining space */
   background: white;
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-height: 600px;
+}
+
+.browse-section h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+/* Updated browse content layout - horizontal */
+.browse-content {
+  display: flex;
+  gap: 1.5rem;
+  height: 100%;
 }
 
 .sidebar {
-  width: 200px;
+  flex: 0 0 200px; /* Fixed width for sidebar */
   background-color: #f8f8f8;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
+  height: fit-content;
 }
 
 .sidebar h3 {
   color: #2c3e50;
   margin-bottom: 1rem;
   font-size: 1.2rem;
+  text-align: center;
 }
 
 .category-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .category-list li {
-  margin: 8px 0;
   cursor: pointer;
-  padding: 10px;
+  padding: 10px 15px;
   border-radius: 8px;
   transition: all 0.3s ease;
   font-weight: 500;
+  background: #e9ecef;
+  border: 2px solid transparent;
+  text-align: center;
 }
 
-.category-list li.active,
+.category-list li.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #0056b3;
+}
+
 .category-list li:hover {
   background-color: #007bff;
   color: white;
-  transform: translateX(4px);
+  transform: translateY(-2px);
 }
 
 .flashcards-grid {
+  flex: 1; /* Take remaining space */
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
-  max-height: 400px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  max-height: 500px;
   overflow-y: auto;
+  padding: 1rem;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  background-color: #fafafa;
 }
 
 .flashcard-preview {
-  padding: 1rem;
+  padding: 1.5rem;
   border: 2px solid #e9ecef;
-  border-radius: 8px;
+  border-radius: 12px;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
   background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .flashcard-preview:hover {
   border-color: #007bff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 123, 255, 0.2);
 }
 
 .flashcard-preview h4 {
   margin: 0 0 0.5rem 0;
   color: #2c3e50;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .flashcard-preview p {
   margin: 0;
   color: #6c757d;
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
 /* Quiz Active Styles */
@@ -549,6 +594,31 @@
     flex-direction: column;
     gap: 1.5rem;
   }
+  
+  .setup-section {
+    flex: none;
+    width: 100%;
+  }
+  
+  .browse-section {
+    flex: none;
+    width: 100%;
+  }
+  
+  .browse-content {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    flex: none;
+    width: 100%;
+  }
+  
+  .category-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 992px) {
@@ -564,6 +634,10 @@
   
   .quiz-stats {
     justify-content: center;
+  }
+  
+  .category-list {
+    justify-content: flex-start;
   }
 }
 

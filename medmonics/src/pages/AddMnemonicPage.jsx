@@ -173,12 +173,14 @@ A - Acute ...`}
                 required
                 className="form-input"
               >
-                <option value="">Select a category</option>
-                <option value="Cardiology">Cardiology</option>
-                <option value="Emergency">Emergency</option>
-                <option value="Toxicology">Toxicology</option>
-                <option value="Neurology">Neurology</option>
+                <option value="Pathology">Pathology</option>
                 <option value="Anatomy">Anatomy</option>
+                <option value="Histology">Histology</option>
+                <option value="Embryology">Embryology</option>
+                <option value="Pharmacology">Pharmacology</option>
+                <option value="Microbiology">Microbiology</option>
+                <option value="Neurology">Neurology</option>
+
               </select>
             </div>
             <div className="form-group">

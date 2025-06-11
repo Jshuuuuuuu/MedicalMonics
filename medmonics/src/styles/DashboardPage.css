@@ -112,6 +112,22 @@ nav {
     min-width: 300px;
 }
 
+.mnemonics-section {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+    transition: all 0.3s ease-in-out;
+}
+
+@media (max-width: 768px) {
+    .mnemonics-section {
+        padding: 20px;
+    }
+}
+
+
 .content-header {
     display: flex;
     justify-content: space-between;
@@ -160,17 +176,31 @@ nav {
 
 .mnemonics-grid {
     display: grid;
+    
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 25px;
 }
 
 .mnemonic-card {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
-    transition: transform 0.2s ease;
+  background-color: #e9ecef;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  padding: 20px; /* ⬅️ increase padding */
+  min-height: 100px; /* ⬅️ set a taller card height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
+
+.mnemonic-card h3 {
+  font-size: 1rem; /* ⬅️ make acronym text larger */
+  font-weight: 600;
+  color: #2c3e50;
+}
+
 
 .mnemonic-card:hover {
     transform: scale(1.05);
