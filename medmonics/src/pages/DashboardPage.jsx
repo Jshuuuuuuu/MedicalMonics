@@ -74,50 +74,49 @@ const DashboardPage = () => {
       <div className="main-content">
         <h1 className="page-title">Welcome to Medmnemonics</h1>
 
-        <div className="dashboard-layout">
-          {/* Sidebar Categories */}
-          <aside className="dashboard-sidebar">
-            <h3>Categories</h3>
-            <ul className="category-list">
-              {categories.map((category) => (
-                <li
-                  key={category}
-                  className={activeCategory === category ? "active" : ""}
-                >
-                  <a href="#" onClick={() => handleCategoryClick(category)}>
-                    {category}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </aside>
+        {/* Category Sidebar */}
+        <aside className="category-sidebar">
+          <h3>Categories</h3>
+          <ul className="category-list vertical">
+            {categories.map((category) => (
+              <li
+                key={category}
+                className={activeCategory === category ? "active" : ""}
+              >
+                <a href="#" onClick={() => handleCategoryClick(category)}>
+                  {category}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
 
-            <div className="mnemonics-content">
-              <div className="content-header">
-                <h2>Your Mnemonics</h2>
-                <div className="search-container">
-                  <input
-                    type="text"
-                    placeholder="Search mnemonics..."
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                  />
+        <div className="dashboard-layout with-sidebar">
+          <div className="mnemonics-content">
+            <div className="content-header">
+              <h2 className="mnemonics-heading">Your Mnemonics</h2>
+              <div className="search-container right-align">
+                <input
+                  type="text"
+                  placeholder="Search mnemonics..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+              </div>
+            </div>
+
+            <div className="dashboard-panels">
+              <div className="dashboard-overview">
+                <div className="progress-box">
+                  <h3>Progress Overview</h3>
+                  <p>Coming soon: your daily learning stats</p>
+                </div>
+
+                <div className="analytics-box">
+                  <h3>Analytical Report</h3>
+                  <p>Track your mnemonic performance and trends.</p>
                 </div>
               </div>
-
-                {/* Main Dashboard Panel */}
-              <div className="dashboard-panels">
-                <div className="dashboard-overview">
-                  <div className="progress-box">
-                    <h3>Progress Overview</h3>
-                    <p>Coming soon: your daily learning stats</p>
-                  </div>
-
-                  <div className="analytics-box">
-                    <h3>Analytical Report</h3>
-                    <p>Track your mnemonic performance and trends.</p>
-                  </div>
-                </div>
 
               <div className="mnemonics-section">
                 <div className="mnemonics-grid">
@@ -141,30 +140,20 @@ const DashboardPage = () => {
             </div>
           </div>
         </div>
-      </div>
 
-      {selectedMnemonic && (
-        <Modal isOpen={true} onClose={handleCloseModal} title="Mnemonic Details">
-          <div className="modal-content">
-            <h3>{selectedMnemonic.acronym}</h3>
-            <p>
-              <strong>Full Form:</strong> {selectedMnemonic.fullForm}
-            </p>
-            <p>
-              <strong>Category:</strong> {selectedMnemonic.category}
-            </p>
-            <p>
-              <strong>Tags:</strong> {selectedMnemonic.tags?.join(", ")}
-            </p>
-            <p>
-              <strong>Body System:</strong> {selectedMnemonic.bodySystem}
-            </p>
-            <p>
-              <strong>Exam Relevance:</strong> {selectedMnemonic.examRelevance}
-            </p>
-          </div>
-        </Modal>
-      )}
+        {selectedMnemonic && (
+          <Modal isOpen={true} onClose={handleCloseModal} title="Mnemonic Details">
+            <div className="modal-content">
+              <h3>{selectedMnemonic.acronym}</h3>
+              <p><strong>Full Form:</strong> {selectedMnemonic.fullForm}</p>
+              <p><strong>Category:</strong> {selectedMnemonic.category}</p>
+              <p><strong>Tags:</strong> {selectedMnemonic.tags?.join(", ")}</p>
+              <p><strong>Body System:</strong> {selectedMnemonic.bodySystem}</p>
+              <p><strong>Exam Relevance:</strong> {selectedMnemonic.examRelevance}</p>
+            </div>
+          </Modal>
+        )}
+      </div>
     </div>
   );
 };
