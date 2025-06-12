@@ -113,27 +113,27 @@ function HomePage() {
             <div className="category-card">
               <FontAwesomeIcon icon={faHeartbeat} />
               <h3>Anatomy</h3>
-              <p>200+ mnemonics</p>
+              
             </div>
             <div className="category-card">
               <FontAwesomeIcon icon={faPills} />
               <h3>Pharmacology</h3>
-              <p>150+ mnemonics</p>
+              
             </div>
             <div className="category-card">
               <FontAwesomeIcon icon={faVirus} />
               <h3>Pathology</h3>
-              <p>180+ mnemonics</p>
+              
             </div>
             <div className="category-card">
               <FontAwesomeIcon icon={faDna} />
               <h3>Microbiology</h3>
-              <p>120+ mnemonics</p>
+             
             </div>
             <div className="category-card">
               <FontAwesomeIcon icon={faFlask} />
               <h3>Biochemistry</h3>
-              <p>90+ mnemonics</p>
+            
             </div>
           </div>
         </section>
