@@ -4,10 +4,13 @@ import { useToast } from '../contexts/ToastContext';
 import DashboardPage from '../pages/DashboardPage';
 import AddMnemonicPage from '../pages/AddMnemonicPage';
 import FlashcardsPage from '../pages/FlashcardsPage';
-import '../styles/AppLayout.css'; // Make sure this CSS file is created as well
+import '../styles/AppLayout.css';
+
+// You can import icons from a library like react-icons or lucide-react
+// For example: import { Home, Plus, BookOpen, LogOut } from 'lucide-react';
 
 const AppLayout = () => {
-  const [currentView, setCurrentView] = useState('dashboard'); // Default to dashboard
+  const [currentView, setCurrentView] = useState('dashboard');
   const [editingMnemonic, setEditingMnemonic] = useState(null);
   const { currentUser, logout } = useAuth();
   const showToast = useToast();
@@ -29,49 +32,75 @@ const AppLayout = () => {
 
   const clearEditingState = () => {
     setEditingMnemonic(null);
-    setCurrentView('dashboard'); // Default view is now dashboard after clearing edit
+    setCurrentView('dashboard');
   };
 
   const handleMnemonicAddedOrUpdated = () => {
-    setCurrentView('dashboard'); // Go to dashboard after add/update
+    setCurrentView('dashboard');
     setEditingMnemonic(null);
   };
 
-  // Adjusting navItems to match the image's text links
   const navItems = [
-    { view: 'dashboard', label: 'Dashboard' },
-    { view: 'add-edit-mnemonic', label: 'AddMnemonic' },
-    { view: 'quiz', label: 'FlashCard' },
+    { 
+      view: 'dashboard', 
+      label: 'Dashboard',
+      icon: '🏠' // Replace with actual icon component: <Home className="nav-icon" />
+    },
+    { 
+      view: 'add-edit-mnemonic', 
+      label: 'Add Mnemonic',
+      icon: '➕' // Replace with: <Plus className="nav-icon" />
+    },
+    { 
+      view: 'quiz', 
+      label: 'FlashCard',
+      icon: '📚' // Replace with: <BookOpen className="nav-icon" />
+    },
   ];
 
   return (
     <div className="app-container">
-      <header className="app-header">
-        <div className="app-logo">MedMnemonics</div>
-        <nav className="header-nav">
+      {/* Sidebar */}
+      <div className="sidebar">
+        <div className="app-logo">
+          <span>MedMnemonics</span>
+        </div>
+        <nav className="sidebar-nav">
           <ul>
             {navItems.map(item => (
               <li key={item.view}>
-                <button
-                  onClick={() => {
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
                     setCurrentView(item.view);
                     if (item.view !== 'add-edit-mnemonic') setEditingMnemonic(null);
                   }}
                   className={`nav-link ${currentView === item.view ? 'active' : ''}`}
                 >
-                  {item.label}
-                </button>
+                  <span className="nav-icon">{item.icon}</span>
+                  <span className="nav-text">{item.label}</span>
+                </a>
               </li>
             ))}
             <li>
-              <button onClick={handleSignOut} className="nav-link log-out">
-                Log out
-              </button>
+              <a 
+                href="#" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSignOut();
+                }} 
+                className="nav-link log-out"
+              >
+                <span className="nav-icon">🚪</span> {/* Replace with: <LogOut className="nav-icon" /> */}
+                <span className="nav-text">Log out</span>
+              </a>
             </li>
           </ul>
         </nav>
-      </header>
+      </div>
 
+      {/* Content Area */}
       <main className="content-area">
         {currentView === 'dashboard' && <DashboardPage />}
         {currentView === 'add-edit-mnemonic' && (

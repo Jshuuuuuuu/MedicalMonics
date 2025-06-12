@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; // For making HTTP requests to the backend
-import { useAuth } from "../contexts/AuthContext"; // Assuming we use useAuth to manage current user
+import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
-import Modal from "../contexts/Modal"; // Import Modal Component for the popup
+import Modal from "../contexts/Modal";
 import "../styles/common.css";
-import "../styles/DashboardPage.css"; // Using the provided CSS
+import "../styles/DashboardPage.css";
 
 const DashboardPage = () => {
   const { currentUser } = useAuth();
@@ -32,18 +32,15 @@ const DashboardPage = () => {
     const fetchMnemonics = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
-          "http://localhost:5000/get-mnemonics",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            },
-            params: {
-              category: activeCategory === "All" ? "" : activeCategory,
-              searchQuery: searchQuery,
-            },
-          }
-        );
+        const response = await axios.get("http://localhost:5000/get-mnemonics", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+          params: {
+            category: activeCategory === "All" ? "" : activeCategory,
+            searchQuery: searchQuery,
+          },
+        });
         setMnemonics(response.data);
       } catch (error) {
         console.error("Error fetching mnemonics:", error.response || error);
@@ -75,11 +72,13 @@ const DashboardPage = () => {
   return (
     <div className="dashboard-page">
       <div className="main-content">
-        <h1 className="page-title">Welcome to Medmnemonics</h1>
-        <div className="library-container">
-          <aside className="sidebar">
+        <h1 className="page-title">Welcome to MedMnemonics</h1>
+
+        <div className="dashboard-layout">
+          {/* Category List Inside Dashboard Panel */}
+          <div className="category-list-container">
             <h3>Categories</h3>
-            <ul className="category-list">
+            <ul className="category-list vertical">
               {categories.map((category) => (
                 <li
                   key={category}
@@ -91,12 +90,13 @@ const DashboardPage = () => {
                 </li>
               ))}
             </ul>
-          </aside>
+          </div>
 
+          {/* Mnemonics Section */}
           <div className="mnemonics-content">
             <div className="content-header">
-              <h2>Your Mnemonics</h2>
-              <div className="search-container">
+              <h2 className="mnemonics-heading">Dashboard</h2>
+              <div className="search-container right-align">
                 <input
                   type="text"
                   placeholder="Search mnemonics..."
@@ -106,55 +106,55 @@ const DashboardPage = () => {
               </div>
             </div>
 
-            <div className="mnemonics-section">
-              <div className="mnemonics-grid">
-                {loading ? (
-                  <p>Loading mnemonics...</p>
-                ) : mnemonics.length > 0 ? (
-                  mnemonics.map((mnemonic) => (
-                    <div
-                      key={mnemonic.id}
-                      className="mnemonic-card"
-                      onClick={() => handleMnemonicClick(mnemonic)}
-                    >
-                      <h3>{mnemonic.acronym}</h3>
-                    </div>
-                  ))
-                ) : (
-                  <p>No mnemonics found for this category or search.</p>
-                )}
+            <div className="dashboard-panels">
+              <div className="dashboard-overview">
+                <div className="progress-box">
+                  <h3>Progress Overview</h3>
+                  <p>Coming soon: your daily learning stats</p>
+                </div>
+
+                <div className="analytics-box">
+                  <h3>Analytical Report</h3>
+                  <p>Track your mnemonic performance and trends.</p>
+                </div>
+              </div>
+
+              <div className="mnemonics-section">
+                <div className="mnemonics-grid">
+                  {loading ? (
+                    <p>Loading mnemonics...</p>
+                  ) : mnemonics.length > 0 ? (
+                    mnemonics.map((mnemonic) => (
+                      <div
+                        key={mnemonic.id}
+                        className="mnemonic-card"
+                        onClick={() => handleMnemonicClick(mnemonic)}
+                      >
+                        <h3>{mnemonic.acronym}</h3>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No mnemonics found for this category or search.</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {selectedMnemonic && (
-        <Modal
-          isOpen={true}
-          onClose={handleCloseModal}
-          title="Mnemonic Details"
-        >
-          <div className="modal-content">
-            <h3>{selectedMnemonic.acronym}</h3>
-            <p>
-              <strong>Full Form:</strong> {selectedMnemonic.fullForm}
-            </p>
-            <p>
-              <strong>Category:</strong> {selectedMnemonic.category}
-            </p>
-            <p>
-              <strong>Tags:</strong> {selectedMnemonic.tags?.join(", ")}
-            </p>
-            <p>
-              <strong>Body System:</strong> {selectedMnemonic.bodySystem}
-            </p>
-            <p>
-              <strong>Exam Relevance:</strong> {selectedMnemonic.examRelevance}
-            </p>
-          </div>
-        </Modal>
-      )}
+        {selectedMnemonic && (
+          <Modal isOpen={true} onClose={handleCloseModal} title="Mnemonic Details">
+            <div className="modal-content">
+              <h3>{selectedMnemonic.acronym}</h3>
+              <p><strong>Full Form:</strong> {selectedMnemonic.fullForm}</p>
+              <p><strong>Category:</strong> {selectedMnemonic.category}</p>
+              <p><strong>Tags:</strong> {selectedMnemonic.tags?.join(", ")}</p>
+              <p><strong>Body System:</strong> {selectedMnemonic.bodySystem}</p>
+              <p><strong>Exam Relevance:</strong> {selectedMnemonic.examRelevance}</p>
+            </div>
+          </Modal>
+        )}
+      </div>
     </div>
   );
 };

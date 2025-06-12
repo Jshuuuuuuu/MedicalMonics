@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; // Import Axios for making API requests
-import { useAuth } from "../contexts/AuthContext"; // Assuming you have a context to manage user
+import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
 import "../styles/common.css";
 import "../styles/AddMnemonicPage.css";
 
-const AddMnemonicPage = ({
-  onMnemonicAdded,
-  editingMnemonic,
-  onMnemonicUpdated,
-  clearEditing,
-}) => {
-  const { currentUser } = useAuth(); // Access current user from context
+const AddMnemonicPage = ({ onMnemonicAdded, editingMnemonic, onMnemonicUpdated, clearEditing }) => {
+  const { currentUser } = useAuth();
   const showToast = useToast();
 
   const [acronym, setAcronym] = useState("");
@@ -22,7 +17,6 @@ const AddMnemonicPage = ({
   const [examRelevance, setExamRelevance] = useState("");
   const [tags, setTags] = useState("");
 
-  // Pre-fill form with existing mnemonic data if editing
   useEffect(() => {
     if (editingMnemonic) {
       setAcronym(editingMnemonic.acronym);
@@ -44,69 +38,68 @@ const AddMnemonicPage = ({
   }, [editingMnemonic]);
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!currentUser) {
-    showToast("User not authenticated.", "warning");
-    return;
-  }
-
-  if (!acronym.trim() || !fullForm.trim()) {
-    showToast("Mnemonic Title and Mnemonic Content are required.", "error");
-    return;
-  }
-
-  const mnemonicData = {
-    acronym,
-    fullForm,
-    category,
-    bodySystem,
-    difficulty,
-    examRelevance,
-    tags: tags.split(","),
-    userId: currentUser.id,  // Ensure that currentUser.id is being sent as userId
-  };
-
-  try {
-    const token = localStorage.getItem("authToken"); // Get JWT token from localStorage
-    const headers = {
-      Authorization: `Bearer ${token}`, // Send token for authorization
-    };
-
-    if (editingMnemonic) {
-      mnemonicData.updatedAt = new Date();
-      const response = await axios.put(
-        `http://localhost:5000/update-mnemonic/${editingMnemonic.id}`,
-        mnemonicData,
-        { headers }
-      );
-      showToast("Mnemonic updated successfully!", "success");
-      if (onMnemonicUpdated) onMnemonicUpdated(response.data);
-    } else {
-      mnemonicData.createdAt = new Date();
-      const response = await axios.post(
-        "http://localhost:5000/add-mnemonic",
-        mnemonicData,
-        { headers }
-      );
-      showToast("Mnemonic added successfully!", "success");
-      if (onMnemonicAdded) onMnemonicAdded(response.data);
+    e.preventDefault();
+    if (!currentUser) {
+      showToast("User not authenticated.", "warning");
+      return;
     }
 
-    // Clear the form after submission
-    setAcronym("");
-    setFullForm("");
-    setCategory("");
-    setBodySystem("");
-    setDifficulty("");
-    setExamRelevance("");
-    setTags("");
+    if (!acronym.trim() || !fullForm.trim()) {
+      showToast("Mnemonic Title and Mnemonic Content are required.", "error");
+      return;
+    }
 
-    if (clearEditing) clearEditing(); // Clear editing state
-  } catch (error) {
-    console.error("Error saving mnemonic: ", error);
-    showToast(`Error saving mnemonic: ${error.message}`, "error");
-  }
-};
+    const mnemonicData = {
+      acronym,
+      fullForm,
+      category,
+      bodySystem,
+      difficulty,
+      examRelevance,
+      tags: tags.split(","),
+      userId: currentUser.id,
+    };
+
+    try {
+      const token = localStorage.getItem("authToken");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      if (editingMnemonic) {
+        mnemonicData.updatedAt = new Date();
+        const response = await axios.put(
+          `http://localhost:5000/update-mnemonic/${editingMnemonic.id}`,
+          mnemonicData,
+          { headers }
+        );
+        showToast("Mnemonic updated successfully!", "success");
+        if (onMnemonicUpdated) onMnemonicUpdated(response.data);
+      } else {
+        mnemonicData.createdAt = new Date();
+        const response = await axios.post(
+          "http://localhost:5000/add-mnemonic",
+          mnemonicData,
+          { headers }
+        );
+        showToast("Mnemonic added successfully!", "success");
+        if (onMnemonicAdded) onMnemonicAdded(response.data);
+      }
+
+      setAcronym("");
+      setFullForm("");
+      setCategory("");
+      setBodySystem("");
+      setDifficulty("");
+      setExamRelevance("");
+      setTags("");
+
+      if (clearEditing) clearEditing();
+    } catch (error) {
+      console.error("Error saving mnemonic: ", error);
+      showToast(`Error saving mnemonic: ${error.message}`, "error");
+    }
+  };
 
   const handleCancel = () => {
     setAcronym("");
@@ -153,11 +146,7 @@ const AddMnemonicPage = ({
               rows="5"
               required
               className="form-input"
-              placeholder={`Enter the full mnemonic content. You can use bullet points or separate lines for each part.
-Example:
-C - Confusion
-R - Refractory seizures
-A - Acute ...`}
+              placeholder={`Enter the full mnemonic content. You can use bullet points or separate lines for each part.`}
             ></textarea>
           </div>
 
@@ -180,7 +169,6 @@ A - Acute ...`}
                 <option value="Pharmacology">Pharmacology</option>
                 <option value="Microbiology">Microbiology</option>
                 <option value="Neurology">Neurology</option>
-
               </select>
             </div>
             <div className="form-group">

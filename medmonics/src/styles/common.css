@@ -1,183 +1,37 @@
-/* common.css */
-
-/* CSS Variables for consistent theming */
+/* ---------------------------------------- */
+/* COMMON BASE STYLES                       */
+/* ---------------------------------------- */
 :root {
-    --primary: #2c3e50;
-    --secondary: #3498db;
-    --accent: #e74c3c;
-    --light: #ecf0f1;
-    --dark: #2c3e50;
-    --success: #27ae60;
-    --info: #007bff; /* Added for general info/blue buttons */
-    --warning: #ffc107; /* Added for warnings */
-    --danger: #dc3545; /* Added for danger/red buttons */
-    --text-light: #f1f5f9; /* For text on dark backgrounds */
-    --text-dark: #333; /* For text on light backgrounds */
-    --background-light: #f5f7fa;
-    --background-dark: #1e293b;
-    --card-background-light: white;
-    --card-background-dark: #475569;
-    --border-color-light: #ddd;
-    --border-color-dark: #475569;
+  --primary-color: #2c3e50;
+  --accent-color: #ff5722;
+  --text-light: #ffffff;
+  --text-dark: #333;
+  --background-light: #f0f2f5;
+  --background-white: #fff;
+  --transition-fast: 0.3s ease;
 }
 
-/* Global Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html, body {
+body, html {
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  overflow-x: hidden;
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  color: #333;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--background-light);
+  color: var(--text-dark);
 }
 
-/* Body Styles - Using 'Inter' font as per guidelines */
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--background-light); /* Consistent light background */
-    color: var(--text-dark); /* Default text color */
-    line-height: 1.6;
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* Base styles for buttons */
-.btn {
-    padding: 10px 20px;
-    font-size: 1em;
-    font-weight: 600;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    text-decoration: none; /* Ensure buttons used as links don't have underline */
-    display: inline-flex; /* For better alignment with icons/text */
-    justify-content: center;
-    align-items: center;
-    gap: 8px; /* Space between text and icon */
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
 }
 
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Primary button style */
-.btn-primary {
-    background-color: var(--secondary);
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: #2980b9; /* Darker shade of secondary */
-}
-
-/* Accent/Danger button style */
-.btn-danger {
-    background-color: var(--accent);
-    color: white;
-}
-
-.btn-danger:hover {
-    background-color: #c0392b; /* Darker shade of accent */
-}
-
-/* Outline/Secondary button style */
-.btn-outline {
-    background-color: transparent;
-    color: var(--dark);
-    border: 1px solid var(--dark);
-}
-
-.btn-outline:hover {
-    background-color: var(--light);
-    color: var(--dark);
-}
-
-/* Form input base styles */
-.form-input {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid var(--border-color-light);
-    border-radius: 6px;
-    font-size: 1rem;
-    color: var(--text-dark);
-    background-color: var(--card-background-light);
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.form-input:focus {
-    outline: none;
-    border-color: var(--secondary);
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-}
-
-/* Card base styles */
-.card {
-    background-color: var(--card-background-light);
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Ensures content respects border-radius */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-.card-header {
-    background-color: var(--primary);
-    color: white;
-    padding: 15px;
-    font-size: 1.2rem;
-    font-weight: 600;
-}
-
-.card-body {
-    padding: 15px;
-    color: var(--text-dark);
-}
-
-/* Utility classes for flexbox */
-.d-flex {
-    display: flex;
-}
-
-.justify-content-between {
-    justify-content: space-between;
-}
-
-.align-items-center {
-    align-items: center;
-}
-
-.flex-column {
-    flex-direction: column;
-}
-
-.gap-10 {
-    gap: 10px;
-}
-
-.gap-15 {
-    gap: 15px;
-}
-
-.gap-20 {
-    gap: 20px;
-}
-
-/* Responsive utilities - basic examples */
-@media (max-width: 768px) {
-    .flex-column-md {
-        flex-direction: column;
-    }
+input, select, textarea {
+  font-family: inherit;
+  font-size: 1rem;
 }

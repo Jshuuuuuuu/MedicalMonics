@@ -1,197 +1,386 @@
-/* AddMnemonicPage.css */
+/* ---------------------------------------- */
+/* PAGE: ADD MNEMONIC - ENHANCED ANIMATIONS */
+/* ---------------------------------------- */
 
-/* Specific styles for the AddMnemonicPage wrapper */
+/* Main wrapper with sophisticated entrance */
 .mnemonic-page-wrapper {
-    display: flex;
-    /* Adjust padding to create more space around the form, similar to the image */
-    padding: 40px 20px; /* Increased top/bottom padding */
-    background-color: #f0f2f5; /* Matches the background of the AppLayout */
-    min-height: calc(100vh - 80px); /* Adjust based on actual header height (approx 60px + some buffer) */
-    justify-content: center; /* Center content horizontally */
-    align-items: flex-start; /* Align form to the top of the wrapper */
+  animation: pageSlideIn 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  animation-fill-mode: both;
 }
 
-/* Container for the mnemonic form, adapting from .form-container */
+/* Container with floating effect */
 .mnemonic-form-container {
-    background-color: #ffffff; /* White background for the card */
-    border-radius: 8px; /* Slightly more rounded corners, common for cards */
-    padding: 30px 40px; /* Generous padding inside the card to match image */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Softer, more spread-out shadow */
-    width: 100%;
-    max-width: 850px; /* Slightly wider than 800px to match image proportions */
-    display: flex;
-    flex-direction: column;
+  background: var(--background-white);
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 800px;
+  margin: auto;
+  box-shadow: 
+    0 10px 30px rgba(0,0,0,0.08),
+    0 1px 8px rgba(0,0,0,0.02);
+  animation: containerFloat 2s ease-in-out infinite alternate;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Header section within the form container */
+/* Animated background pattern */
+.mnemonic-form-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Header with gradient flow animation */
 .mnemonic-header {
-    text-align: center; /* Center the header text */
-    margin-bottom: 30px; /* More space below header */
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color), var(--primary-color));
+  background-size: 300% 300%;
+  padding: 25px;
+  border-radius: 12px;
+  color: var(--text-light);
+  margin-bottom: 30px;
+  animation: gradientFlow 4s ease infinite, headerSlideIn 0.8s ease-out;
+  position: relative;
+  overflow: hidden;
 }
 
+/* Header glow effect */
+.mnemonic-header::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Title with typing effect */
 .mnemonic-title {
-    font-size: 2.2rem; /* Larger font size for the main title */
-    font-weight: 600; /* Bold enough */
-    color: #333333; /* Darker text for the title */
-    margin-bottom: 0;
+  margin: 0;
+  font-size: 1.8rem;
+  position: relative;
+  overflow: hidden;
+  animation: titleReveal 1s ease-out 0.5s both;
 }
 
-/* Form group styling */
+/* Form groups with staggered entrance */
 .form-group {
-    margin-bottom: 20px; /* Consistent spacing between form groups */
+  margin-bottom: 20px;
+  animation: formGroupSlideIn 0.6s ease-out both;
+  opacity: 0;
+  transform: translateX(-20px);
 }
 
-.form-label {
-    display: block;
-    margin-bottom: 8px; /* Slightly more space below label */
-    font-weight: 500; /* Medium weight */
-    color: #555555; /* Slightly lighter text for labels */
-    font-size: 0.9rem; /* A bit smaller, but clear */
-}
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+.form-group:nth-child(4) { animation-delay: 0.4s; }
+.form-group:nth-child(5) { animation-delay: 0.5s; }
+.form-group:nth-child(6) { animation-delay: 0.6s; }
 
-.required {
-    color: #ff5722; /* Accent color for required fields */
-    margin-left: 4px; /* Small space after label for asterisk */
-}
-
-/* Input, select, and textarea styling */
-.form-input {
-    width: 100%;
-    padding: 12px 15px; /* Increased padding inside inputs */
-    border: 1px solid #cccccc; /* Lighter border color */
-    border-radius: 6px; /* Rounded input borders */
-    font-size: 1rem; /* Standard font size */
-    color: #333333;
-    background-color: #fcfcfc; /* Very light background for inputs */
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-}
-
-.form-input::placeholder {
-    color: #999999; /* Placeholder text color */
-}
-
-.form-input:focus {
-    border-color: #4CAF50; /* A green primary focus color */
-    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); /* Soft focus shadow */
-    outline: none;
-}
-
-textarea.form-input {
-    min-height: 120px; /* Matches the image height for textarea */
-    resize: vertical;
-}
-
-/* Two-column form row layout */
+/* Form row with coordinated animation */
 .form-row {
-    display: flex;
-    gap: 30px; /* More gap between columns */
-    margin-bottom: 20px; /* Consistent spacing for rows */
+  display: flex;
+  gap: 20px;
+  animation: rowExpand 0.8s ease-out both;
 }
 
 .form-row .form-group {
-    flex: 1;
-    margin-bottom: 0; /* Remove double margin */
+  flex: 1;
+  animation: formGroupSlideIn 0.6s ease-out both;
 }
 
-/* Dropdown specific styles */
-select.form-input {
-    appearance: none; /* Remove default arrow */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 20px;
-    padding-right: 40px; /* Make space for the custom arrow */
+.form-row:nth-child(3) .form-group:nth-child(1) { animation-delay: 0.3s; }
+.form-row:nth-child(3) .form-group:nth-child(2) { animation-delay: 0.35s; }
+.form-row:nth-child(4) .form-group:nth-child(1) { animation-delay: 0.4s; }
+.form-row:nth-child(4) .form-group:nth-child(2) { animation-delay: 0.45s; }
+
+/* Enhanced form labels */
+.form-label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: block;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
+.form-label::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary-color);
+  transition: width 0.3s ease;
+}
 
-/* Form action buttons container */
+.form-group:hover .form-label::before {
+  width: 100%;
+}
+
+/* Interactive form inputs */
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.form-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  transform: scale(1.02);
+  animation: inputPulse 0.3s ease;
+}
+
+.form-input:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+/* Textarea specific animations */
+textarea.form-input {
+  resize: vertical;
+  min-height: 120px;
+  transition: all 0.3s ease, height 0.2s ease;
+}
+
+textarea.form-input:focus {
+  min-height: 140px;
+}
+
+/* Form hint with fade-in */
+.form-hint {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 5px;
+  opacity: 0;
+  animation: fadeIn 0.5s ease 0.8s both;
+}
+
+/* Action buttons with sophisticated hover effects */
 .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px; /* Space between buttons */
-    margin-top: 30px; /* More space above buttons */
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  animation: actionsSlideUp 0.6s ease-out 0.7s both;
+  opacity: 0;
 }
 
-/* Submit button styling */
+.submit-btn, .cancel-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
 .submit-btn {
-    background-color: #4CAF50; /* A shade of green, similar to the image's submit button */
-    color: white;
-    border: none;
-    border-radius: 6px; /* Rounded button corners */
-    padding: 12px 28px; /* Generous padding */
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.submit-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.submit-btn:hover::before {
+  left: 100%;
 }
 
 .submit-btn:hover {
-    background-color: #45a049; /* Darker green on hover */
-    transform: translateY(-2px); /* Slight lift */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* More pronounced shadow on hover */
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
 }
 
-/* Cancel button styling */
+.submit-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
 .cancel-btn {
-    background-color: #ffffff; /* White background */
-    color: #666666; /* Darker text */
-    border: 1px solid #cccccc; /* Light gray border */
-    border-radius: 6px; /* Rounded button corners */
-    padding: 12px 28px; /* Generous padding */
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Very subtle shadow */
+  background: #f8fafc;
+  color: #475569;
+  border: 2px solid #e2e8f0;
 }
 
 .cancel-btn:hover {
-    background-color: #f0f0f0; /* Slightly darker white on hover */
-    color: #333333; /* Darker text on hover */
-    border-color: #bbbbbb; /* Slightly darker border on hover */
-    transform: translateY(-2px); /* Slight lift */
+  background: #e2e8f0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* Hint text for tags */
-.form-hint {
-    font-size: 0.8rem; /* Smaller font size */
-    color: #888888; /* Lighter gray */
-    margin-top: 5px;
-    padding-left: 2px; /* Small indentation */
+/* Required asterisk animation */
+.required {
+  color: #ef4444;
+  animation: requiredBlink 2s ease-in-out infinite;
 }
 
-/* Responsive adjustments */
+/* KEYFRAME ANIMATIONS */
+@keyframes pageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes containerFloat {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes headerSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) rotateX(90deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  50% {
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+  }
+}
+
+@keyframes titleReveal {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes formGroupSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px) rotateY(20deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotateY(0deg);
+  }
+}
+
+@keyframes rowExpand {
+  from {
+    opacity: 0;
+    transform: scaleX(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes inputPulse {
+  0% { transform: scale(1.02); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1.02); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes actionsSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes requiredBlink {
+  0%, 50% { opacity: 1; }
+  25%, 75% { opacity: 0.5; }
+}
+
+/* Responsive animations */
 @media (max-width: 768px) {
-    .mnemonic-page-wrapper {
-        padding: 20px; /* Reduced padding on smaller screens */
-    }
+  .mnemonic-form-container {
+    animation: containerFloat 3s ease-in-out infinite alternate;
+  }
+  
+  .form-group {
+    animation-duration: 0.4s;
+  }
+  
+  .submit-btn:hover {
+    transform: translateY(-1px) scale(1.02);
+  }
+}
 
-    .mnemonic-form-container {
-        padding: 25px; /* Reduced padding on smaller screens */
-        max-width: 100%; /* Allow full width */
-    }
-
-    .mnemonic-title {
-        font-size: 1.8rem; /* Adjusted title size for mobile */
-    }
-
-    .form-row {
-        flex-direction: column; /* Stack fields vertically */
-        gap: 15px;
-    }
-
-    .form-actions {
-        flex-direction: column-reverse; /* Stack buttons vertically, cancel above submit */
-        gap: 10px;
-    }
-
-    .submit-btn,
-    .cancel-btn {
-        width: 100%; /* Full width buttons */
-        padding: 15px; /* Larger touch targets */
-    }
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .mnemonic-form-container {
+    animation: none;
+  }
 }
