@@ -74,24 +74,25 @@ const DashboardPage = () => {
       <div className="main-content">
         <h1 className="page-title">Welcome to MedMnemonics</h1>
 
-        {/* Category Sidebar */}
-        <aside className="category-sidebar">
-          <h3>Categories</h3>
-          <ul className="category-list vertical">
-            {categories.map((category) => (
-              <li
-                key={category}
-                className={activeCategory === category ? "active" : ""}
-              >
-                <a href="#" onClick={() => handleCategoryClick(category)}>
-                  {category}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </aside>
+        <div className="dashboard-layout">
+          {/* Category List Inside Dashboard Panel */}
+          <div className="category-list-container">
+            <h3>Categories</h3>
+            <ul className="category-list vertical">
+              {categories.map((category) => (
+                <li
+                  key={category}
+                  className={activeCategory === category ? "active" : ""}
+                >
+                  <a href="#" onClick={() => handleCategoryClick(category)}>
+                    {category}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <div className="dashboard-layout with-sidebar">
+          {/* Mnemonics Section */}
           <div className="mnemonics-content">
             <div className="content-header">
               <h2 className="mnemonics-heading">Dashboard</h2>

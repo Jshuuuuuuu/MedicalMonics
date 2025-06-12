@@ -1,57 +1,126 @@
-/* ---------------------------------------- */
-/* APP LAYOUT                               */
-/* ---------------------------------------- */
+/* General layout */
 .app-container {
   display: flex;
-  flex-direction: column;
   min-height: 100vh;
 }
 
-.app-header {
-  background-color: var(--primary-color);
-  color: var(--text-light);
-  padding: 20px 40px;
+.sidebar {
+  width: 250px;
+  background-color: var(--primary-color, #2c3e50);
+  color: white;
+  padding: 20px 0;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
 }
 
 .app-logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: var(--accent-color);
+  margin-bottom: 40px;
+  text-align: center;
+  padding: 0 20px;
 }
 
-.header-nav {
-  margin-left: auto;
+.sidebar-nav {
+  flex: 1;
+  padding: 0 20px;
 }
 
-.header-nav ul {
-  display: flex;
-  gap: 24px;
-  align-items: center;
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.sidebar-nav li {
+  margin-bottom: 8px;
+  width: 100%;
 }
 
 .nav-link {
   background: none;
-  color: var(--text-light);
-  padding: 8px 14px;
+  border: none;
+  color: white;
+  padding: 12px 16px;
   font-size: 1rem;
-  transition: color var(--transition-fast);
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: block;
+  text-decoration: none;
+  font-family: inherit;
 }
 
-.nav-link:hover,
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateX(2px);
+}
+
 .nav-link.active {
-  color: #aaa;
+  background-color: var(--accent-color, #e74c3c);
+  font-weight: 500;
 }
 
-.nav-link.log-out {
-  color: var(--accent-color);
+.log-out {
+  margin-top: auto;
+  color: #ff6b6b;
+  font-weight: 500;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 20px;
+  padding-top: 20px;
 }
 
+.log-out:hover {
+  background-color: rgba(255, 107, 107, 0.1);
+  color: #ff5252;
+}
+
+/* Content Area */
 .content-area {
-  flex: 1;
+  flex-grow: 1;
+  margin-left: 250px;
   padding: 20px 40px;
-  background-color: var(--background-white);
+  background-color: var(--background-white, #ffffff);
+  min-height: 100vh;
+}
+
+.page-title {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--text-dark, #333);
+  margin-bottom: 30px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+  }
+  
+  .content-area {
+    margin-left: 200px;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  
+  .content-area {
+    margin-left: 0;
+  }
 }

@@ -45,9 +45,12 @@ const AppLayout = () => {
 
   return (
     <div className="app-container">
-      <header className="app-header">
-        <div className="app-logo">MedMnemonics</div>
-        <nav className="header-nav">
+      {/* Sidebar */}
+      <div className="sidebar">
+        <div className="app-logo">
+          <span>MedMnemonics</span>
+        </div>
+        <nav className="sidebar-nav">
           <ul>
             {navItems.map(item => (
               <li key={item.view}>
@@ -69,8 +72,9 @@ const AppLayout = () => {
             </li>
           </ul>
         </nav>
-      </header>
+      </div>
 
+      {/* Content Area */}
       <main className="content-area">
         {currentView === 'dashboard' && <DashboardPage />}
         {currentView === 'add-edit-mnemonic' && (
