@@ -94,7 +94,7 @@ const DashboardPage = () => {
         <div className="dashboard-layout with-sidebar">
           <div className="mnemonics-content">
             <div className="content-header">
-              <h2 className="mnemonics-heading">Your Mnemonics</h2>
+              <h2 className="mnemonics-heading">Dashboard</h2>
               <div className="search-container right-align">
                 <input
                   type="text"
