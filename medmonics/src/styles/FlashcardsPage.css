@@ -19,7 +19,6 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Quiz Setup Styles - Updated Layout */
 .quiz-setup {
   display: flex;
   gap: 2rem;
@@ -29,7 +28,6 @@
   width: 100%;
 }
 
-/* Ensure browse-section expands properly */
 .browse-section {
   flex: 1;
   display: flex;
@@ -38,7 +36,7 @@
 }
 
 .setup-section {
-  flex: 0 0 350px; /* Fixed width for quiz settings */
+  flex: 0 0 350px;
   background: white;
   padding: 2rem;
   border-radius: 12px;
@@ -72,8 +70,8 @@
 
 .category-btn {
   padding: 0.5rem 1rem;
-  border: 2px solid #e9ecef;
-  background: rgb(1, 153, 102);
+  border: 2px solid #dbeafe;
+  background: #3b82f6;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -82,23 +80,23 @@
 }
 
 .category-btn:hover {
-  border-color: #007bff;
-  background: #2fa002;
+  background: #2563eb;
+  border-color: #1d4ed8;
 }
 
 .category-btn.selected {
-  border-color: #abc1d8;
-  background: #52d109;
+  background: #1d4ed8;
+  border-color: #1e40af;
   color: white;
 }
 
 .setting-group select {
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid #2fa002;
+  border: 2px solid #3b82f6;
   border-radius: 8px;
   font-size: 1rem;
-  background: rgb(1, 153, 102);
+  background: #3b82f6;
   color: white;
 }
 
@@ -110,7 +108,7 @@
 .start-quiz-btn {
   width: 100%;
   padding: 1rem 2rem;
-  background: rgb(1, 153, 102);
+  background: #3b82f6;
   color: rgb(255, 255, 255);
   border: none;
   border-radius: 12px;
@@ -123,6 +121,7 @@
 
 .start-quiz-btn:hover:not(:disabled) {
   transform: translateY(-2px);
+  background: #2563eb;
 }
 
 .start-quiz-btn:disabled {
@@ -130,7 +129,6 @@
   cursor: not-allowed;
 }
 
-/* Browse Section Styles - Updated for horizontal layout */
 .browse-section {
   flex: 1;
   background: white;
@@ -147,7 +145,6 @@
   text-align: center;
 }
 
-/* Updated browse content layout - horizontal */
 .browse-content {
   display: flex;
   gap: 1.5rem;
@@ -155,7 +152,7 @@
 }
 
 .sidebar {
-  flex: 0 0 200px; /* Fixed width for sidebar */
+  flex: 0 0 200px;
   background-color: #f8f8f8;
   padding: 20px;
   border-radius: 8px;
