@@ -72,7 +72,7 @@ const DashboardPage = () => {
   return (
     <div className="dashboard-page">
       <div className="main-content">
-        <h1 className="page-title">Welcome to Medmnemonics</h1>
+        <h1 className="page-title">Welcome to MedMnemonics</h1>
 
         {/* Category Sidebar */}
         <aside className="category-sidebar">

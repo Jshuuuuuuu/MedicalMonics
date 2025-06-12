@@ -190,7 +190,7 @@
 .category-list li.active {
   background-color: #007bff;
   color: white;
-  border-color: #0056b3;
+  border-color: #007bff;
 }
 
 .category-list li:hover {
