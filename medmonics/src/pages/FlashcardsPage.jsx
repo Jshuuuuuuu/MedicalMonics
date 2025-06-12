@@ -281,9 +281,9 @@ const FlashcardsPage = () => {
             <div className="browse-section">
               <h2>Browse Flashcards</h2>
               <div className="browse-content">
-                <div className="sidebar">
-                  <h3>Categories</h3>
-                  <ul className="category-list">
+              <div className="category-filter">
+                <h3>Categories</h3>
+                <ul className="category-filter-list">
                     {categories.map((category) => (
                       <li
                         key={category}
