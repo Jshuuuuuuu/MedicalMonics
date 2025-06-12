@@ -8,7 +8,7 @@
   width: 250px;
   background-color: var(--primary-color, #2c3e50);
   color: white;
-  padding: 20px 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -20,14 +20,17 @@
 .app-logo {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 40px;
   text-align: center;
-  padding: 0 20px;
+  padding: 30px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 0;
 }
 
 .sidebar-nav {
   flex: 1;
-  padding: 0 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-nav ul {
@@ -35,11 +38,21 @@
   padding: 0;
   margin: 0;
   width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-nav li {
   margin-bottom: 8px;
   width: 100%;
+}
+
+.sidebar-nav li:last-child {
+  margin-top: auto;
+  margin-bottom: 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .nav-link {
@@ -53,9 +66,21 @@
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.2s ease;
-  display: block;
+  display: flex;
+  align-items: center;
   text-decoration: none;
   font-family: inherit;
+  gap: 12px;
+}
+
+.nav-link .nav-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.nav-link .nav-text {
+  flex: 1;
 }
 
 .nav-link:hover {
@@ -69,12 +94,8 @@
 }
 
 .log-out {
-  margin-top: auto;
   color: #ff6b6b;
   font-weight: 500;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin-top: 20px;
-  padding-top: 20px;
 }
 
 .log-out:hover {
