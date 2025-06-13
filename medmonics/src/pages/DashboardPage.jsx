@@ -26,6 +26,44 @@ const DashboardPage = () => {
     "Neurology",
   ];
 
+  // Add this new state at the beginning of your DashboardPage component
+  const [progress, setProgress] = useState({
+    totalMnemonics: 0,
+    reviewedToday: 0,
+    progressPercentage: 0,
+    isComplete: false,
+    resetTime: { hoursUntilReset: 0, minutesUntilReset: 0 },
+  });
+
+  // Add this new useEffect to fetch progress data
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const fetchProgress = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/get-progress-overview",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
+          }
+        );
+        setProgress(response.data);
+      } catch (error) {
+        console.error("Error fetching progress:", error);
+      }
+    };
+
+    fetchProgress();
+
+    // Refresh progress every 5 minutes
+    const intervalId = setInterval(fetchProgress, 5 * 60 * 1000);
+
+    // Clean up interval on unmount
+    return () => clearInterval(intervalId);
+  }, [currentUser]);
+
   useEffect(() => {
     if (!currentUser) return;
 
@@ -61,8 +99,37 @@ const DashboardPage = () => {
     setActiveCategory(category);
   };
 
-  const handleMnemonicClick = (mnemonic) => {
+  const handleMnemonicClick = async (mnemonic) => {
     setSelectedMnemonic(mnemonic);
+
+    // Update last_reviewed when a mnemonic is clicked
+    try {
+      await axios.post(
+        "http://localhost:5000/update-mnemonic-stats",
+        {
+          mnemonicId: mnemonic.id,
+          isCorrect: true, // We'll count viewing as a correct interaction
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
+      // Refresh progress data after updating stats
+      const progressResponse = await axios.get(
+        "http://localhost:5000/get-progress-overview",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+      setProgress(progressResponse.data);
+    } catch (error) {
+      console.error("Error updating mnemonic stats:", error);
+    }
   };
 
   const handleCloseModal = () => {
@@ -110,7 +177,51 @@ const DashboardPage = () => {
               <div className="dashboard-overview">
                 <div className="progress-box">
                   <h3>Progress Overview</h3>
-                  <p>Coming soon: your daily learning stats</p>
+                  <div className="progress-content">
+                    {/* Progress bar */}
+                    <div className="progress-bar-container">
+                      <div
+                        className="progress-bar-fill"
+                        style={{ width: `${progress.progressPercentage}%` }}
+                      ></div>
+                    </div>
+
+                    {/* Progress stats */}
+                    <div className="progress-stats">
+                      <p>
+                        <strong>{progress.reviewedToday}</strong> of{" "}
+                        <strong>{progress.totalMnemonics}</strong> mnemonics studied
+                        today
+                        <span className="progress-percentage">
+                          {" ("}
+                          {progress.progressPercentage}
+                          %)
+                        </span>
+                      </p>
+
+                      {/* Show completion message or remaining count */}
+                      {progress.isComplete ? (
+                        <p className="progress-complete">
+                          🎉 All mnemonics reviewed today!
+                        </p>
+                      ) : (
+                        progress.totalMnemonics > 0 && (
+                          <p className="progress-remaining">
+                            {progress.totalMnemonics - progress.reviewedToday}{" "}
+                            mnemonics remaining
+                          </p>
+                        )
+                      )}
+                    </div>
+
+                    {/* Reset timer */}
+                    <div className="reset-timer">
+                      <small>
+                        Progress resets in {progress.resetTime.hoursUntilReset}h{" "}
+                        {progress.resetTime.minutesUntilReset}m
+                      </small>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="analytics-box">
@@ -146,11 +257,21 @@ const DashboardPage = () => {
           <Modal isOpen={true} onClose={handleCloseModal} title="Mnemonic Details">
             <div className="modal-content">
               <h3>{selectedMnemonic.acronym}</h3>
-              <p><strong>Full Form:</strong> {selectedMnemonic.fullForm}</p>
-              <p><strong>Category:</strong> {selectedMnemonic.category}</p>
-              <p><strong>Tags:</strong> {selectedMnemonic.tags?.join(", ")}</p>
-              <p><strong>Body System:</strong> {selectedMnemonic.bodySystem}</p>
-              <p><strong>Exam Relevance:</strong> {selectedMnemonic.examRelevance}</p>
+              <p>
+                <strong>Full Form:</strong> {selectedMnemonic.fullForm}
+              </p>
+              <p>
+                <strong>Category:</strong> {selectedMnemonic.category}
+              </p>
+              <p>
+                <strong>Tags:</strong> {selectedMnemonic.tags?.join(", ")}
+              </p>
+              <p>
+                <strong>Body System:</strong> {selectedMnemonic.bodySystem}
+              </p>
+              <p>
+                <strong>Exam Relevance:</strong> {selectedMnemonic.examRelevance}
+              </p>
             </div>
           </Modal>
         )}

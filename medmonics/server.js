@@ -13,7 +13,7 @@ const client = new Client({
   user: "postgres",
   host: "localhost",
   database: "medicalmnemonics",
-  password: "123", 
+  password: "JEDI", 
   port: 5432,
 });
 
@@ -398,93 +398,60 @@ app.post("/update-mnemonic-stats", authenticateJWT, async (req, res) => {
   }
 });
 
-// Get user's learning analytics
-app.get("/get-learning-analytics", authenticateJWT, async (req, res) => {
+app.get("/get-progress-overview", authenticateJWT, async (req, res) => {
   const userId = req.user.userId;
 
   try {
-    // Get overall stats
-    const overallStats = await client.query(`
-      SELECT 
-        COUNT(*) as total_cards_studied,
-        SUM(correct_count) as total_correct,
-        SUM(incorrect_count) as total_incorrect,
-        AVG(ease_factor) as avg_ease_factor,
-        COUNT(CASE WHEN last_reviewed > NOW() - INTERVAL '7 days' THEN 1 END) as cards_studied_week
-      FROM user_mnemonic_stats 
-      WHERE user_id = $1
-    `, [userId]);
+    // Get today's date in UTC
+    const todayUTC = new Date();
+    todayUTC.setUTCHours(0, 0, 0, 0); // Set to beginning of day in UTC
 
-    // Get category breakdown
-    const categoryStats = await client.query(`
-      SELECT 
-        m.category,
-        COUNT(*) as total_cards,
-        SUM(ums.correct_count) as correct_answers,
-        SUM(ums.incorrect_count) as incorrect_answers,
-        AVG(ums.ease_factor) as avg_ease_factor
-      FROM mnemonics m
-      LEFT JOIN user_mnemonic_stats ums ON m.id = ums.mnemonic_id AND ums.user_id = $1
-      WHERE m.user_id = $1
-      GROUP BY m.category
-      ORDER BY correct_answers DESC
-    `, [userId]);
+    // Count total mnemonics for this user
+    const totalResult = await client.query(
+      "SELECT COUNT(*) as total FROM mnemonics WHERE user_id = $1",
+      [userId]
+    );
+    const totalMnemonics = parseInt(totalResult.rows[0].total);
 
-    // Get cards due for review
-    const cardsDue = await client.query(`
-      SELECT COUNT(*) as cards_due
-      FROM user_mnemonic_stats ums
-      JOIN mnemonics m ON ums.mnemonic_id = m.id
-      WHERE ums.user_id = $1 
-      AND ums.last_reviewed < NOW() - INTERVAL '1 day' * ums.interval
-    `, [userId]);
+    // Count mnemonics reviewed today (after 12AM UTC)
+    const reviewedTodayResult = await client.query(
+      "SELECT COUNT(*) as reviewed FROM user_mnemonic_stats ums " +
+      "JOIN mnemonics m ON ums.mnemonic_id = m.id " +
+      "WHERE ums.user_id = $1 AND m.user_id = $1 " +
+      "AND ums.last_reviewed >= $2",
+      [userId, todayUTC.toISOString()]
+    );
+    const reviewedToday = parseInt(reviewedTodayResult.rows[0].reviewed);
+
+    // Calculate progress percentage
+    const progressPercentage = totalMnemonics > 0 
+      ? Math.round((reviewedToday / totalMnemonics) * 100) 
+      : 0;
+
+    // Calculate time until reset (12AM UTC tomorrow)
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+    tomorrow.setUTCHours(0, 0, 0, 0);
+    const timeUntilReset = tomorrow - now;
+    const hoursUntilReset = Math.floor(timeUntilReset / (1000 * 60 * 60));
+    const minutesUntilReset = Math.floor((timeUntilReset % (1000 * 60 * 60)) / (1000 * 60));
 
     res.json({
-      overall: overallStats.rows[0],
-      categories: categoryStats.rows,
-      cardsDue: cardsDue.rows[0].cards_due
+      totalMnemonics,
+      reviewedToday,
+      progressPercentage,
+      isComplete: reviewedToday === totalMnemonics && totalMnemonics > 0,
+      resetTime: {
+        hoursUntilReset,
+        minutesUntilReset
+      }
     });
-
-  } catch (err) {
-    console.error("Error fetching learning analytics:", err);
-    res.status(500).json({ message: "Error fetching analytics", error: err.message });
+  } catch (error) {
+    console.error("Error fetching progress overview:", error);
+    res.status(500).json({ message: "Error fetching progress", error: error.message });
   }
 });
-
-// Get cards due for review today
-app.get("/get-cards-due", authenticateJWT, async (req, res) => {
-  const userId = req.user.userId;
-
-  try {
-    const result = await client.query(`
-      SELECT 
-        m.*,
-        ums.ease_factor,
-        ums.interval,
-        ums.last_reviewed,
-        ums.correct_count,
-        ums.incorrect_count
-      FROM mnemonics m
-      JOIN user_mnemonic_stats ums ON m.id = ums.mnemonic_id
-      WHERE ums.user_id = $1 
-      AND (
-        ums.last_reviewed IS NULL 
-        OR ums.last_reviewed < NOW() - INTERVAL '1 day' * ums.interval
-      )
-      ORDER BY 
-        CASE WHEN ums.last_reviewed IS NULL THEN 0 ELSE 1 END,
-        ums.last_reviewed ASC
-      LIMIT 50
-    `, [userId]);
-
-    res.json(result.rows);
-
-  } catch (err) {
-    console.error("Error fetching cards due:", err);
-    res.status(500).json({ message: "Error fetching cards due", error: err.message });
-  }
-});
-
 // Verify token endpoint
 app.get("/verify-token", authenticateJWT, (req, res) => {
   res.json({ user: req.user }); // Respond with the user data if token is valid
