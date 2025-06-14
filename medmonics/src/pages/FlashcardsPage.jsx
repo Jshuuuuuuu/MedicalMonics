@@ -51,14 +51,17 @@ const FlashcardsPage = () => {
     const fetchFlashcards = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/get-mnemonics", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-          params: {
-            category: activeCategory === "All" ? "" : activeCategory,
-          },
-        });
+        const response = await axios.get(
+          "http://localhost:5000/get-mnemonics",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
+            params: {
+              category: activeCategory === "All" ? "" : activeCategory,
+            },
+          }
+        );
         setFlashcards(response.data);
       } catch (error) {
         console.error("Error fetching flashcards:", error);
@@ -83,15 +86,27 @@ const FlashcardsPage = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/start-quiz", quizSettings, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.post(
+        "http://localhost:5000/start-quiz",
+        quizSettings,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       if (response.data && response.data.flashcards) {
-        setQuizFlashcards(response.data.flashcards);
-        setCurrentFlashcard(response.data.flashcards[0]);
+        // Ensure we only take exactly the number of cards specified in settings
+        const limitedCards = response.data.flashcards.slice(
+          0,
+          quizSettings.numberOfCards
+        );
+        setQuizFlashcards(limitedCards);
+        setCurrentFlashcard(limitedCards[0] || null);
         setQuizMode(true);
         setCurrentFlashcardIndex(0);
+        // Reset points and stats when starting a new quiz
+        setPoints(0);
+        setQuizStats({ correct: 0, incorrect: 0, total: 0 });
       } else {
         showToast("No flashcards available for quiz", "error");
       }
@@ -107,12 +122,18 @@ const FlashcardsPage = () => {
     if (!currentFlashcard) return;
 
     try {
-      await axios.post("http://localhost:5000/update-mnemonic-stats", {
-        mnemonicId: currentFlashcard.id,
-        isCorrect: isCorrect,
-      }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
-      });
+      await axios.post(
+        "http://localhost:5000/update-mnemonic-stats",
+        {
+          mnemonicId: currentFlashcard.id,
+          isCorrect: isCorrect,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
 
       setQuizStats((prev) => ({
         correct: prev.correct + (isCorrect ? 1 : 0),
@@ -143,7 +164,9 @@ const FlashcardsPage = () => {
       Medium: 1.5,
       Hard: 2,
     };
-    return Math.round(basePoints * (difficultyMultiplier[flashcard.difficulty] || 1));
+    return Math.round(
+      basePoints * (difficultyMultiplier[flashcard.difficulty] || 1)
+    );
   };
 
   const nextFlashcard = () => {
@@ -161,7 +184,20 @@ const FlashcardsPage = () => {
   const endQuiz = () => {
     setQuizMode(false);
     setCurrentFlashcard(null);
-    showToast(`Quiz completed! Score: ${quizStats.correct}/${quizStats.total}`, "success");
+
+    // Calculate percentage score
+    const percentage =
+      quizStats.total > 0
+        ? Math.round((quizStats.correct / quizStats.total) * 100)
+        : 0;
+
+    // Display end of quiz toast with more information
+    showToast(
+      `Quiz completed! Score: ${quizStats.correct}/${quizStats.total} (${percentage}%)`,
+      percentage >= 70 ? "success" : "info"
+    );
+
+    // You could also save quiz results to the server here
   };
 
   const handleCategorySelection = (category) => {
@@ -222,7 +258,11 @@ const FlashcardsPage = () => {
                   {categories.map((category) => (
                     <button
                       key={category}
-                      className={`category-btn ${quizSettings.categories.includes(category) ? "selected" : ""}`}
+                      className={`category-btn ${
+                        quizSettings.categories.includes(category)
+                          ? "selected"
+                          : ""
+                      }`}
                       onClick={() => handleCategorySelection(category)}
                     >
                       {category}
@@ -281,9 +321,9 @@ const FlashcardsPage = () => {
             <div className="browse-section">
               <h2>Browse Flashcards</h2>
               <div className="browse-content">
-              <div className="category-filter">
-                <h3>Categories</h3>
-                <ul className="category-filter-list">
+                <div className="category-filter">
+                  <h3>Categories</h3>
+                  <ul className="category-filter-list">
                     {categories.map((category) => (
                       <li
                         key={category}
@@ -371,10 +411,10 @@ const FlashcardsPage = () => {
                   <div className="answer-reveal">
                     <div className="correct-answer">
                       <h3>Correct Answer:</h3>
-                      <p className="full-form">{currentFlashcard.fullForm}</p>
-                      {currentFlashcard.bodySystem && (
+                      <p className="full-form">{currentFlashcard.full_form}</p>
+                      {currentFlashcard.body_system && (
                         <p className="body-system">
-                          Body System: {currentFlashcard.bodySystem}
+                          Body System: {currentFlashcard.body_system}
                         </p>
                       )}
                     </div>

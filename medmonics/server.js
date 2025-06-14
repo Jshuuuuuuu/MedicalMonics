@@ -452,6 +452,90 @@ app.get("/get-progress-overview", authenticateJWT, async (req, res) => {
     res.status(500).json({ message: "Error fetching progress", error: error.message });
   }
 });
+
+app.get("/get-analytical-report", authenticateJWT, async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    // Get performance metrics by category
+    const categoryPerformanceResult = await client.query(`
+      SELECT 
+        m.category,
+        SUM(ums.correct_count) AS total_correct,
+        SUM(ums.incorrect_count) AS total_incorrect,
+        COUNT(m.id) AS total_mnemonics,
+        COUNT(CASE WHEN ums.last_reviewed IS NOT NULL THEN 1 END) AS studied_mnemonics
+      FROM mnemonics m
+      LEFT JOIN user_mnemonic_stats ums 
+        ON m.id = ums.mnemonic_id AND ums.user_id = $1
+      WHERE m.user_id = $1
+      GROUP BY m.category
+      ORDER BY 
+        (CASE WHEN SUM(ums.correct_count) + SUM(ums.incorrect_count) > 0 
+          THEN SUM(ums.correct_count)::float / (SUM(ums.correct_count) + SUM(ums.incorrect_count)) 
+          ELSE 0 END) DESC
+    `, [userId]);
+
+    // Get overall performance metrics
+    const overallPerformanceResult = await client.query(`
+      SELECT 
+        SUM(ums.correct_count) AS total_correct,
+        SUM(ums.incorrect_count) AS total_incorrect
+      FROM user_mnemonic_stats ums
+      JOIN mnemonics m ON m.id = ums.mnemonic_id
+      WHERE ums.user_id = $1 AND m.user_id = $1
+    `, [userId]);
+
+    // Format the category performance data
+    const categoryPerformance = categoryPerformanceResult.rows.map(category => {
+      // Convert string values to numbers before adding
+      const totalCorrect = parseInt(category.total_correct) || 0;
+      const totalIncorrect = parseInt(category.total_incorrect) || 0;
+      const totalAnswers = totalCorrect + totalIncorrect;
+      
+      const accuracyRate = totalAnswers > 0 
+        ? Math.round((totalCorrect / totalAnswers) * 100) 
+        : 0;
+      
+      const studiedPercentage = category.total_mnemonics > 0
+        ? Math.round((category.studied_mnemonics / category.total_mnemonics) * 100)
+        : 0;
+
+      return {
+        category: category.category,
+        accuracyRate,
+        totalCorrect,
+        totalIncorrect,
+        totalAnswers,  // Now it's properly calculated as a sum
+        totalMnemonics: parseInt(category.total_mnemonics),
+        studiedMnemonics: parseInt(category.studied_mnemonics),
+        studiedPercentage
+      };
+    });
+
+    // Calculate overall stats
+    const overallStats = overallPerformanceResult.rows[0];
+    const totalOverallAnswers = 
+  parseInt(overallStats?.total_correct || 0) +
+      parseInt(overallStats?.total_incorrect || 0);
+    const overallAccuracy = totalOverallAnswers > 0
+      ? Math.round((parseInt(overallStats?.total_correct || 0) / totalOverallAnswers) * 100)
+      : 0;
+
+    res.json({
+      categoryPerformance,
+      overallStats: {
+        totalCorrect: parseInt(overallStats?.total_correct || 0),
+        totalIncorrect: parseInt(overallStats?.total_incorrect || 0),
+        totalAnswers: totalOverallAnswers,
+        overallAccuracy
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching analytical report:", error);
+    res.status(500).json({ message: "Error fetching analytical data", error: error.message });
+  }
+});
 // Verify token endpoint
 app.get("/verify-token", authenticateJWT, (req, res) => {
   res.json({ user: req.user }); // Respond with the user data if token is valid

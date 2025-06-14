@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
 import Modal from "../contexts/Modal";
+import AnalyticalReport from "../components/AnalyticalReport";
 import "../styles/common.css";
 import "../styles/DashboardPage.css";
 
@@ -226,7 +227,7 @@ const DashboardPage = () => {
 
                 <div className="analytics-box">
                   <h3>Analytical Report</h3>
-                  <p>Track your mnemonic performance and trends.</p>
+                  <AnalyticalReport />
                 </div>
               </div>
 
@@ -258,7 +259,7 @@ const DashboardPage = () => {
             <div className="modal-content">
               <h3>{selectedMnemonic.acronym}</h3>
               <p>
-                <strong>Full Form:</strong> {selectedMnemonic.fullForm}
+                <strong>Full Form:</strong> {selectedMnemonic.full_form}
               </p>
               <p>
                 <strong>Category:</strong> {selectedMnemonic.category}
@@ -267,10 +268,10 @@ const DashboardPage = () => {
                 <strong>Tags:</strong> {selectedMnemonic.tags?.join(", ")}
               </p>
               <p>
-                <strong>Body System:</strong> {selectedMnemonic.bodySystem}
+                <strong>Body System:</strong> {selectedMnemonic.body_system}
               </p>
               <p>
-                <strong>Exam Relevance:</strong> {selectedMnemonic.examRelevance}
+                <strong>Exam Relevance:</strong> {selectedMnemonic.exam_relevance}
               </p>
             </div>
           </Modal>
