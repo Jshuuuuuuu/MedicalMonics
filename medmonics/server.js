@@ -536,6 +536,75 @@ app.get("/get-analytical-report", authenticateJWT, async (req, res) => {
     res.status(500).json({ message: "Error fetching analytical data", error: error.message });
   }
 });
+
+// Delete mnemonic endpoint
+app.delete("/delete-mnemonic/:id", authenticateJWT, async (req, res) => {
+  const mnemonicId = req.params.id;
+  const userId = req.user.userId;
+
+  try {
+    // First check if the mnemonic belongs to the user
+    const checkResult = await client.query(
+      "SELECT * FROM mnemonics WHERE id = $1 AND user_id = $2",
+      [mnemonicId, userId]
+    );
+
+    if (checkResult.rows.length === 0) {
+      return res.status(404).json({ message: "Mnemonic not found or unauthorized" });
+    }
+
+    // Delete related user_mnemonic_stats first (foreign key constraint)
+    await client.query(
+      "DELETE FROM user_mnemonic_stats WHERE mnemonic_id = $1 AND user_id = $2",
+      [mnemonicId, userId]
+    );
+
+    // Then delete the mnemonic
+    await client.query(
+      "DELETE FROM mnemonics WHERE id = $1 AND user_id = $2",
+      [mnemonicId, userId]
+    );
+
+    res.json({ message: "Mnemonic deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting mnemonic:", error);
+    res.status(500).json({ message: "Error deleting mnemonic", error: error.message });
+  }
+});
+
+// Update mnemonic endpoint
+app.put("/update-mnemonic/:id", authenticateJWT, async (req, res) => {
+  const mnemonicId = req.params.id;
+  const userId = req.user.userId;
+  const { acronym, fullForm, category, bodySystem, difficulty, examRelevance, tags } = req.body;
+
+  try {
+    // Check if the mnemonic belongs to the user
+    const checkResult = await client.query(
+      "SELECT * FROM mnemonics WHERE id = $1 AND user_id = $2",
+      [mnemonicId, userId]
+    );
+
+    if (checkResult.rows.length === 0) {
+      return res.status(404).json({ message: "Mnemonic not found or unauthorized" });
+    }
+
+    // Update the mnemonic
+    const result = await client.query(
+      `UPDATE mnemonics 
+       SET acronym = $1, full_form = $2, category = $3, body_system = $4, 
+           difficulty = $5, exam_relevance = $6, tags = $7, updated_at = NOW()
+       WHERE id = $8 AND user_id = $9
+       RETURNING *`,
+      [acronym, fullForm, category, bodySystem, difficulty, examRelevance, tags, mnemonicId, userId]
+    );
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error("Error updating mnemonic:", error);
+    res.status(500).json({ message: "Error updating mnemonic", error: error.message });
+  }
+});
 // Verify token endpoint
 app.get("/verify-token", authenticateJWT, (req, res) => {
   res.json({ user: req.user }); // Respond with the user data if token is valid

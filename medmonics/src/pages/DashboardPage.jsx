@@ -14,6 +14,8 @@ const DashboardPage = () => {
   const [mnemonics, setMnemonics] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedMnemonic, setSelectedMnemonic] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedMnemonic, setEditedMnemonic] = useState(null);
   const showToast = useToast();
 
   const categories = [
@@ -27,7 +29,6 @@ const DashboardPage = () => {
     "Neurology",
   ];
 
-  // Add this new state at the beginning of your DashboardPage component
   const [progress, setProgress] = useState({
     totalMnemonics: 0,
     reviewedToday: 0,
@@ -36,7 +37,6 @@ const DashboardPage = () => {
     resetTime: { hoursUntilReset: 0, minutesUntilReset: 0 },
   });
 
-  // Add this new useEffect to fetch progress data
   useEffect(() => {
     if (!currentUser) return;
 
@@ -58,10 +58,8 @@ const DashboardPage = () => {
 
     fetchProgress();
 
-    // Refresh progress every 5 minutes
     const intervalId = setInterval(fetchProgress, 5 * 60 * 1000);
 
-    // Clean up interval on unmount
     return () => clearInterval(intervalId);
   }, [currentUser]);
 
@@ -103,13 +101,12 @@ const DashboardPage = () => {
   const handleMnemonicClick = async (mnemonic) => {
     setSelectedMnemonic(mnemonic);
 
-    // Update last_reviewed when a mnemonic is clicked
     try {
       await axios.post(
         "http://localhost:5000/update-mnemonic-stats",
         {
           mnemonicId: mnemonic.id,
-          isCorrect: true, // We'll count viewing as a correct interaction
+          isCorrect: true,
         },
         {
           headers: {
@@ -118,7 +115,6 @@ const DashboardPage = () => {
         }
       );
 
-      // Refresh progress data after updating stats
       const progressResponse = await axios.get(
         "http://localhost:5000/get-progress-overview",
         {
@@ -137,13 +133,103 @@ const DashboardPage = () => {
     setSelectedMnemonic(null);
   };
 
+  const handleEditClick = (mnemonic) => {
+    setEditedMnemonic({
+      id: mnemonic.id,
+      acronym: mnemonic.acronym,
+      fullForm: mnemonic.full_form,
+      category: mnemonic.category,
+      bodySystem: mnemonic.body_system,
+      difficulty: mnemonic.difficulty,
+      examRelevance: mnemonic.exam_relevance,
+      tags: mnemonic.tags || [],
+    });
+    setIsEditing(true);
+    setSelectedMnemonic(null);
+  };
+
+  const handleDeleteClick = async (mnemonicId) => {
+    if (!window.confirm("Are you sure you want to delete this mnemonic?")) {
+      return;
+    }
+
+    try {
+      await axios.delete(`http://localhost:5000/delete-mnemonic/${mnemonicId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+
+      setMnemonics(mnemonics.filter((m) => m.id !== mnemonicId));
+      setSelectedMnemonic(null);
+      showToast("Mnemonic deleted successfully", "success");
+    } catch (error) {
+      console.error("Error deleting mnemonic:", error);
+      showToast("Error deleting mnemonic", "error");
+    }
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/update-mnemonic/${editedMnemonic.id}`,
+        {
+          acronym: editedMnemonic.acronym,
+          fullForm: editedMnemonic.fullForm,
+          category: editedMnemonic.category,
+          bodySystem: editedMnemonic.bodySystem,
+          difficulty: editedMnemonic.difficulty,
+          examRelevance: editedMnemonic.examRelevance,
+          tags: editedMnemonic.tags,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
+      setMnemonics(
+        mnemonics.map((m) => (m.id === editedMnemonic.id ? response.data : m))
+      );
+
+      setIsEditing(false);
+      setEditedMnemonic(null);
+      showToast("Mnemonic updated successfully", "success");
+    } catch (error) {
+      console.error("Error updating mnemonic:", error);
+      showToast("Error updating mnemonic", "error");
+    }
+  };
+
+  const handleEditFormChange = (e) => {
+    const { name, value } = e.target;
+    setEditedMnemonic((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleTagsChange = (e) => {
+    const tagsString = e.target.value;
+    const tagsArray = tagsString
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag);
+    setEditedMnemonic((prev) => ({
+      ...prev,
+      tags: tagsArray,
+    }));
+  };
+
   return (
     <div className="dashboard-page">
       <div className="main-content">
         <h1 className="page-title">Welcome to MedMnemonics</h1>
 
         <div className="dashboard-layout">
-          {/* Category List Inside Dashboard Panel */}
           <div className="category-list-container">
             <h3>Categories</h3>
             <ul className="category-list vertical">
@@ -160,7 +246,6 @@ const DashboardPage = () => {
             </ul>
           </div>
 
-          {/* Mnemonics Section */}
           <div className="mnemonics-content">
             <div className="content-header">
               <h2 className="mnemonics-heading">Dashboard</h2>
@@ -179,7 +264,6 @@ const DashboardPage = () => {
                 <div className="progress-box">
                   <h3>Progress Overview</h3>
                   <div className="progress-content">
-                    {/* Progress bar */}
                     <div className="progress-bar-container">
                       <div
                         className="progress-bar-fill"
@@ -187,7 +271,6 @@ const DashboardPage = () => {
                       ></div>
                     </div>
 
-                    {/* Progress stats */}
                     <div className="progress-stats">
                       <p>
                         <strong>{progress.reviewedToday}</strong> of{" "}
@@ -200,7 +283,6 @@ const DashboardPage = () => {
                         </span>
                       </p>
 
-                      {/* Show completion message or remaining count */}
                       {progress.isComplete ? (
                         <p className="progress-complete">
                           🎉 All mnemonics reviewed today!
@@ -215,7 +297,6 @@ const DashboardPage = () => {
                       )}
                     </div>
 
-                    {/* Reset timer */}
                     <div className="reset-timer">
                       <small>
                         Progress resets in {progress.resetTime.hoursUntilReset}h{" "}
@@ -273,7 +354,125 @@ const DashboardPage = () => {
               <p>
                 <strong>Exam Relevance:</strong> {selectedMnemonic.exam_relevance}
               </p>
+              
+              <div className="modal-actions">
+                <button 
+                  className="btn btn-secondary"
+                  onClick={() => handleEditClick(selectedMnemonic)}
+                >
+                  Edit
+                </button>
+                <button 
+                  className="btn btn-danger"
+                  onClick={() => handleDeleteClick(selectedMnemonic.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
+          </Modal>
+        )}
+
+        {/* Add the Edit Modal */}
+        {isEditing && editedMnemonic && (
+          <Modal isOpen={true} onClose={() => setIsEditing(false)} title="Edit Mnemonic">
+            <form onSubmit={handleEditSubmit} className="edit-form">
+              <div className="form-group">
+                <label htmlFor="acronym">Acronym</label>
+                <input
+                  type="text"
+                  id="acronym"
+                  name="acronym"
+                  value={editedMnemonic.acronym}
+                  onChange={handleEditFormChange}
+                  required
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="fullForm">Full Form</label>
+                <textarea
+                  id="fullForm"
+                  name="fullForm"
+                  value={editedMnemonic.fullForm}
+                  onChange={handleEditFormChange}
+                  required
+                ></textarea>
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="category">Category</label>
+                <select
+                  id="category"
+                  name="category"
+                  value={editedMnemonic.category}
+                  onChange={handleEditFormChange}
+                  required
+                >
+                  {categories.filter(c => c !== "All").map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="bodySystem">Body System</label>
+                <input
+                  type="text"
+                  id="bodySystem"
+                  name="bodySystem"
+                  value={editedMnemonic.bodySystem}
+                  onChange={handleEditFormChange}
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="difficulty">Difficulty</label>
+                <select
+                  id="difficulty"
+                  name="difficulty"
+                  value={editedMnemonic.difficulty}
+                  onChange={handleEditFormChange}
+                >
+                  <option value="Easy">Easy</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Hard">Hard</option>
+                </select>
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="examRelevance">Exam Relevance</label>
+                <input
+                  type="text"
+                  id="examRelevance"
+                  name="examRelevance"
+                  value={editedMnemonic.examRelevance}
+                  onChange={handleEditFormChange}
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="tags">Tags (comma-separated)</label>
+                <input
+                  type="text"
+                  id="tags"
+                  name="tags"
+                  value={editedMnemonic.tags?.join(", ")}
+                  onChange={handleTagsChange}
+                />
+              </div>
+              
+              <div className="form-buttons">
+                <button type="submit" className="btn btn-primary">Save Changes</button>
+                <button 
+                  type="button" 
+                  className="btn btn-secondary"
+                  onClick={() => setIsEditing(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </Modal>
         )}
       </div>
